@@ -2,7 +2,7 @@
 > [!NOTE]
 > ###### Source: [Paper](<../Sources/CNNs with DPR on FPGA based SoC.pdf>)
 > ###### Status: Not Started
-> ###### Author: TBD
+> ###### Author: Arun
 > ###### Keywords: 
 >   - Computer Vision
 >   - CNNs

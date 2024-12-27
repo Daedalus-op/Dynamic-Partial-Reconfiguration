@@ -2,7 +2,7 @@
 > [!NOTE]
 > ###### Source: [Paper](<../Sources/Partial dynamic reconfiguration framework for FPGA_ A survey with concepts, constraints and trends - ScienceDirect.pdf>)
 > ###### Status: Not Started
-> ###### Author: TBD
+> ###### Author: Krishna
 > ###### Keywords: 
 >   - Survey
 
