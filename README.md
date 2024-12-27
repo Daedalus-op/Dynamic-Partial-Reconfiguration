@@ -8,4 +8,4 @@
 # From Papers
 - [SoC RISC-V soft processor](Papers/Findings/soc-risc-v-soft-processor.md)
 - [Survey on Partial Dynamic Reconfiguration](Papers/Findings/survey-on-partial-dynamic-reconfiguration.md)
-- [DPR for SDNs](Papers/Findings/dpr-for-sdns.md)
+- [CNNs with DPR](Papers/Findings/cnns-with-dpr.md)
