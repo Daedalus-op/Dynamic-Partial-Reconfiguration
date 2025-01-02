@@ -1,17 +1,48 @@
 # SoC RISC-V soft processor
 > [!NOTE]
 > ###### Source: [Paper](../Sources/A_remote_partial-reconfigurable_SoC_with_a_RISC-V_soft_processor_targeting_low-end_FPGAs.pdf)
-> ###### Status: Not Started
+> ###### Status: Finished
 > ###### Author: Pranav
 > ###### Keywords: 
 >   - RISCV
 >   - SoC
+
+## Table of Content
+- [SoC RISC-V soft processor](#soc-risc-v-soft-processor)
+          - [Source: [Paper](../Sources/A_remote_partial-reconfigurable_SoC_with_a_RISC-V_soft_processor_targeting_low-end_FPGAs.pdf)](#source-papersourcesaremotepartial-reconfigurablesocwitharisc-vsoftprocessortargetinglow-endfpgaspdf)
+          - [Status: Not Started](#status-not-started)
+          - [Author: Pranav](#author-pranav)
+          - [Keywords:](#keywords)
+  - [Topic](#topic)
+  - [Questions](#questions)
+  - [Notes](#notes)
+    - [Introduction](#introduction)
+      - [Principle](#principle)
+      - [Achievements](#achievements)
+    - [Technical](#technical)
+      - [Partial Bitstreams](#partial-bitstreams)
+      - [LiteX](#litex)
+    - [Related Work](#related-work)
+    - [The Proposal](#the-proposal)
+      - [Hardware Implementation](#hardware-implementation)
+      - [LiteCAP](#litecap)
+    - [Verification](#verification)
+      - [Environment](#environment)
+      - [CNN Network as Application Circuit](#cnn-network-as-application-circuit)
+      - [RISCV Soft Processor as Application Circuit](#riscv-soft-processor-as-application-circuit)
+      - [Verification of SoC](#verification-of-soc)
+      - [Evaluation Results: Hardware Usage](#evaluation-results-hardware-usage)
+      - [Evaluation Results: Processing time and Throughput](#evaluation-results-processing-time-and-throughput)
+  - [Conclusion](#conclusion)
+  - [Extra Sources](#extra-sources)
 
 ## Topic
 Remote Partial Reconfigurable RISCV Soft Core for Edge Computing
 
 ## Questions
 - Why is long distance JTAG not feasible?
+  - Reliabitly
+  - Timing
 
 ## Notes
 ### Introduction
@@ -34,7 +65,7 @@ Remote Partial Reconfigurable RISCV Soft Core for Edge Computing
   - Header
     - metadata of FPGA model
   - Sync word
-    - 32 bit magic number !!
+    - 32 bit magic number - `0xAA995566`
   - Instruction sequence
     - Address of configuration memory
     - Values to be written at the addresses
@@ -106,7 +137,9 @@ Remote Partial Reconfigurable RISCV Soft Core for Edge Computing
 ![Picture](./assets/Evaluation.png)
 
 ## Conclusion
-- 
+- We use a stripped down version of other protocols and modules to fit it into a low end fpga with limited resources (Zynq vs Arty FPGA boards)
+- The above proposal is suitable for datacenters and NFV (Network Function Virtualisation)
+- The above SoC removes the need for an external CPU/ Controller that is usually used with partial reconfiguration of FPGAs. Making each FPGA standalone. Therefore more scalable
 
 ## Extra Sources
 - [REoN Protocol](../Sources/REoN_A_protocol_for_reliable_software-defined_FPGA_partial_reconfiguration_over_network.pdf)

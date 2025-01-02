@@ -7,6 +7,7 @@
 >   - Network
 
 ## Topic
+A Network protocol for remote Partial Configuration on FPGAs
 
 ## Notes
 - 

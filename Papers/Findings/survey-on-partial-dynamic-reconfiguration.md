@@ -1,6 +1,6 @@
 # Survey on Partial Dynamic Reconfiguration
 > [!NOTE]
-> ###### Source: [Paper](<../Sources/Partial dynamic reconfiguration framework for FPGA_ A survey with concepts, constraints and trends - ScienceDirect.pdf>)
+> ###### Source: [Paper](<../Sources/sivasankarphani2021.pdf>)
 > ###### Status: Not Started
 > ###### Author: Shrikrishna
 > ###### Keywords: 
