@@ -1,18 +1,17 @@
 # SoC RISC-V soft processor
 > [!NOTE]
-> ###### Source: [Paper](../Sources/A_remote_partial-reconfigurable_SoC_with_a_RISC-V_soft_processor_targeting_low-end_FPGAs.pdf)
-> ###### Status: Finished
-> ###### Author: Pranav
-> ###### Keywords: 
+> - Source: [Paper](../Sources/A_remote_partial-reconfigurable_SoC_with_a_RISC-V_soft_processor_targeting_low-end_FPGAs.pdf)
+> - Status: Finished
+> - Author: Pranav
+> - Keywords:
 >   - RISCV
 >   - SoC
 
+## PPT Link
+[PPT]()
+
 ## Table of Content
 - [SoC RISC-V soft processor](#soc-risc-v-soft-processor)
-          - [Source: [Paper](../Sources/A_remote_partial-reconfigurable_SoC_with_a_RISC-V_soft_processor_targeting_low-end_FPGAs.pdf)](#source-papersourcesaremotepartial-reconfigurablesocwitharisc-vsoftprocessortargetinglow-endfpgaspdf)
-          - [Status: Not Started](#status-not-started)
-          - [Author: Pranav](#author-pranav)
-          - [Keywords:](#keywords)
   - [Topic](#topic)
   - [Questions](#questions)
   - [Notes](#notes)
