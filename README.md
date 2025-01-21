@@ -6,14 +6,20 @@
 - [Implementation](Implementation.md)
 
 ## TODO
-- PPTs
-- Implement reconfig on an FPGA
-  - Coarse grained & fine grained
-  - Profile the performance from above experiments
-- Things we can implement
-  - Riscv core
-  - Graph partitioning
-  - Memory (from verification)
+- [-] PPTs Combination
+- [-] Implement reconfig on an FPGA
+  - [ ] Coarse grained & fine grained
+  - [-] Profile the performance from above experiments
+- [ ] Research
+  - [ ] Implementation flows
+    - [ ] Vitis AI
+    - [ ] Apache TVM
+
+## On Hold
+- [ ] Things we can implement
+  - [ ] Riscv core (parallel architecture like NPU/ any other accelerator)
+  - [ ] Graph partitioning
+  - [ ] Mapparat / Matanalysis
 
 ## From Papers
 - [SoC RISC-V soft processor](Papers/Findings/soc-risc-v-soft-processor.md)
