@@ -8,8 +8,8 @@
 ## TODO
 - [-] PPTs Combination
 - [-] Implement reconfig on an FPGA
-  - [ ] Coarse grained & fine grained
-  - [-] Profile the performance from above experiments
+  - [-] AlexNet
+  - [-] Profile the performance from DFX Tutorials
 - [ ] Research
   - [ ] Implementation flows
     - [ ] Vitis AI
