@@ -8,8 +8,8 @@
 ## TODO
 - [-] PPTs Combination
 - [-] Implement reconfig on an FPGA
-  - [ ] Coarse grained & fine grained
-  - [-] Profile the performance from above experiments
+  - [-] AlexNet
+  - [-] Profile the performance from DFX Tutorials
 - [ ] Research
   - [ ] Implementation flows
     - [ ] Vitis AI
@@ -27,5 +27,6 @@
 - [CNNs with DPR](Papers/Findings/cnns-with-dpr.md)
 
 ## Presentations
-- [Serverless computing](./Presentations/PTV.pdf)
-- 
+- [Serverless computing](./Presentations/Serverless-Compute(PTV).pdf)
+- [Survey on partial dynamic reconfiguration](./Presentations/Survey_DPR_(SKGP).pdf)
+- [CNN on FPGA using DPR](./Presentations/FPGA-SOC-Paper_DPR(AMI).pdf)
