@@ -5,10 +5,12 @@
 - [CNN (AlexNet)](#cnn-alexnet)
 
 ## DFX Tutorials
-### Brief
-- 
-### Profiling
-#### shift_right_count_up/shift_down_count_down utilisation
+### Basic DFX Flow
+- A basic up/down counter run in parallel with a left/right shifter
+- Implemented mostly using tcl scripts
+
+#### Profiling
+##### shift_right_count_up/shift_down_count_down utilisation
 |      Site Type      | Used | Fixed | Prohibited | Available | Util% |
 | :-----------------: | :--: | :---: | :--------: | :-------: | :---: |
 |        Slice        |  21  |   0   |     0      |   15850   | 0.13  |
@@ -19,15 +21,20 @@
 |   Block RAM Tile    |  1   |   0   |     0      |    135    | 0.74  |
 |        DSPs         |  0   |   0   |     0      |    240    | 0.00  |
 
-#### shift_right_count_up/shift_down_count_down timing details
-> ---------------------------------------------------------------------------------------------------
+##### shift_right_count_up/shift_down_count_down timing details
 > - From Clock:  clk_p
 >   - To Clock:  clk_p
 > 
 > - Setup :            0  Failing Endpoints,  Worst Slack        2.022ns,  Total Violation        0.000ns
 > - Hold  :            0  Failing Endpoints,  Worst Slack        0.109ns,  Total Violation        0.000ns
 > - PW    :            0  Failing Endpoints,  Worst Slack        2.000ns,  Total Violation        0.000ns
-> ---------------------------------------------------------------------------------------------------
+
+### DFX RTL Project Flow
+- Left/right shift implemented completely in GUI
+- How to add more reconfigurable partitions after initial bitstream generation
+
+#### Profiling
+##### 
 
 ## CNN (AlexNet)
 ### Brief
