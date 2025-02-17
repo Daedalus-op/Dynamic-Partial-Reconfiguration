@@ -12,7 +12,7 @@
  `include "shift_rows.v"
  `include "sub_bytes.v"
 
-module testbench;
+module testbench_AES;
   reg clk;
   reg reset;
 

@@ -1,3 +1,16 @@
+module wrapper(
+    output [127:0] cipher,
+    input [127:0] plain,
+    input [127:0] key,
+    input clk
+    );
+    AES128 aes_dut(clk,
+        plain[31:0], plain[63:32], plain[95:64], plain[127:96],
+        key[31:0], key[63:32], key[95:64], key[127:96],
+        cipher[31:0], cipher[63:32], cipher[95:64], cipher[127:96]
+        );
+endmodule
+
 module AES128(
     input clk,
     //input reset,
