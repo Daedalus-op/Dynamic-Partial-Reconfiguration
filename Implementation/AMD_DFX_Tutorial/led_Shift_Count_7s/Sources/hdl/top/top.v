@@ -64,7 +64,6 @@ module top(
 
   wire        rst;
   reg  [34:0] count;
-  wire        clk;
   wire [35:0] icon_control;
 
 
@@ -88,7 +87,7 @@ module top(
   shift inst_shift (
       .en      (rst),
       .clk     (clk),
-      .addr    (count[34:23]),
+//      .addr    (count[34:23]),
       .data_out(shift_out)
   );
 
@@ -109,7 +108,7 @@ module top(
     end
 
 endmodule
-
+/*
 // black box definition for module_shift
 module shift (
     input         en,
@@ -126,4 +125,4 @@ module count (
     output [3:0] count_out
 );
 endmodule
-
+*/
