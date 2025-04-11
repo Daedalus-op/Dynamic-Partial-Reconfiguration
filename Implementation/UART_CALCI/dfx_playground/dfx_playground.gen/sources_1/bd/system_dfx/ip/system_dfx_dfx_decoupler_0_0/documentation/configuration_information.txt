@@ -1,0 +1,85 @@
+Core Configuration Properties
+=============================
+CONFIG.HAS_AXI_LITE                                  0
+CONFIG.HAS_AXIS_CONTROL                              0
+CONFIG.HAS_AXIS_STATUS                               0
+CONFIG.HAS_SIGNAL_CONTROL                            1
+CONFIG.HAS_SIGNAL_STATUS                             1
+CONFIG.ALWAYS_HAVE_AXI_CLK                           0
+CONFIG.INTF.read_data.VLNV                           xilinx.com:signal:data_rtl:1.0
+CONFIG.INTF.read_data.MODE                           slave
+CONFIG.INTF.read_data.CDC_STAGES                     0
+CONFIG.INTF.read_data.REGISTER                       0
+CONFIG.INTF.read_data.SIGNAL.DATA.PRESENT            1
+CONFIG.INTF.read_data.SIGNAL.DATA.DECOUPLED          1
+CONFIG.INTF.read_data.SIGNAL.DATA.DECOUPLED_VALUE    0x0
+CONFIG.INTF.read_data.SIGNAL.DATA.WIDTH              8
+CONFIG.INTF.read_data.SIGNAL.DATA.DIRECTION          s
+CONFIG.INTF.read_data.SIGNAL.DATA.RESOURCE           infer
+CONFIG.INTF.read_data.SIGNAL.DATA.MANAGEMENT         manual
+CONFIG.INTF.stored_data.VLNV                         xilinx.com:signal:data_rtl:1.0
+CONFIG.INTF.stored_data.MODE                         slave
+CONFIG.INTF.stored_data.CDC_STAGES                   0
+CONFIG.INTF.stored_data.REGISTER                     0
+CONFIG.INTF.stored_data.SIGNAL.DATA.PRESENT          1
+CONFIG.INTF.stored_data.SIGNAL.DATA.DECOUPLED        1
+CONFIG.INTF.stored_data.SIGNAL.DATA.DECOUPLED_VALUE  0x0
+CONFIG.INTF.stored_data.SIGNAL.DATA.WIDTH            8
+CONFIG.INTF.stored_data.SIGNAL.DATA.DIRECTION        s
+CONFIG.INTF.stored_data.SIGNAL.DATA.RESOURCE         infer
+CONFIG.INTF.stored_data.SIGNAL.DATA.MANAGEMENT       manual
+CONFIG.INTF.write_data.VLNV                          xilinx.com:signal:data_rtl:1.0
+CONFIG.INTF.write_data.MODE                          master
+CONFIG.INTF.write_data.CDC_STAGES                    0
+CONFIG.INTF.write_data.REGISTER                      0
+CONFIG.INTF.write_data.SIGNAL.DATA.PRESENT           1
+CONFIG.INTF.write_data.SIGNAL.DATA.DECOUPLED         1
+CONFIG.INTF.write_data.SIGNAL.DATA.DECOUPLED_VALUE   0x0
+CONFIG.INTF.write_data.SIGNAL.DATA.WIDTH             8
+CONFIG.INTF.write_data.SIGNAL.DATA.DIRECTION         s
+CONFIG.INTF.write_data.SIGNAL.DATA.RESOURCE          infer
+CONFIG.INTF.write_data.SIGNAL.DATA.MANAGEMENT        manual
+
+
+dfx_decoupler_v1_0::set_property -dict [list \
+                               CONFIG.HAS_AXI_LITE                                  0 \
+                               CONFIG.HAS_AXIS_CONTROL                              0 \
+                               CONFIG.HAS_AXIS_STATUS                               0 \
+                               CONFIG.HAS_SIGNAL_CONTROL                            1 \
+                               CONFIG.HAS_SIGNAL_STATUS                             1 \
+                               CONFIG.ALWAYS_HAVE_AXI_CLK                           0 \
+                               CONFIG.INTF.read_data.VLNV                           xilinx.com:signal:data_rtl:1.0 \
+                               CONFIG.INTF.read_data.MODE                           slave \
+                               CONFIG.INTF.read_data.CDC_STAGES                     0 \
+                               CONFIG.INTF.read_data.REGISTER                       0 \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.PRESENT            1 \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.DECOUPLED          1 \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.DECOUPLED_VALUE    0x0 \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.WIDTH              8 \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.DIRECTION          s \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.RESOURCE           infer \
+                               CONFIG.INTF.read_data.SIGNAL.DATA.MANAGEMENT         manual \
+                               CONFIG.INTF.stored_data.VLNV                         xilinx.com:signal:data_rtl:1.0 \
+                               CONFIG.INTF.stored_data.MODE                         slave \
+                               CONFIG.INTF.stored_data.CDC_STAGES                   0 \
+                               CONFIG.INTF.stored_data.REGISTER                     0 \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.PRESENT          1 \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.DECOUPLED        1 \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.DECOUPLED_VALUE  0x0 \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.WIDTH            8 \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.DIRECTION        s \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.RESOURCE         infer \
+                               CONFIG.INTF.stored_data.SIGNAL.DATA.MANAGEMENT       manual \
+                               CONFIG.INTF.write_data.VLNV                          xilinx.com:signal:data_rtl:1.0 \
+                               CONFIG.INTF.write_data.MODE                          master \
+                               CONFIG.INTF.write_data.CDC_STAGES                    0 \
+                               CONFIG.INTF.write_data.REGISTER                      0 \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.PRESENT           1 \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.DECOUPLED         1 \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.DECOUPLED_VALUE   0x0 \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.WIDTH             8 \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.DIRECTION         s \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.RESOURCE          infer \
+                               CONFIG.INTF.write_data.SIGNAL.DATA.MANAGEMENT        manual \
+] [get_ips system_dfx_dfx_decoupler_0_0]
+
