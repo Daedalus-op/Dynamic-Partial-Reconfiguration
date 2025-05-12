@@ -16,6 +16,11 @@
 | ------ | -----------------------------------------------------------------------------------------------------------------------------------    | --------- | ------------------- | ---------           | ------------------------------------------- |
 | 11     | [Partial Reconfiguration for Fault Injection in FPGA Fabrics](https://ieeexplore.ieee.org/abstract/document/10915413)                  | 0         | Abstract            | No                  | Very Less Views in Xplore                   |
 | 12     | [Error detection and recovery in MPSoCs using Hypervisor and DPR](https://ieeexplore.ieee.org/abstract/document/10854581)              | 0         | Abstract            | No                  | Very Less Views in Xplore                   |
+| 13     | [Mitigating side channel attacks on FPGA through deep learning and dynamic partial reconfiguration](https://www.nature.com/articles/s41598-025-98473-3)              | 0         | Abstract            | No                  | Very High Access for a month old paper                   |
+| 14     | [DML: Dynamic Partial Reconfiguration With Scalable Task Scheduling for Multi-Applications on FPGAs](https://ieeexplore.ieee.org/document/9661327)              | 7         | Abstract            | No                  | Sounds Interesting Have to go through                   |
+| 15     | [System Architecture for Network-Attached FPGAs in the Cloud using Partial Reconfiguration](https://ieeexplore.ieee.org/abstract/document/8892175?casa_token=s0UmSMW5BtwAAAAA:W4SH9nhssPx07Xo0WDm_AUSM14MU7ieoNGxQCcfqoVRIbxe9PBxRXjWZJr1Hf0dzUDV02KB2NSA)
+)              | 22         | Abstract            | No                  | IBM Paper                   |
+
 
 
 ## Detailed Exploration
