@@ -1,4 +1,7 @@
 # Dynamic Partial Reconfiguration
+## Research
+- [Literature Survey](./Papers/README.md)
+
 ## Final
 - [What is it](Intro.md)
 - [Types](Types.md)
@@ -6,10 +9,7 @@
 - [Implementation](Implementation.md)
 
 ## TODO
-- [-] PPTs Combination
-- [-] Implement reconfig on an FPGA
-  - [-] AlexNet
-  - [-] Profile the performance from DFX Tutorials
+- [ ] DFX Tutorials
 - [ ] Research
   - [ ] Implementation flows
     - [ ] Vitis AI
@@ -20,13 +20,3 @@
   - [ ] Riscv core (parallel architecture like NPU/ any other accelerator)
   - [ ] Graph partitioning
   - [ ] Mapparat / Matanalysis
-
-## From Papers
-- [SoC RISC-V soft processor](Papers/Findings/soc-risc-v-soft-processor.md)
-- [Survey on Partial Dynamic Reconfiguration](Papers/Findings/survey-on-partial-dynamic-reconfiguration.md)
-- [CNNs with DPR](Papers/Findings/cnns-with-dpr.md)
-
-## Presentations
-- [Serverless computing](./Presentations/Serverless-Compute(PTV).pdf)
-- [Survey on partial dynamic reconfiguration](./Presentations/Survey_DPR_(SKGP).pdf)
-- [CNN on FPGA using DPR](./Presentations/FPGA-SOC-Paper_DPR(AMI).pdf)
