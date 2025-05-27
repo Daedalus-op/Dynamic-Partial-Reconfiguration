@@ -131,6 +131,6 @@
     <Step Id="write_bitstream"/>
     <Step Id="write_device_image"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="count_down"/>
   <BlockFileSet Type="BlockSrcs" Name="shift_left"/>
+  <BlockFileSet Type="BlockSrcs" Name="count_down"/>
 </GenRun>

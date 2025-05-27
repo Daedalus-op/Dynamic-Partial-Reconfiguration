@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="68" Path="/home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.xpr">
+<Project Product="Vivado" Version="7" Minor="68" Path="/home/arix8/Desktop/Dynamic-Partial-Reconfiguration/Implementation/UART_CALCI/dfx_playground/dfx_playground.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="b18872429521472b80fb912758542016"/>
@@ -44,8 +44,6 @@
     <Option Name="SimulatorGccVersionRiviera" Val="9.3.0"/>
     <Option Name="SimulatorGccVersionActiveHdl" Val="9.3.0"/>
     <Option Name="BoardPart" Val="tul.com.tw:pynq-z2:part0:1.0"/>
-    <Option Name="BoardPartRepoPaths" Val="$PPRDIR/../../../.Xilinx/Vivado/2024.2/xhub/board_store/xilinx_board_store"/>
-    <Option Name="BoardPartRepoPaths" Val="$PPRDIR/../../../.Xilinx/Vivado/2024.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2024.2"/>
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
@@ -276,7 +274,7 @@
       </Config>
     </FileSet>
     <FileSet Name="calc_mul" Type="BlockSrcs" RelSrcDir="$PSRCDIR/calc" RelGenDir="$PGENDIR/calc">
-      <File Path="$PPRDIR/../../Projects/play_src/FPGAs/dfx_controller/mul_wrap.v">
+      <File Path="$PPRDIR/../src/dfx_controller/mul_wrap.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -290,14 +288,14 @@
       </Config>
     </FileSet>
     <FileSet Name="calc_alu" Type="BlockSrcs" RelSrcDir="$PSRCDIR/calc_alu" RelGenDir="$PGENDIR/calc_alu">
-      <File Path="$PPRDIR/../../Projects/play_src/FPGAs/ALU/final/src/logic.sv">
+      <File Path="$PPRDIR/../src/uart_calculator/logic.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../Projects/play_src/FPGAs/ALU/final/src/alu.sv">
+      <File Path="$PPRDIR/../src/uart_calculator/alu.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -402,9 +400,7 @@
     </Run>
     <Run Id="system_dfx_dfx_decoupler_0_0_synth_1" Type="Ft3:Synth" SrcSet="system_dfx_dfx_decoupler_0_0" Part="xc7z020clg400-1" ConstrsSet="system_dfx_dfx_decoupler_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_decoupler_0_0_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_decoupler_0_0_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2024"/>
@@ -413,9 +409,7 @@
     </Run>
     <Run Id="system_dfx_dfx_controller_0_0_synth_1" Type="Ft3:Synth" SrcSet="system_dfx_dfx_controller_0_0" Part="xc7z020clg400-1" ConstrsSet="system_dfx_dfx_controller_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_controller_0_0_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_controller_0_0_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2024"/>
@@ -424,9 +418,7 @@
     </Run>
     <Run Id="system_dfx_rst_ps7_0_100M_0_synth_1" Type="Ft3:Synth" SrcSet="system_dfx_rst_ps7_0_100M_0" Part="xc7z020clg400-1" ConstrsSet="system_dfx_rst_ps7_0_100M_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_rst_ps7_0_100M_0_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_rst_ps7_0_100M_0_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2024"/>
@@ -435,9 +427,7 @@
     </Run>
     <Run Id="system_dfx_debounce_explicit_0_1_synth_1" Type="Ft3:Synth" SrcSet="system_dfx_debounce_explicit_0_1" Part="xc7z020clg400-1" ConstrsSet="system_dfx_debounce_explicit_0_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_debounce_explicit_0_1_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_debounce_explicit_0_1_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2024"/>
@@ -446,9 +436,7 @@
     </Run>
     <Run Id="system_dfx_uart_top_0_1_synth_1" Type="Ft3:Synth" SrcSet="system_dfx_uart_top_0_1" Part="xc7z020clg400-1" ConstrsSet="system_dfx_uart_top_0_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_uart_top_0_1_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_uart_top_0_1_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2024"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2024"/>
@@ -543,9 +531,7 @@
     </Run>
     <Run Id="system_dfx_dfx_decoupler_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="system_dfx_dfx_decoupler_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="system_dfx_dfx_decoupler_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_decoupler_0_0_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_decoupler_0_0_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -562,9 +548,7 @@
     </Run>
     <Run Id="system_dfx_dfx_controller_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="system_dfx_dfx_controller_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="system_dfx_dfx_controller_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_controller_0_0_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_dfx_controller_0_0_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -581,9 +565,7 @@
     </Run>
     <Run Id="system_dfx_rst_ps7_0_100M_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="system_dfx_rst_ps7_0_100M_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="system_dfx_rst_ps7_0_100M_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_rst_ps7_0_100M_0_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_rst_ps7_0_100M_0_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -600,9 +582,7 @@
     </Run>
     <Run Id="system_dfx_debounce_explicit_0_1_impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="system_dfx_debounce_explicit_0_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="system_dfx_debounce_explicit_0_1_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_debounce_explicit_0_1_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_debounce_explicit_0_1_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -619,9 +599,7 @@
     </Run>
     <Run Id="system_dfx_uart_top_0_1_impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="system_dfx_uart_top_0_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="system_dfx_uart_top_0_1_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/system_dfx_uart_top_0_1_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/system_dfx_uart_top_0_1_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -646,8 +624,6 @@
         <ReconfigModule Name="calc_alu" Top="calc" SrcSet="calc_alu" SynthRun="calc_alu_synth_1" ImplRun="calc_alu_impl_1"/>
         <ReconfigModule Name="calc_mul" Top="calc" SrcSet="calc_mul" SynthRun="calc_mul_synth_1" ImplRun="calc_mul_impl_1"/>
       </PartitionDef>
-      <PartitionDef Name="counter" DefaultRM="" ModuleName="count" LibraryName="xil_defaultlib" Type="NONE"/>
-      <PartitionDef Name="shifter" DefaultRM="" ModuleName="shift" LibraryName="xil_defaultlib" Type="NONE"/>
     </PartitionDefs>
     <PRConfigurations>
       <PRConfiguration Name="config_alu">
