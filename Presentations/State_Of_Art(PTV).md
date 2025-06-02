@@ -61,18 +61,18 @@ section {
 
 ## AMD
 
-- DFx Controller IP → Manages PR events, pulls bitstreams to ICAP, handles decoupling, and controls RM shutdown via AXI interfaces.
-- DFx Decoupler → Provides interface isolation between static and reconfigurable regions to prevent glitches during PR.
-- DFx Shutdown Manager → Safely disables clocks and stops RM transactions to ensure a clean reconfiguration process.
-- DFx Bitstream Monitor → Tracks bitstreams flowing through the design for debugging and verification.
+- IPs   - DFX Controller IP 
+        - Decoupler 
+        - Shutdown Manager
+        - Bitstream Monitor 
 
-> Source: AMD Documentation (link)
+> Source: AMD Documentation (https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/dfx-controller.html#tabs-2cd0a79ccf-item-04baf4b63a-tab)
 
 ---
 
 ## Intel
 
-- Hierarchical Partition Reconfiguration → Allows parent RMs to manage child RMs under a static region for modular PR.
+- Hierarchical Partition Reconfiguration
 - Static Update Reconfiguration → Enables updates to specialized static regions without full design recompilation.
 - PR Bitstream Validation → Checks that RMs only occupy authorized FPGA areas.
 - PR Bitstream Authentication → Verifies firmware and bitstreams are from trusted, authenticated sources.
