@@ -1,0 +1,6 @@
+"Aspect","Prior Work (Fixed PR)","This Work (Hierarchical PR)"
+"Region Size","Fixed","Variable (Single/Double/Quad)"
+"Manual Effort","High (manual split)","Low (automatic assignment)"
+"Performance","Moderate","1.4–4.9× improvement"
+"Compile Time","Hours","2–5 minutes (2.2–5.3× faster)"
+"Flexibility","Low","High"
