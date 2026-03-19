@@ -1,0 +1,33 @@
+Report Outline — Capstone Project Report (Generic)
+
+Chat 1 — Abstract
+What to provide: Project title, team names, guide name, 2–3 sentences on what you built and why.
+What to write: 150–200 words covering: the problem domain, your proposed solution/architecture, the implementation platform/tools used, and the key outcome or result achieved.
+
+Chat 2 — Chapter 1: Preamble
+What to provide: Project title, your 3–4 core objectives.
+What to write: ~1 page. Introduction contextualizes the problem in the broader field and motivates your approach. Problem statement lists your specific goals clearly, either as refined bullets or short paragraphs.
+
+Chat 3 — Chapter 2: Literature Review
+What to provide: Each paper's title, authors, year, and your notes on what it covers.
+What to write: For each paper: (1) what the paper proposes, (2) its key findings or contributions, (3) how it is relevant to your project. Aim for 3 paragraphs per paper.
+
+Chat 4 — Chapter 3: Background & Case Study
+What to provide: Your section headings and any bullet points or rough notes you have.
+What to write: Convert notes into flowing prose. Each subsection covers a foundational concept your project builds on — explain it clearly, why it matters, and how it connects to your implementation.
+
+Chat 5 — Chapter 4: Implementation & Methodology
+What to provide: Block diagrams, module/component descriptions, verification results, and platform-specific implementation details.
+What to write: Walk through your design from architecture to individual components to integration. Each subsection should explain the design rationale, describe the figure, and tie it back to the overall system.
+
+Chat 6 — Chapter 5: Project Codes / Design Files
+What to provide: Your source files (HDL, scripts, configs, etc.)
+What to write: A short explanatory paragraph before each file — what the module/file does, its key inputs/outputs, and notable design decisions. Code or config files follow each explanation.
+
+Chat 7 — Chapter 6: Results & Conclusion
+What to provide: Your synthesis/implementation reports, tables, and any simulation outputs.
+What to write: For results: interpret each table or figure — what the numbers mean and what they say about your design. For conclusion: summarize what was achieved. For future work: what limitations exist and how the design could be extended.
+
+Chat 8 — Final Assembly & Formatting (optional)
+What to provide: All finalized chapter texts.
+What to do: Assemble into a properly formatted .docx with consistent headings, page numbers, table of contents, figure captions, and references list.
