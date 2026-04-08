@@ -13,15 +13,15 @@ passive/third-person academic prose. No direct quotes from papers.
 
 ## Content Distribution Map
 
-| Topic | Chapter | Target % | Pages (est. ~50 total) |
-|---|---|---|---|
-| HPR (Hierarchical PR) | Ch. 2 Literature Review | 25% | ~12 pages |
-| ZyPR + ZyCAP | Ch. 2 Literature Review | 15% | ~7 pages |
-| RapidStream (1.0 + 2.0) | Ch. 2 Literature Review | 10% | ~5 pages |
-| Other surveys (Vipin, Fahmy, DML, AMPER-X, etc.) | Ch. 2 Literature Review | 10% | ~5 pages |
-| Proposed CFU Controller Architecture | Ch. 3 Background + Ch. 4 Design | 20% | ~10 pages |
-| Results + Conclusion + Future Scope | Ch. 6 Results + Ch. 7 Conclusion | 10% | ~5 pages |
-| Preamble + Front Matter + References | Ch. 1 + Back Matter | ~10% | ~6 pages |
+| Topic                                            | Chapter                          | Target % | Pages (est. ~50 total) |
+| ------------------------------------------------ | -------------------------------- | -------- | ---------------------- |
+| HPR (Hierarchical PR)                            | Ch. 2 Literature Review          | 25%      | ~12 pages              |
+| ZyPR + ZyCAP                                     | Ch. 2 Literature Review          | 15%      | ~7 pages               |
+| RapidStream (1.0 + 2.0)                          | Ch. 2 Literature Review          | 10%      | ~5 pages               |
+| Other surveys (Vipin, Fahmy, DML, AMPER-X, etc.) | Ch. 2 Literature Review          | 10%      | ~5 pages               |
+| Proposed CFU Controller Architecture             | Ch. 3 Background + Ch. 4 Design  | 20%      | ~10 pages              |
+| Results + Conclusion + Future Scope              | Ch. 6 Results + Ch. 7 Conclusion | 10%      | ~5 pages               |
+| Preamble + Front Matter + References             | Ch. 1 + Back Matter              | ~10%     | ~6 pages               |
 
 ---
 
@@ -174,17 +174,17 @@ Three distinct implementation phases were pursued across different hardware plat
 
 **Phase 1 — Arty A7-100T (Standalone)**
 
-The Arty A7-100T served as the primary development platform. Both JTAG-based and ICAP-based
+The Arty A7-100T served as the primary development platform. JTAG-based
 reconfiguration were implemented and validated.
 
 - **JTAG reconfiguration:** Bitstreams delivered over the Digilent USB-JTAG cable via Vivado
   Hardware Manager. ✅
-- **ICAP reconfiguration:** Partial bitstreams written to the ICAP primitive directly from
-  static PL fabric logic. ✅
+- **ICAP reconfiguration (Work In Progress):** Partial bitstreams written to the ICAP primitive directly from
+  static PL fabric logic after being fetch from a memory source (DDR or flash)
 - Reconfiguration latency measured using the **ILA** connected to `recon_counter`, monitoring
   the STARTUPE2 EOS signal toggle.
 
-**Status: Both JTAG and ICAP reconfiguration achieved.**
+**Status: JTAG reconfiguration achieved.**
 
 ---
 
@@ -203,7 +203,7 @@ ARM Cortex-A9 PS.
 
 ---
 
-**Phase 3 — Arty A7 + PYNQ-Z2 Bridge ("Jugaad" Approach)**
+**Phase 3 — Arty A7 + PYNQ-Z2 Bridge**
 
 The PYNQ-Z2 exposes only a **single USB port** shared between JTAG and USB-UART. Since the
 JTAG connection was occupied by the ILA (for `recon_counter` latency measurement), no
@@ -233,8 +233,9 @@ a direct TX/RX passthrough bridging the Z2 to the host via the Arty's USB-UART.
 
 **4.7 Partial Bitstream Storage — Current State & Next Steps**
 
-**Current state:** Partial bitstreams are loaded **manually** (JTAG or direct host-driven
-ICAP write). CFU unit swap is manually triggered — not fully autonomous.
+**Current state:** Partial bitstreams are loaded **manually** (JTAG based host-driven
+reconfiguration). CFU unit swap is manually triggered and the bitstream is
+provided from the host — not fully autonomous.
 
 **Planned next steps (in order):**
 
@@ -309,12 +310,12 @@ ICAP write). CFU unit swap is manually triggered — not fully autonomous.
 
 ## What Is Still Needed from the User
 
-| Item | Chapter | Priority |
-|---|---|---|
-| Exact project title | Front Matter | High |
-| Team names + guide name + college + year | Front Matter | High |
-| Synthesis/implementation reports for CFU Playground | Ch. 6 Results | High |
-| ILA captures / recon_counter measurements | Ch. 6 Results | High |
-| Any block diagrams drawn | Ch. 3/4 | Medium |
-| Confirmation if DDR issue has been resolved | Ch. 4.7 / Ch. 7 | High |
-| RapidStream-specific results numbers to cite | Ch. 2.3 | Low (available in paper) |
+| Item                                                | Chapter         | Priority                 |
+| --------------------------------------------------- | --------------- | ------------------------ |
+| Exact project title                                 | Front Matter    | High                     |
+| Team names + guide name + college + year            | Front Matter    | High                     |
+| Synthesis/implementation reports for CFU Playground | Ch. 6 Results   | High                     |
+| ILA captures / recon_counter measurements           | Ch. 6 Results   | High                     |
+| Any block diagrams drawn                            | Ch. 3/4         | Medium                   |
+| Confirmation if DDR issue has been resolved         | Ch. 4.7 / Ch. 7 | High                     |
+| RapidStream-specific results numbers to cite        | Ch. 2.3         | Low (available in paper) |
