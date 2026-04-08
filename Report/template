@@ -1,0 +1,27 @@
+Based on the Table of Contents and the section headers provided in the `G18_BB.pdf` template, here is the full, exhaustive structure of the report:
+
+**Front Matter**
+*   **Approval and Certificate Page**
+*   **Candidate Declaration**
+*   **Abstract**
+*   **Acknowledgement**
+*   **Table of Contents**
+*   **List of Figures**
+
+**Core Chapters**
+*   **Chapter 1: Preamble**
+    *   *Includes: 1.1 Introduction, 1.2 Problem Statement*
+*   **Chapter 2: Literature Review**
+    *   *Includes: Summaries of various state-of-the-art papers and existing works.*
+*   **Chapter 3: [Background / Theoretical Framework]**
+    *   *Note: The exact title isn't fully visible in the text, but the List of Figures shows it covers the background concepts (e.g., Battery types, Voltage vs SOC graphs, State of Health).*
+*   **Chapter 4: Design and Implementation**
+*   **Chapter 5: Coding / Algorithm**
+    *   *Includes: Libraries Required (e.g., Keras, TensorFlow, etc.) and algorithmic flow.*
+*   **Chapter 6: [Results and Discussion]**
+    *   *Note: The List of Figures confirms this chapter focuses on the results (e.g., "Plot of Training the model", "Plot of Predicted vs Actual values", "RMSE of SOC", "Plot of R2 value").*
+*   **Chapter 7: Conclusion and Future Work**
+
+**Back Matter**
+*   **Plagiarism Report / Originality Report**
+*   **References**
