@@ -74,6 +74,12 @@ passive/third-person academic prose. No direct quotes from papers.
 - RapidStream 2.0: extends to HBM-based boards; inter-SLR routing; FPGA 2023
 - Key result: order-of-magnitude compile time reduction vs monolithic Vitis
 
+> **⚠️ Implementation Note (Report §4 / §7):** Hands-on evaluation of RapidStream was
+> abandoned. The RapidStream team is in the process of converting the work into a
+> commercial product/patent and has revoked all public API keys and access. The tool is
+> no longer publicly accessible and could therefore not be exercised as part of this
+> project. Coverage is limited to a literature-based analysis of the published papers.
+
 #### 2.4 Hierarchical Partial Reconfiguration (HPR) (~12 pages) [25%]
 - Based on: `Papers/Findings/HPR notes.md` + HPR paper (FCCM 2022)
 - **Core concept:** recombinable PR pages (Single/Double/Quad) connected via NoC
@@ -90,6 +96,14 @@ passive/third-person academic prose. No direct quotes from papers.
   (hierarchical/adaptive)
 - Results: synthesis time reduction, reduced manual effort
 
+> **⚠️ Implementation Note (Report §4 / §7):** Reproduction of the HPR toolflow was
+> attempted but ultimately abandoned due to a combination of version incompatibilities
+> (Vivado version, Linux kernel version, and associated driver/library conflicts) and
+> compute resource constraints — the available machine was pushed well past its limits
+> during place-and-route, causing jobs to fail or hang. HPR is therefore treated as a
+> literature reference; its architectural concepts directly inform the proposed CFU
+> controller design.
+
 #### 2.5 ZyPR: End-to-End Build and Runtime Manager (~7 pages) [15%]
 - Based on: `Papers/Findings/Toolflows using PR.md` + ZyPR paper
 - **ZyCAP:** PR controller on Zynq SoC — AXI-Lite GP port for control, AXI4 HP port for
@@ -104,6 +118,13 @@ passive/third-person academic prose. No direct quotes from papers.
   runtime manager
 - Comparison with standard FPGA Manager (PCAP bottleneck, blocks processor)
 - Relevance: ZyCAP is the closest existing IP to our ICAP controller on non-Zynq fabric
+
+> **⚠️ Implementation Note (Report §4 / §7):** Hands-on use of ZyPR was abandoned.
+> The toolflow depends on a single proprietary tool that requires an educational licence;
+> the application for that licence was unsuccessful. A manual workaround (running the
+> underlying scripts by hand and treating the outputs as correct) was explored but was
+> deemed insufficiently verifiable to produce reliable results. The approach was
+> discontinued and is covered in this report through literature analysis only.
 
 #### 2.6 Other Related Works (~5 pages) [10%]
 - **DML** (Scalable Task Scheduling): multi-application DPR with task graph scheduling
