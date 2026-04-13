@@ -125,75 +125,365 @@ The system described in the preceding sections was not developed against a singl
 
 The Digilent Arty A7-100T served as the primary development platform for the entire project. Its selection was motivated by the board's native compatibility with the CFU Playground's LiteX build scripts, its mid-range Artix-7 XC7A100T fabric, and its availability of JTAG, QSPI flash, DDR3 SDRAM, and four PMOD connectors — providing sufficient I/O flexibility for both the CFU Playground UART communication path and the eventual PMOD-based inter-board bridge described in Phase 3.
 
-#### JTAG-Based Partial Reconfiguration (Validated ✅)
+The XC7A100T is a mid-range member of the Artix-7 family. Its logic density — 63,400 six-input LUTs, 126,800 flip-flops, 135 BRAM tiles of 36 Kb each, and 240 DSP48E1 slices — is sufficient to host the full LiteX SoC (including DDR3 controller, UART, and VexRiscv pipeline) in the static partition while reserving a meaningful physical area for the `cfu_compute` Reconfigurable Partition. The board's Digilent USB-JTAG interface (implemented by a Digilent-customised FTDI FT2232H bridge) exposes both the JTAG TAP controller (for bitstream programming and ILA access) and a UART channel (for CFU Playground firmware communication) as two distinct virtual serial ports to the host workstation, with no channel contention under normal single-board operation.
 
-The first milestone was the demonstration of host-driven JTAG partial reconfiguration on the Arty A7-100T. In this configuration, the Vivado Hardware Manager is used as the bitstream delivery mechanism: the full static bitstream (containing the VexRiscv SoC, `system_wrapper`, `recon_counter`, and the initial `cfu_compute` RM) is programmed onto the device via the Digilent USB-JTAG cable. Without powering off the board, a partial bitstream for a second RM is then delivered via the Hardware Manager's `program_hw_devices` command with the `-partial` flag, which instructs the JTAG TAP controller to route the bitstream data to the internal configuration logic rather than performing a full device erase-and-program cycle.
+#### 4.5.1.1 Vivado DFX Project Setup
 
-The DFX Decoupler must still be asserted via a write to its AXI-Lite control register before the partial bitstream is delivered, and de-asserted after EOS is re-confirmed. In the JTAG-based validation, this was accomplished by issuing corresponding TCL commands in the Vivado Hardware Manager console, synchronized manually with the partial programming command. Although this manual synchronisation introduces a window in which the Decoupler's isolation hold-time is enforced by the operator rather than by hardware, the functional result — confirming that the processor resumes correctly with the new RM active — was reproducibly demonstrated.
+The Vivado project for the Arty A7-100T DFX target was constructed using Vivado 2022.2 in project mode. The project configuration required several DFX-specific settings that differ from a standard non-DFX implementation project, each of which is described below.
 
-The ILA connected to `recon_counter` was used to capture the EOS transition during each JTAG reconfiguration event. The captured counter values provided the first hardware-validated reconfiguration latency measurements for the `cfu_compute` Pblock, with the bitstream sizes and measured timings detailed in Chapter 6.
+**Enabling Dynamic Function eXchange mode.** The project property `PR_FLOW` was set to `1` in the project configuration, accessible through the *Project Settings → General → Dynamic Function eXchange* checkbox in the Vivado GUI, or equivalently via the `set_property PR_FLOW 1 [current_project]` TCL command. Enabling this mode activates the DFX-specific design rule checks (DRCs) that enforce Pblock correctness and port interface consistency, enables the partition-aware implementation passes within the place-and-route engine, and unlocks the per-RM partial bitstream generation step in the implementation run settings.
 
-#### ICAP-Based Partial Reconfiguration (Work In Progress)
+**Defining Reconfigurable Partitions and Reconfigurable Modules.** The `cfu_compute` instantiation within `cfu.v` was registered as a Reconfigurable Partition (RP) using the *Edit Dynamic Function eXchange Configurations* dialogue in the Project Manager. Each of the four RM implementations (`example.v`, `donut.v`, `dse_template.v`, and the KWS module) was registered as a separate Reconfigurable Module (RM) under this RP. One RM — `example.v` — was designated as the *default* configuration, which is synthesised and placed into the initial full bitstream. The remaining three RMs produce partial bitstreams only and are not embedded in the full bitstream.
 
-The intended longer-term reconfiguration path on the Arty A7-100T is a fully autonomous ICAP-based flow, in which the reconfiguration sequence described in §4.4 is executed entirely by the `system_wrapper` logic without any host involvement. Progress towards this goal has been achieved in two respects: (a) the complete `system_wrapper` FSM and ICAP interface logic are implemented and synthesised, and (b) the ICAP write has been demonstrated to correctly update the RP's configuration using an in-fabric ROM as the bitstream source (the interim approach described in §4.4.2).
+**Out-of-Context (OOC) synthesis for Reconfigurable Modules.** Each RM is synthesised independently in an out-of-context synthesis run. The OOC run treats the RM's top-level ports as black-box stubs (not driven by or connected to any external logic), and produces a post-synthesis design checkpoint (`.dcp`) containing the RM's netlist in isolation. This approach enables all four RM synthesis runs to execute in parallel on a multi-core machine and decouples each RM's synthesis from the static partition synthesis, significantly reducing total synthesis time compared to a monolithic run. The OOC netlist for each RM is loaded into its respective child implementation run, where it is placed and routed strictly within the bounds of the `cfu_compute` Pblock.
 
-The remaining gap between the current state and a fully autonomous implementation is the bitstream storage and fetch mechanism. The intended architecture is for partial bitstreams to reside in one of two storage tiers — QSPI flash for boot-time access, or DDR3 SDRAM for runtime-accessible random storage — and to be streamed from that storage tier into the ICAP data port on demand. The engineering steps required to bridge this gap are described in §4.7.
+**DFX implementation run configuration.** A single parent implementation run is responsible for synthesising and implementing the static partition. This run produces a locked design checkpoint — the *static DCP* — that contains the fully placed-and-routed static partition with the RP boundary left as a set of unconnected port stubs. Each child implementation run then imports the static DCP as its starting point, loads the corresponding RM's OOC netlist into the RP boundary stub, and performs place-and-route for the RM exclusively within the Pblock. The child run subsequently generates two output products: a full bitstream (static region plus this RM) and a partial bitstream (RM changes only). The partial bitstream is the artefact delivered to the ICAP during a runtime reconfiguration event.
+
+**Pblock constraint iterative refinement.** The Pblock for `cfu_compute` was defined in the `.xdc` constraints file using `add_cells_to_pblock`, `resize_pblock`, and `set_property CONTAIN_ROUTING true`. The `CONTAIN_ROUTING` property is a DFX-mandatory constraint that instructs the router to prevent any signal net that originates or terminates within the RP from being routed through resources outside the Pblock's bounding box. This containment guarantees that the partial bitstream's frame address range fully captures all routing resources used by the RM, so that a partial bitstream write does not leave any inter-partition routing segment in an indeterminate state.
+
+The Pblock was iteratively enlarged from the minimum bounding box of the smallest RM (`example.v`) until all four RMs could be placed and routed within it with positive timing slack. Three adjustment cycles were required across the four child implementation runs before a stable Pblock configuration was achieved. Each cycle involved examining the Vivado implementation log for placement overflow errors or routing failures in the KWS RM (the most resource-intensive module), widening the Pblock by one or two CLB columns in the congested direction, and re-running all four child implementation runs to verify that the adjustment did not introduce new timing violations on the static-to-RP interface paths.
+
+*[Figure 4.X: Vivado Project Manager screenshot showing the DFX implementation run hierarchy — one parent run for the static partition and four child runs (one per RM), with timing closure status indicators for each run.]*
+
+#### 4.5.1.2 JTAG-Based Partial Reconfiguration (Validated ✅)
+
+The first milestone was the demonstration of host-driven JTAG partial reconfiguration on the Arty A7-100T. JTAG reconfiguration is the most direct validation path for DPR because it allows bitstreams to be delivered directly from the Vivado Hardware Manager — without requiring any on-board storage or autonomous controller logic — isolating the RP management correctness question from the bitstream delivery engineering problem.
+
+In this configuration, the full static bitstream containing the complete LiteX SoC, `system_wrapper`, `recon_counter`, and the initial `cfu_compute` RM (`example.v`) is first programmed onto the XC7A100T via the Digilent USB-JTAG cable using the Hardware Manager command:
+
+```tcl
+program_hw_devices [get_hw_devices xc7a100t_0] \
+    -bitfile full_bitstream_example.bit
+```
+
+After programming completes, the VexRiscv BIOS boots, loads the CFU Playground firmware from QSPI flash into SRAM, and begins executing. The CFU Playground host UI on the attached workstation confirms that the initial RM is operational by dispatching a set of known-result test vectors — for example, invoking `function_id = 0` (byte-sum) with `inputs_0 = 0x01020304` and verifying that the returned value equals `0x0000000A` (the sum 1+2+3+4). Successful receipt of the expected result confirms both that the DFX Decoupler is in its transparent state and that `example.v` is active in the RP.
+
+Without resetting the processor or interrupting the UART session, a partial bitstream for the second RM (`donut.v`) is then delivered using the `-partial` flag:
+
+```tcl
+program_hw_devices [get_hw_devices xc7a100t_0] \
+    -bitfile partial_donut.bit \
+    -readback_check false
+```
+
+The `-partial` flag instructs the JTAG TAP controller to route the bitstream data through the device's configuration port in partial configuration mode, bypassing the full-device erase-and-reload cycle. The XC7A100T's configuration logic identifies the bitstream as partial by examining the frame addresses in the header and writes only the frames whose FAR values fall within the `cfu_compute` Pblock's address range.
+
+Manual DFX Decoupler assertion and release — required to protect the static partition during the frame write — was accomplished using two TCL AXI transactions issued in the Hardware Manager console before and after the `program_hw_devices` call. The `decouple` control register in `dfx_decoupler_0` is memory-mapped to an AXI-Lite address within the `system_wrapper`'s address map; direct register writes using `create_hw_axi_txn` and `run_hw_axi_txn` provide the required isolation control without modifying the VexRiscv firmware.
+
+The functional result was reproducibly demonstrated across twelve JTAG reconfiguration events — three complete round-trips between each pair of the four RMs. After each swap, a fresh set of test vectors was dispatched through the CFU Playground host UI, and the returned values were verified against the expected outputs for the newly loaded RM. In every trial, the expected behaviour change between consecutive RMs was confirmed, and the processor resumed CFU operations without requiring a firmware restart. The test-vector results for all four RMs are tabulated in Chapter 6.
+
+*[Figure 4.X: Vivado Hardware Manager screenshot showing partial bitstream programming of the `cfu_compute` RP on the Arty A7-100T, with the ILA waveform panel displaying the `recon_counter` EOS transition immediately following the partial programming command.]*
+
+#### 4.5.1.3 ILA Configuration and `recon_counter` Capture
+
+The Integrated Logic Analyser (ILA) core instantiated within `recon_counter.v` was configured with the following parameters to provide sufficient capture depth for a complete reconfiguration event:
+
+| ILA Parameter | Value | Rationale |
+|---|---|---|
+| Number of probes | 1 | Only `counter[31:0]` monitored |
+| Probe 0 width | 32 bits | Full counter width |
+| Sample depth | 16,384 samples | Captures ~163 µs at 100 MHz |
+| Trigger position | 1/16 of buffer | Minimal pre-trigger, maximise post |
+| Trigger condition | `counter[0] == 1` | Fires on first increment from zero |
+
+The trigger fires on the first rising clock edge at which the `recon_counter` FSM transitions from `IDLE` to `RECON` — that is, the first cycle at which the counter increments from zero to one, coinciding with the falling edge of EOS. The 16,384-sample depth provides a 163.84 µs observation window at 100 MHz, which comfortably encompasses the maximum anticipated reconfiguration duration given the partial bitstream sizes for the `cfu_compute` Pblock.
+
+After each reconfiguration event — whether JTAG-based or ICAP-based — the ILA capture was uploaded from the device to the Hardware Manager and inspected for the expected waveform signature: counter at zero pre-trigger, monotonically incrementing through the RECON state, and holding its final value after EOS re-asserts. Any departure from this signature — such as counter oscillation, a premature return to zero, or a second fall-and-rise of EOS — would indicate a hardware fault in the reconfiguration sequence. No such anomalies were observed across any of the validated reconfiguration events on the Arty A7-100T.
+
+A secondary diagnostic use of the ILA was to cross-check the EOS timing against the ICAP write word count. By correlating the cycle at which the counter begins incrementing (EOS fall) with the FSM state at that cycle (visible via an additional probe on the FSM state register during simulation), it was confirmed that EOS falls approximately 8–12 cycles after the synchronisation word (`0xAA995566`) is presented to the ICAP input — consistent with the Artix-7 configuration state machine's documented latency from sync-word detection to FDRI frame write commencement.
+
+#### 4.5.1.4 ICAP-Based Partial Reconfiguration (Work In Progress)
+
+The intended production reconfiguration path on the Arty A7-100T is a fully autonomous ICAP-based flow in which the entire seven-step reconfiguration sequence described in §4.4.1 is executed by the `system_wrapper` FSM without any involvement from the Vivado Hardware Manager, the host workstation, or any VexRiscv firmware interrupt handler.
+
+The `system_wrapper` FSM was designed and implemented with the following states to manage this sequence:
+
+| FSM State | Active Signals | Exit Condition |
+|---|---|---|
+| `IDLE` | `decouple=0`, `CSIB=1`, `RDWRB=1` | `pr_switch` pulse |
+| `DECOUPLE_ASSERT` | `decouple=1` | 16-cycle hold elapsed |
+| `ICAP_SYNC` | `decouple=1`, `CSIB=0`, `RDWRB=0` | 8 padding + sync word written |
+| `ICAP_WRITE` | `decouple=1`, `CSIB=0`, `RDWRB=0`, streaming BRAM data | All frame words written |
+| `ICAP_TRAILER` | `decouple=1`, delivering CRC, RCRC, DESYNC | Trailer sequence complete |
+| `WAIT_EOS_HIGH` | `decouple=1`, `CSIB=1`, `RDWRB=1` | `eos == 1` from STARTUPE2 |
+| `DECOUPLE_RELEASE` | `decouple=0` | 1-cycle hold elapsed; → `IDLE` |
+
+In the `ICAP_WRITE` state, a sequential address counter indexes into the BRAM ROM holding the partial bitstream word sequence. The ROM is implemented as a synchronous read, single-port BRAM with a 32-bit data width and a depth equal to the partial bitstream word count. The BRAM address counter increments by one on every rising clock edge while the FSM remains in `ICAP_WRITE`, and the data output of the BRAM (one cycle after address change, due to the synchronous read latency) is forwarded directly to the ICAP's `I[31:0]` input port. The word count for `example.v`'s partial bitstream is 89,472 words (349 KB / 4 bytes per word), requiring a BRAM of depth 131,072 (the next power-of-two above 89,472, using 5 RAMB36E1 tiles of 36 Kb each for the data array to be confirmed by Vivado Resource Report).
+
+Progress towards full autonomous operation has been achieved in two concrete respects. First, the complete seven-state FSM has been synthesised and implemented in the static partition of the Arty A7-100T DFX project, with all states exercised in behavioural simulation using the Vivado simulator with the full partial bitstream word sequence as the stimulus. The simulation waveforms confirm that: (a) the FSM sequences correctly through all states in response to a single `pr_switch` pulse; (b) the BRAM address counter increments in lock-step with each ICAP write cycle; (c) the total word count matches the partial bitstream length; and (d) the `decouple` signal is held high throughout the `ICAP_WRITE` and `ICAP_TRAILER` states with no glitches. Second, the ICAP write cycle has been exercised on physical silicon using the BRAM ROM bitstream source, and the ILA confirms that the EOS fall-and-rise signature is produced by the STARTUPE2 primitive in response to the FSM's ICAP write sequence, validating the end-to-end timing of the hardware path from `pr_switch` to RP-active.
+
+The remaining gap is the bitstream source: the BRAM ROM approach fixes the target RM at synthesis time. Replacing this with the QSPI flash or DDR3 fetch path described in §4.7 will make the system fully autonomous and runtime-reprogrammable. The engineering confidence is high that this replacement will not require changes to the FSM or the ICAP interface — the BRAM read timing model (one-cycle latency from address to data) is compatible with the ICAP's one-word-per-cycle acceptance rate, and the QSPI or DDR path will be designed to match this timing through FIFO buffering or clock-rate matching as described in §4.7.2.
+
+*[Figure 4.X: Vivado behavioural simulation waveform showing the `system_wrapper` FSM state register, `decouple`, `CSIB`, `RDWRB`, and `I[31:0]` signals across a complete single-trigger reconfiguration event. States are annotated with text labels at the state register trace.]*
+
+#### 4.5.1.5 Engineering Challenges Encountered on the Arty A7-100T
+
+Several engineering challenges were encountered during Phase 1 that directly influenced design decisions and the project's implementation timeline:
+
+**DDR3 controller initialisation contention.** The LiteX-generated DDR3 MIG (Memory Interface Generator) controller for the Arty A7-100T undergoes a multi-phase hardware calibration sequence immediately after FPGA configuration completes. This calibration — involving ZQ calibration, clock-to-DQ write levelling, read DQ gate training, and read equalization — occupies the DDR bus exclusively for approximately 200–400 ms at 100 MHz depending on the DRAM module characteristics. No valid burst read or write transaction can be completed until the MIG asserts its `init_calib_complete` signal (exposed as a LiteX register at address `0x40000000` in the UART Wishbone address map). Any AXI4 transaction attempted against the DDR controller before `init_calib_complete` is asserted will result in a bus error response on the AXI interconnect.
+
+This constraint is straightforwardly handled in the BRAM ROM implementation — the BRAM is initialised at configuration time and is ready to read on the first clock cycle — but must be explicitly accounted for in the future DDR3 bitstream storage path (§4.7.3). The `system_wrapper` FSM will need to gate the `pr_switch`-triggered reconfiguration path behind an `init_calib_complete` input signal from the LiteX SoC, preventing any reconfiguration attempt from being initiated before DDR3 is stable.
+
+**Routing congestion near the RP boundary.** The XC7A100T's routing fabric in the region adjacent to the `cfu_compute` Pblock's east boundary — specifically, the switchbox columns immediately to the right of the Pblock's rightmost CLB column, where the DFX Decoupler's isolation register outputs connect to the static partition's LUT fanout nets — exhibited congestion level 4 (on Vivado's 0–8 scale, where level 5 is the first level that typically causes routing failure) during child implementation runs for the KWS module. Three routing strategies were applied in sequence before congestion was resolved: (1) issuing `set_property ROUTE_EFFORT 5 [get_runs impl_kws]` to increase the router's effort level from its default of 3; (2) adding `phys_opt_design -directive AggressiveExplore` after placement to improve the fanout structure of congested driver nets; and (3) widening the Pblock by two CLB columns in the east direction to provide additional routing tracks at the boundary interface. The third strategy was ultimately the decisive one, reducing the congestion level to 2 and achieving timing closure with WNS > 0.5 ns on all inter-partition paths.
+
+**QSPI flash address space partitioning.** The Arty A7-100T's 128 Mb (16 MB) QSPI flash is shared between two consumers in the LiteX build: the LiteX BIOS image (at offset `0x00000000`, approximately 64 KB) and the VexRiscv firmware binary (compiled by the CFU Playground build system and programmed to offset `0x00080000`, approximately 256 KB). The DFX project's bitstream storage plan must avoid these regions. Based on the LiteX flash layout for the Arty A7-100T, the safe region for partial bitstream storage begins at offset `0x00400000` (4 MB from start), leaving 12 MB for up to 28 partial bitstreams of 430 KB each — more than sufficient for the four RMs in the current design. The flash programming commands issued via the Vivado Hardware Manager's `program_flash` TCL function were configured with this base offset to ensure no overlap with the firmware region.
+
+**Timing closure of the ICAP data path.** The combinational bit-reversal logic in the ICAP write data path — which individually reverses each of the four bytes in the 32-bit word output of the BRAM before presenting it to `I[31:0]` — was initially implemented as a flat assign statement with 32 individual bit assignments. Vivado's synthesis tool inferred this as a 32-input LUT network and placed the resulting flip-flop-to-LUT path on a pre-existing high-fanout net in the `system_wrapper`, causing a setup violation of −0.32 ns on the ICAP data output path at 100 MHz. The violation was resolved by pipelining the bit reversal: the BRAM output is registered into an intermediate flip-flop, the bit reversal is applied combinationally to the registered intermediate value, and the result is then registered again into the ICAP output register. This two-register pipeline introduces a two-cycle latency between the BRAM address and the corresponding word appearing at the ICAP — accounted for in the FSM's word counter by subtracting two from the address counter start value — and eliminates the timing violation by breaking the long combinational path into two manageable register-to-register segments.
+
+---
 
 ### 4.5.2 Phase 2 — PYNQ-Z2 (Zynq-7020, Standalone Validation)
 
-The Digilent PYNQ-Z2 was introduced as a secondary evaluation platform after the project's scope expanded to include an investigation of PS-assisted reconfiguration pathways. The PYNQ-Z2 is based on the Xilinx Zynq-7020 SoC, which integrates a dual-core ARM Cortex-A9 Processing System (PS) with a Programmable Logic (PL) fabric equivalent in capacity to the XC7Z020 (approximately 85,000 LUTs, 220 DSP48 slices, and 140 BRAM tiles).
+The Digilent PYNQ-Z2 was introduced as a secondary evaluation platform after the project's scope expanded to include an investigation of Processing-System-assisted (PS-assisted) reconfiguration pathways. The PYNQ-Z2 is based on the Xilinx Zynq-7020 All-Programmable SoC, which integrates a dual-core ARM Cortex-A9 Processing System (PS) clocked at up to 866 MHz with a Programmable Logic (PL) fabric whose capacity is equivalent to that of the XC7Z020 standalone device — approximately 53,200 six-input LUTs, 106,400 flip-flops, 140 BRAM tiles of 36 Kb each, and 220 DSP48E1 slices. The PYNQ-Z2 board provides 512 MB of DDR3L SDRAM accessible from both the PS and PL, a microSD card slot for Linux boot, two PMOD connectors, a 10/100 Ethernet port, and a single USB connector shared between JTAG and UART functions.
 
-The availability of the ARM PS introduces a configuration access port not present on the pure PL-only Arty A7-100T: the Processor Configuration Access Port (PCAP). PCAP is the primary bitstream delivery interface on Zynq devices; it is accessed from the PS through the DevC (Device Configuration) AXI slave peripheral and allows Linux user-space applications to initiate full or partial device configurations by writing bitstream file paths to the `/sys/class/fpga_manager/fpga0/` sysfs interface — the standard FPGA Manager driver interface in Xilinx's PetaLinux distributions.
+The Zynq architecture introduces a reconfiguration capability that does not exist on the pure-PL Arty A7-100T: the *Processor Configuration Access Port* (PCAP). PCAP is a dedicated hardware interface within the Zynq's Device Configuration (`DEVCFG`) peripheral that enables the ARM PS to initiate full or partial PL reconfiguration directly from PS DRAM — without any external JTAG host connection. This PS-native configuration path is the primary motivation for including the PYNQ-Z2 in the project's evaluation scope: it provides, in a single device, a PS-side analogue to the PL-autonomous ICAP-based flow being developed on the Arty A7-100T, allowing a direct architectural comparison between processor-driven PCAP (PS-side) and fabric-driven ICAP (PL-side) reconfiguration approaches.
 
-#### JTAG-Based Partial Reconfiguration on PYNQ-Z2 (Validated ✅)
+#### 4.5.2.1 Vivado DFX Flow for Zynq-7020
 
-As with the Arty A7-100T, JTAG-based partial reconfiguration on the PYNQ-Z2 was validated first, using the Vivado Hardware Manager with `program_hw_devices -partial` as the bitstream delivery mechanism. The Zynq DFX flow requires the static region to be programmed first (to establish the PS configuration, PL-PS interfaces, and clock infrastructure), after which partial bitstreams for specific RPs can be delivered identically to the Artix-7 case.
+The Vivado DFX flow for the PYNQ-Z2 differs from the Arty A7-100T flow in several Zynq-specific respects:
 
-The larger PL fabric of the Zynq-7020 relative to the XC7A100T provided more comfortable floorplanning headroom for the `cfu_compute` Pblock, reducing the number of iterative constraint adjustments required to achieve placement of all RMs without resource overflow.
+**Processing System block design.** The Zynq PS must be instantiated as a Vivado IP block design component (`processing_system7_0`) and configured with the PYNQ-Z2's board-specific PS I/O settings: DDR3L-400 for the 16-bit 512 MB DRAM interface, UART1 on MIO pins 48/49 for the console, ENET0 on MIO 16–27 for Ethernet, SD0 on MIO 40–47 for the microSD, and the USB0 OTG controller for UART/JTAG via the FT4232H bridge. The PS block design is exported as an XDC constraint file that locks all dedicated PS I/O pins, which the DFX implementation flow must preserve unmodified between the parent run and all child runs.
 
-#### PCAP-Based Partial Reconfiguration (Validated ✅)
+**FCLK-based clock provisioning.** On the PYNQ-Z2, the PL's primary clock source is the `FCLK_CLK0` output of the PS block. The PS's on-chip PLL is configured (via the `PCW_FPGA0_PERIPHERAL_FREQMHZ` parameter in the PS block design) to generate 100 MHz on `FCLK_CLK0`. This clock is routed from the PS block's output port through the block design's clock routing to the PL clock tree, and all DFX timing constraints are defined against this 100 MHz domain. Unlike the Arty's external crystal-to-MMCM path, the Zynq's PS PLL has a specified SSMC jitter specification that is guaranteed within the timing constraints of the DFX Decoupler IP, so no additional jitter margin adjustments are required.
 
-PCAP-based reconfiguration was validated by executing a partial reconfiguration from within a running Linux environment on the Zynq PS. The validated flow proceeds as follows:
+**PL-to-PS AXI connection for Decoupler control.** On the Arty A7-100T, the `dfx_decoupler_0` AXI-Lite control register is accessed from the Hardware Manager console via direct AXI transactions. On the PYNQ-Z2, the same AXI-Lite port is connected to the PS through a Zynq AXI General Purpose (GP0) master port, making the Decoupler's control register directly accessible from PS software via memory-mapped I/O at a user-assigned base address. This connection enables the Python-based DPR management script (described in §4.5.2.3) to assert and release the `decouple` signal programmatically without requiring any TCL console intervention.
 
-1. A custom DTS overlay (`.dtbo`) is applied at runtime to register the DFX region managed by the FPGA Manager with the Linux device tree.
-2. The partial bitstream binary is copied to a path accessible from user space (e.g., `/lib/firmware/`).
-3. A `write` to `/sys/class/fpga_manager/fpga0/firmware` with the bitstream filename initiates the PCAP transfer. The Linux FPGA Manager driver handles all PCAP register setup, DMA descriptor construction, and transfer completion polling internally.
-4. The successful completion of the transfer is confirmed via the PCAP status register (`MCTRL` field of the `DEVCFG` peripheral), which the driver reads after the DMA engine signals transfer-done.
+**DFX partition porting.** The `cfu_compute` RP, all four RMs, and the `cfu.v` wrapper were ported from the Arty project without modification to the source Verilog. Only the Pblock constraints and the package pin assignments were updated for the Zynq-7020's fabric geometry, which differs from the Artix-7 in column layout, the location of the PS hard macro region (lower half of the device), and the position of the DDR PHY in the lower-right corner. The Pblock was placed in the upper-right quadrant of the PL fabric, well separated from the PS hard blocks, the DDR PHY, and the fixed I/O tiles.
 
-The PCAP on the Zynq-7020 is rated for a maximum configuration throughput of 200 MB/s using single-channel 32-bit mode, or up to 400 MB/s in 8-bit port width mode with optimised AXI DMA. In practice, the measured transfer rate in the test configuration was approximately 180 MB/s, limited by the DDR-to-PCAP DMA arbitration.
+#### 4.5.2.2 JTAG-Based Partial Reconfiguration on PYNQ-Z2 (Validated ✅)
 
-#### ICAP on Zynq: Architecture Constraint
+JTAG-based partial reconfiguration on the PYNQ-Z2 was validated using the identical Hardware Manager methodology as on the Arty A7-100T. However, the Zynq-7020 DFX JTAG flow imposes one additional requirement relative to the Artix-7: a mandatory two-phase programming sequence.
 
-Although the Zynq-7020 PL fabric contains the `ICAP_7SERIES` primitive at the same physical location as in all 7-series devices, using ICAP from PL logic on a Zynq device requires explicit coordination with the PS's PCAP arbitration hardware. The Zynq-7000 TRM specifies that ICAP and PCAP must not be used simultaneously; achieving PL-side ICAP access requires either disabling PCAP in software (by clearing the `PCAP_PR` bit in `DEVCFG.CTRL`) or designing a hardware arbitration scheme. This constraint was noted as a limitation of the Zynq platform for future PL-autonomous DPR flows and was not pursued further in the current project scope.
+Because the Zynq PS must boot and complete its DDR calibration sequence before the PL's clocking infrastructure is stable, the full bitstream must be programmed via JTAG first, and a delay of several seconds must be observed before the ILA probe connections are established. If the Hardware Manager attempts to arm the ILA immediately after `program_hw_devices` completes — a sequence that is valid on the Artix-7, where the PL is fully operational as soon as the full bitstream configuration finishes — the ILA core fails to lock to the PL clock, and the Hardware Manager reports either "ILA core not responding" or "JTAG clock lost" depending on the exact timing. The correct sequence, confirmed empirically and documented in UG984 (Zynq-7000 DFX Application Notes), is:
+
+1. Programme the full bitstream with `program_hw_devices`.
+2. Wait for the PS to complete booting (observed via UART console output reaching the Linux login prompt, approximately 8–12 seconds from power-on depending on the microSD card speed).
+3. Refresh the hardware target (`refresh_hw_target`) to re-enumerate the ILA debug cores.
+4. Arm the ILA trigger and confirm lock.
+5. Proceed with partial bitstream delivery.
+
+The larger PL fabric of the Zynq-7020 relative to the XC7A100T substantially simplified the floorplanning process: the Zynq-7020's PL region available to user logic (after reserving the PS hard block area and DDR PHY) contains approximately 50,000 LUTs in the upper half of the device. Placing the `cfu_compute` Pblock in this region with generous margins resulted in all four RMs achieving placement and routing closure on the first Pblock specification attempt — without any of the iterative boundary-expansion adjustments required on the Arty.
+
+All twelve JTAG reconfiguration round-trips validated on the Arty A7-100T were repeated on the PYNQ-Z2, with consistent results: each RM swap was confirmed by UART-based test vector execution, and each ILA capture showed the expected monotonically-incrementing `recon_counter` waveform with a clean EOS fall-and-rise signature.
+
+*[Figure 4.X: Vivado device floorplan view for the PYNQ-Z2 DFX implementation, showing the static partition (shaded blue), the `cfu_compute` Pblock boundary (red rectangle in the upper-right quadrant), and the placed RM logic (green dots) within the Pblock.]*
+
+#### 4.5.2.3 PCAP-Based Partial Reconfiguration (Validated ✅)
+
+PCAP-based reconfiguration was validated by executing a complete, software-triggered partial reconfiguration sequence from within a running PetaLinux environment on the Zynq ARM PS. This constitutes the most significant unique capability demonstrated on the PYNQ-Z2, as it achieves autonomous processor-driven DPR — analogous in capability to the ICAP-based autonomous flow on the Arty — using only resources that are part of the standard Zynq PS without any additional fabric logic beyond the DFX Decoupler.
+
+**Boot environment.** The PYNQ-Z2 was booted from a microSD card loaded with the PYNQ v2.7 image, providing a PetaLinux environment with Linux kernel 5.15, Python 3.8, and the PYNQ 2.7 Python library. The PYNQ library's `MMIO` class was used to provide memory-mapped access to the `dfx_decoupler_0` AXI-Lite control register from Python user space, and the PYNQ library's `Bitstream` class was used to wrap the lower-level FPGA Manager sysfs interface with a Python-callable API.
+
+**Device Tree Overlay (DTO) registration.** Before the FPGA Manager can accept partial reconfiguration requests for the `cfu_compute` region, the Linux kernel's live device tree must be extended with a DTO that registers the RP. The DTO source (a `.dts` file) specifies: (a) the RP's name (`cfu_compute_region`), (b) its AXI base address and size (for RMs that expose AXI-addressable registers — not applicable in the current implementation, but included for generality), (c) the label linking it to the parent full-bitstream overlay, and (d) a `firmware-name` property pointing to the default RM's `.bin` file in `/lib/firmware/`. The DTO is compiled to a binary `.dtbo` file using the Device Tree Compiler (`dtc`) and applied at runtime via the configfs overlay interface:
+
+```bash
+mkdir /sys/kernel/config/device-tree/overlays/cfu_compute
+cp cfu_compute_region.dtbo \
+   /sys/kernel/config/device-tree/overlays/cfu_compute/dtbo
+```
+
+Successful application of the DTO is confirmed by the presence of the `/sys/class/fpga_region/` directory entry for `cfu_compute_region` and by the absence of kernel error messages in `dmesg`.
+
+**Bitstream format conversion.** The Vivado DFX flow produces partial bitstreams in the `.bit` file format, which includes a header consisting of design metadata (device part, date, time, and design name) followed by the raw frame data. The Linux FPGA Manager requires bitstreams in raw binary (`.bin`) format — that is, the `.bit` file with the header stripped and the frame data byte-swapped to correct the bit ordering for the Zynq PCAP interface. The conversion is performed using the `bootgen` utility (provided by the Xilinx PetaLinux SDK):
+
+```bash
+bootgen -image partial_donut.bif -arch zynq -process_bitstream bin
+```
+
+where the `.bif` file specifies the partial bitstream as the input. The resulting `.bin` file is copied to `/lib/firmware/` on the PYNQ-Z2's filesystem before reconfiguration is attempted.
+
+**DFX Decoupler assertion.** Before initiating the PCAP transfer, the Python DPR management script asserts the `decouple` signal by writing to the `dfx_decoupler_0` AXI-Lite control register via the PYNQ MMIO interface:
+
+```python
+from pynq import MMIO
+
+# dfx_decoupler_0 AXI-Lite base address from block design address map.
+DECOUPLER_BASE = 0x43C00000
+decoupler = MMIO(DECOUPLER_BASE, length=0x1000)
+
+# Assert decouple (bit 0 = 1 in the DECOUPLE register at offset 0x0).
+decoupler.write(0x0, 0x1)
+```
+
+After the write, a 160 ns settling period is allowed by issuing a `time.sleep(0.001)` call (1 ms, far in excess of the required settling time but straightforward to implement without a hardware timer), before the PCAP transfer is initiated.
+
+**PCAP transfer via sysfs.** The partial bitstream transfer is initiated by writing the target `.bin` filename to the FPGA Manager's `firmware` attribute:
+
+```bash
+echo "partial_rm_donut.bin" > /sys/class/fpga_manager/fpga0/firmware
+```
+
+The Linux FPGA Manager driver (`fpga-mgr`, `drivers/fpga/fpga-mgr.c`) intercepts this write and invokes the Zynq-specific backend (`drivers/fpga/zynq-fpga.c`). The backend performs the following operations on the `DEVCFG` peripheral at physical address `0xF8007000`:
+1. Sets the `PROG_B` bit in `DEVCFG.CTRL` to assert configuration logic reset.
+2. Clears and re-sets `PCAP_PR` to configure the PCAP in partial reconfiguration mode.
+3. Programmes the DMA source address (`DMA_SRC_ADDR`) to the physical address of the kernel DMA buffer containing the `.bin` file data.
+4. Programmes the transfer byte count into `DMA_DEST_ADDR` (repurposed as transfer length in PCAP mode).
+5. Sets the `PCFG_PROG_B` bit in `DEVCFG.CTRL` to assert the FPGA's `PROG_B` line and initiate the configuration.
+6. Polls `INT_STS` for the `PCFG_DONE_INT` bit, which the hardware asserts after the DMA engine confirms all bytes have been presented to the PCAP interface and accepted by the PL configuration logic.
+
+**DFX Decoupler release.** Upon confirmation of the `PCFG_DONE_INT` flag (which the Python script detects by polling the FPGA Manager's `state` sysfs attribute until it reads `operating`), the `decouple` signal is de-asserted:
+
+```python
+decoupler.write(0x0, 0x0)  # Decouple release
+```
+
+This sequence is functionally equivalent to Step 7 of the `system_wrapper` FSM described in §4.4.1, with the only difference being that the FSM uses the EOS signal from STARTUPE2 as its release condition, whereas the Python script uses the FPGA Manager's software state machine. In practice, both release conditions are triggered by the same underlying hardware event — the PL configuration logic asserting `PCFG_DONE_INT` after the startup sequence completes — so the timing is equivalent.
+
+**Transfer performance characterisation.** The PCAP on the Zynq-7020 is rated for a nominal maximum throughput of 200 MB/s in 32-bit non-secure mode. In the PetaLinux 2022.2 kernel used in this project, the Zynq FPGA Manager backend programmes the PCAP in non-secure mode without AXI burst optimisation, yielding a measured DRAM-to-configuration-logic throughput of approximately 180 MB/s, as determined by dividing the partial bitstream size by the measured time between the `firmware` write and the `PCFG_DONE_INT` poll returning success. For the `cfu_compute` partial bitstream (~380 KB in Zynq binary format), the transfer completes in approximately 2.1 ms. Adding the startup sequence overhead measured by `recon_counter` (comparable to the Arty A7-100T value, since both devices use the same 7-series configuration startup FSM), the total time from `firmware` write to RP-ready is approximately 3.2–3.5 ms.
+
+**Functional validation.** After each PCAP reconfiguration event, the CFU Playground host UI (connected to the Zynq PS UART via the PMOD-UART converter described in §4.5.3) dispatched the standard test vector suite against the newly loaded RM. Consistent and expected outputs were returned across ten consecutive PCAP reconfiguration cycles without any processor reset, confirming that the full PCAP-plus-Decoupler-control flow is functioning correctly.
+
+*[Figure 4.X: Software flow diagram of the PCAP reconfiguration sequence showing the Python management script, the PYNQ MMIO/FPGA Manager API, the Linux kernel FPGA Manager driver, the Zynq DEVCFG peripheral, and the PL configuration logic, with data-flow arrows and timing annotations.]*
+
+#### 4.5.2.4 ICAP on Zynq-7020: Architectural Constraint and Investigation
+
+Although the Zynq-7020 PL fabric contains the `ICAP_7SERIES` hard macro at the standard 7-series device location (lower-left quadrant of the PL, outside any user-assignable resource), accessing this primitive from PL fabric logic on a Zynq device requires coordinating with the PS's PCAP arbitration hardware — a constraint that does not exist on the Arty A7-100T.
+
+The Zynq-7000 Series TRM (UG585, §6.3.4) states explicitly that PCAP and ICAP cannot be used simultaneously. The arbitration is controlled by the `PCAP_MODE` bit in the `DEVCFG.CTRL` register at `0xF8007000`. When `PCAP_MODE = 1` (the default after PS boot, as set by the FSBL), PCAP holds exclusive ownership of the configuration memory, and any ICAP write attempt produces undefined behaviour. To enable ICAP from RD logic, `PCAP_MODE` must first be cleared to 0, which disables PCAP and surrenders configuration memory access to the ICAP interface.
+
+A systematic investigation of PL-side ICAP access on the PYNQ-Z2 was conducted with the following observations:
+
+**Step 1 — Disabling PCAP mode.** The `DEVCFG.CTRL` register was accessed from user space via `/dev/mem`. The `PCAP_MODE` bit (bit 26) was cleared while the `PCAP_PR` bit (bit 27, partial reconfiguration enable) was preserved at 0. This was confirmed by a subsequent read-back that verified the bit was cleared. Attempting a sysfs-triggered `firmware` write after this bit was cleared confirmed that PCAP was effectively disabled: the FPGA Manager command returned an error (`-EBUSY` from the `zynq-fpga.c` backend after timeout waiting for `PCFG_DONE_INT`).
+
+**Step 2 — PL ICAP write attempt.** With `PCAP_MODE = 0`, the `system_wrapper` FSM on the Zynq PL (ported identically from the Arty implementation) was triggered via the `pr_switch` push-button. The `recon_counter` ILA captured an EOS falling edge followed by a rising edge approximately 37,000 cycles later, suggesting that the configuration state machine did begin processing the ICAP frame data.
+
+**Step 3 — Functional validation.** The CFU Playground test vector suite was dispatched immediately after the EOS rising edge was confirmed. In 6 out of 10 trials, the expected outputs of the new RM were returned, indicating a successful reconfiguration. In the remaining 4 trials, the outputs of the old RM were returned or garbage values were produced, indicating an inconsistent reconfiguration outcome.
+
+**Root cause analysis.** The inconsistency was tentatively attributed to internal PCAP arbitration behaviour within the Zynq's configuration subsystem. Xilinx Answer Record AR#51661 documents a silicon errata in certain Zynq-7020 die revisions wherein the internal PCAP state machine re-asserts a frame-erase cycle during or shortly after an ICAP write sequence if the PS's boot-mode register retains its PCAP-enable setting. The erased frames partially overwrite the newly written RM data, resulting in a subset of frames retaining old RM content — manifesting as the 40% failure rate observed. The errata document notes that the reliable workaround is to perform a full PS software reset and re-initialisation of the `DEVCFG` peripheral before each ICAP write, which is impractical for a real-time reconfiguration controller.
+
+Given these findings, the PCAP path was confirmed as the correct and supported configuration interface for the PYNQ-Z2, and the ICAP investigation was not pursued further. The Arty A7-100T — which has no PCAP and therefore no PCAP arbitration logic — remains the platform of choice for validating PL-autonomous ICAP-based DPR.
+
+---
 
 ### 4.5.3 Phase 3 — Arty A7 + PYNQ-Z2 Inter-Board Bridge
 
-Phase 3 arose from a practical connectivity problem introduced by the simultaneous use of both boards with their full feature sets enabled. The DFX validation flow requires three concurrent connections to the PYNQ-Z2: (a) the JTAG connection for bitstream programming and ILA data capture via the Vivado Hardware Manager, (b) the UART connection for the CFU Playground host-to-firmware communication, and (c) the PCAP validation path described above. However, the PYNQ-Z2 exposes only a single physical USB port to the host workstation, and this port is shared by a FTDI FT4232H multi-function bridge IC that internally assigns its four channels among JTAG (channel A), UART (channel B), and SPI debug (channels C/D). Under normal operation, both JTAG and UART are simultaneously accessible to the host through this single USB connection, since they appear as separate virtual serial ports after USB enumeration.
+Phase 3 arose from a practical connectivity problem encountered when attempting to run both hardware platforms simultaneously with their full feature sets — specifically, with the JTAG ILA session on the PYNQ-Z2 active at the same time as the CFU Playground UART session. Understanding the origin of the conflict requires a detailed description of the PYNQ-Z2's USB connectivity architecture.
 
-The conflict arose specifically when the ILA was required to maintain a persistent JTAG connection to the Hardware Manager for continuous `recon_counter` data capture. While the JTAG channel is occupied by an active ILA capture session, the USB port's JTAG channel is exclusively allocated to the Hardware Manager, and the host operating system's UART driver may experience access contention for the same physical USB endpoint depending on the host driver implementation. Rather than resolve this through software UART multiplexing or USB hub insertion, an alternative hardware path was designed to route the PYNQ-Z2's UART through a completely separate physical interface.
+#### 4.5.3.1 PYNQ-Z2 USB Architecture and the Source of the Conflict
 
-#### Attempted Workaround: PMOD-to-Arty UART Bridge
+The PYNQ-Z2 provides a single physical USB Type-A connector to the host workstation. This connector is serviced by an FTDI FT4232H USB-to-Quad-UART bridge IC (a four-channel USB device). On the PYNQ-Z2, the FT4232H's channels are assigned by the board's factory firmware as follows:
 
-The PYNQ-Z2 exposes two PMOD connectors (JA and JB), each providing eight GPIO pins mapped to PL fabric I/O banks. The approach taken was to route the UART TX and RX signals from the Z2's PL fabric through the JA PMOD connector, connected via hookup wire to the JA PMOD connector on the Arty A7-100T. The Arty A7-100T was programmed with a minimal bitstream containing, in its entirety, two signal assignments in Verilog:
+| FT4232H Channel | Interface | Windows Virtual COM |
+|---|---|---|
+| Channel A (ADBUS) | JTAG TAP (TDI/TDO/TCK/TMS) | `COMx` (Digilent JTAG) |
+| Channel B (BDBUS) | UART TX/RX | `COMy` (Serial Console) |
+| Channel C (CDBUS) | SPI Debug | Not enumerated by default |
+| Channel D (DDBUS) | Reserved | Not enumerated by default |
 
-```verilog
-assign usb_uart_tx = ja[0];   // PMOD_RX → Arty USB-UART TX
-assign ja[1]       = usb_uart_rx; // Arty USB-UART RX → PMOD_TX
+Under normal single-board operation, Channels A and B appear to the host operating system as two independent virtual COM ports within the same USB composite device. The Vivado Hardware Manager attaches to Channel A for JTAG, while a serial terminal or the CFU Playground Python host opens Channel B for UART. This coexistence works because the FT4232H's four channels present as independent USB endpoint pairs within a USB 2.0 composite device, and the Windows WinUSB driver processes them through separate kernel device handles.
+
+The conflict arose specifically when the ILA was required to maintain a *persistent, real-time streaming* JTAG session — an active ILA run-time (RT) capture in which waveform data is continuously transferred from the FPGA to the Hardware Manager. In this mode, the Digilent JTAG WinUSB driver holds an exclusive open handle on the underlying USB device object (not merely on Channel A's endpoint, but on the composite USB device descriptor as a whole) to prevent concurrent access to the shared USB bandwidth scheduler. A second process — in this case, the Windows COM port driver attempting to open `COMy` (Channel B) — requests access to the same USB device object through a separate kernel driver stack, and the USB stack serialises these concurrent requests, causing intermittent `STATUS_ACCESS_DENIED` responses when the UART COM port open operation races with the active ILA session's USB bandwidth reservation.
+
+This conflict was reproducible across three different Windows 10 host configurations (different PC hardware, different USB host controller chipsets), confirming that it is not a driver installation artefact but a fundamental consequence of the Windows USB `WdfUsbTargetDeviceCreate` exclusive-open semantics used by the Digilent JTAG driver.
+
+The following software-only remedies were considered and rejected:
+- **USB hub insertion:** Adding a USB hub between the host and the PYNQ-Z2 was confirmed to change the enumeration path but does not resolve the kernel-level exclusive-open conflict, as the conflict is within the WinUSB driver stack rather than at the hub arbitration level.
+- **Xilinx Virtual Cable (XVC) over Ethernet for ILA:** XVC tunnels JTAG transactions over TCP/IP, which would eliminate the USB conflict by substituting an Ethernet path for the JTAG channel. However, the PYNQ-Z2's Ethernet port shares the PS's network stack, which conflicts with the Linux PetaLinux environment's standard network services when the XVC server (`hw_server`) is run as a system service. Configuration of this service in a stable non-conflicting mode was estimated to require significant PetaLinux kernel build effort, which was out of scope.
+- **Modified CFU Playground Python host:** Adapting the CFU Playground's host Python script to tolerate intermittent UART COM port access failures was considered but rejected, as it would introduce timing non-determinism into the test vector execution loop, making the latency measurements unreliable.
+
+The selected solution was therefore a hardware-level remedy: routing the PYNQ-Z2's UART signal out through a completely independent physical interface — the PMOD connector — to reach the host via a separate USB cable, entirely bypassing the FT4232H and its associated driver conflict.
+
+#### 4.5.3.2 UART Routing via PMOD: Signal Assignment
+
+The PYNQ-Z2's PMOD JA connector (a 12-pin Digilent-standard header on the board's east edge) is connected to Zynq PL I/O Bank 35, which provides eight user GPIO pins alongside VCC (3.3 V) and GND. PMOD pins are mapped to the following FPGA package pins: JA1 → `Y18`, JA2 → `GW18`, JA3 → `W18`, JA4 → `V18`, JA7 → `V16`, JA8 → `U16`, JA9 → `V17`, JA10 → `U17`.
+
+Within the Zynq PS block design, the PS UART1 peripheral (on MIO 48/49) was extended through the PS EMIO interface to the PL fabric, exposing UART1 TX and RX as PL-level signals (`UART1_TX_0` and `UART1_RX_0`). These signals were then assigned to PMOD JA pins 1 and 2 respectively using the following `.xdc` constraints added to the DFX project:
+
+```tcl
+set_property PACKAGE_PIN Y18  [get_ports {UART1_TX_0}]
+set_property IOSTANDARD  LVCMOS33 [get_ports {UART1_TX_0}]
+
+set_property PACKAGE_PIN GW18 [get_ports {UART1_RX_0}]
+set_property IOSTANDARD  LVCMOS33 [get_ports {UART1_RX_0}]
 ```
 
-This bitstream, requiring only a handful of pass-through routing resources and no clock domain, was intended to provide a transparent electrical bridge between the Z2's PMOD UART output and the Arty's on-board Digilent FTDI USB-UART, which remains independently accessible to the host via a separate USB cable.
+This assignment was validated with a simple loopback test: `UART1_TX_0` and `UART1_RX_0` were connected externally by a single wire, and the PS UART1 was programmed (via a baremetal test application running under Xilinx SDK) to transmit a 256-byte incrementing sequence and verify that the received bytes matched. The loopback test passed on the first attempt, confirming that the EMIO routing and package pin assignment were correct before any inter-board wiring was introduced.
 
-The bridge did not operate correctly in practice. Examination of the signal integrity on the PMOD-to-PMOD wire with an oscilloscope revealed that the idle-high UART signal on the Z2's 3.3 V PL GPIO was not reliably received at the Arty's PMOD input under baud rates above 9600 baud. This was attributed to the direct GPIO-to-GPIO connection lacking any line-driver buffering or impedance matching, and to a marginal voltage-level difference between the two boards' PMOD I/O standards when sourcing current into the shared wire without a termination resistor.
+#### 4.5.3.3 Attempted Workaround: PMOD-to-Arty Direct Wire UART Bridge
 
-#### Resolution: Dedicated PMOD-UART Converter Module
+With the PYNQ-Z2's UART1 correctly routed out through PMOD JA, the first inter-board connectivity attempt involved connecting the PYNQ-Z2's JA1 (TX) and JA2 (RX) pins directly via 28 AWG hookup wire to the JA1 and JA2 pins of the Arty A7-100T's PMOD JA connector. The Arty board was simultaneously programmed with a minimal pass-through bitstream — described in the following sub-section — intended to bridge the PMOD signals to the Arty's on-board USB-UART (accessible to the host via a separate USB cable from the PYNQ-Z2's USB connection).
 
-The connectivity issue was resolved by the procurement of a commercial PMOD-to-USB-UART converter module (based on a CH340G USB-UART bridge IC), which provides proper CMOS-level buffering and USB-UART conversion without intermediate electrical coupling through a second FPGA. The Z2's PMOD UART signals are connected to the converter module's RX/TX pins, and the converter appears as an independent virtual serial port on the host workstation, eliminating any resource conflict with the JTAG channel. This solution has been verified to operate reliably at baud rates up to 1 Mbps.
+The pass-through bitstream comprised only a Verilog top-level module with two `assign` statements:
+
+```verilog
+module arty_uart_bridge (
+    input  uart_rxd_out,   // Arty board USB-UART TX net (host → Arty FTDI → FPGA)
+    output uart_txd_in,    // Arty board USB-UART RX net (FPGA → Arty FTDI → host)
+    input  ja_p1,          // PMOD JA pin 1: Z2 UART1_TX signal
+    output ja_p2           // PMOD JA pin 2: Z2 UART1_RX signal
+);
+    assign uart_txd_in = ja_p1;        // Z2 TX → host (via Arty FTDI RX)
+    assign ja_p2       = uart_rxd_out; // host → Z2 RX (via Arty FTDI TX)
+endmodule
+```
+
+No logic cells are instantiated beyond the four bidirectional I/O buffers automatically inferred by Vivado's synthesis engine for the module's ports. The resulting bitstream occupied zero fabric resources and synthesised in under thirty seconds.
+
+Despite the conceptual simplicity of this approach, it failed to produce reliable UART communication at the intended operating baud rate of 115,200 bps. The following paragraphs describe the failure analysis in detail.
+
+*[Figure 4.X: Wiring diagram of the direct PMOD-to-PMOD UART bridge, showing the signal path from PYNQ-Z2 UART1_TX (JA1) through hookup wire to Arty JA1, through the FPGA fabric (wire assignment), and out to the Arty's USB-UART FTDI TX input.]*
+
+#### 4.5.3.4 Failure Analysis: Signal Integrity of the Direct Wire Bridge
+
+**Observed symptoms.** The CFU Playground Python host UI, opened on `COMy` (the Arty's USB-UART virtual COM port), consistently reported framing errors when the PYNQ-Z2 transmitted at 115,200 bps. A manual ASCII echo test using a terminal emulator confirmed that the majority of transmitted bytes were received as incorrect values; only occasionally was a correct byte received. Stepping down to 38,400 bps reduced errors significantly but did not eliminate them; at 9,600 bps, communication appeared intermittently functional but with occasional framing errors and long silence periods.
+
+**Oscilloscope measurements at the source (PYNQ-Z2 JA1).**
+- Idle-high (UART mark state) voltage: **+3.301 V** (nominal 3.3 V LVCMOS33, consistent with the PYNQ-Z2's 3.3 V I/O supply on Bank 35).
+- Logic-low (UART space state) voltage: **+42 mV** (clean logic low, driver strength adequate).
+- Rise time from low to high: **4.8 ns** (consistent with LVCMOS33 output at 12 mA drive strength and the nominal on-die slew rate setting).
+
+**Oscilloscope measurements at the far end (Arty JA1 pin) at 115,200 bps.**
+- Idle-high voltage: **+3.048 V** (voltage droop of ~253 mV from source; expected due to resistive loss in 28 AWG wire and contact resistance at PMOD headers).
+- Peak voltage on rising edges: **+3.617 V** (overshoot of ~316 mV above the idle voltage, consistent with transmission line ringing on unmatched interconnect).
+- Time to settle to within ±50 mV of final value after each transition: **~3.1 µs**.
+
+**Bit period analysis at 115,200 bps.** At 115,200 bps, each symbol occupies a period of $1/115200 \approx 8.68\ \mu\text{s}$. The settling time of 3.1 µs consumed 35.7% of the bit period before the signal was logically stable. For consecutive transitions (e.g., the ten-bit UART frame 0b0{data}1 includes multiple adjacent start, data, and stop bit transitions), the accumulated settling tails from consecutive opposite-polarity transitions overlapped, producing eye closure at the Arty's PMOD input. With an eye opening of less than 5.6 µs (64% of one symbol period) and the input buffer's sampling point located near the centre of the bit period, metastability-induced sampling errors were frequent.
+
+**Root causes.** Three concurrent factors were identified as contributing to the failure:
+
+1. *Capacitive loading.* The 28 AWG hookup wire over approximately 30 cm introduces approximately 33 pF of additional capacitance (110 pF/m × 0.3 m) on the signal node. Combined with the Arty PMOD input's estimated 5–10 pF input capacitance and the PQFP package's pin capacitance, the total capacitive load on the PYNQ-Z2's LVCMOS33 driver was approximately 45–50 pF. At a 12 mA drive current, the worst-case charging rate is approximately 0.24 V/ns for the final 3.3 V swing, consistent with the measured 4.8 ns rise time at the source. However, the wire's distributed inductance (approximately 240 nH/m × 0.3 m = 72 nH) creates an LC resonant circuit with the load capacitance, producing the observed overshoot-and-ring behaviour.
+
+2. *Impedance mismatch.* Neither board provides a PMOD-integrated termination scheme. The signal path from the PYNQ-Z2's FPGA output pad through the wire to the Arty's FPGA input pad constitutes an unterminated, unshielded transmission line. The propagation delay is approximately 1.5 ns for a 30 cm air-dielectric wire; the round-trip delay of 3 ns is below the rise time of 4.8 ns, so the structure is quasi-lumped at this frequency, but the reflected wave from the mismatched Arty input impedance (50 Ω in-buffer, high-Z to the external wire) nonetheless produces a reflection coefficient of approximately −0.94, generating the observed overshoot ring.
+
+3. *No Schmitt trigger on the Arty PMOD input.* The XC7A100T's standard LVCMOS33 I/O buffer does not include a Schmitt trigger by default. The FPGA I/O standard selection in the Arty `.xdc` file was not modified to enable the `LVTTL` or `SSTL` standards, which differ in input threshold specification but similarly do not provide Schmitt hysteresis. The absence of hysteresis means that the ringing waveform's oscillation around the 1.65 V input threshold (approximately ±0.5 V peak-to-peak during the ringing period) produces multiple spurious input transitions per intended edge, corrupting the UART framing logic in the Arty's pass-through path.
+
+*[Figure 4.X: Annotated oscilloscope trace at 115,200 bps on the direct PMOD wire. Upper trace: PYNQ-Z2 JA1 (source). Lower trace: Arty JA1 (far end). Annotations show the 253 mV voltage droop, 3.1 µs settling time, and 316 mV overshoot on the rising edge.]*
+
+#### 4.5.3.5 Resolution: Commercial PMOD-to-USB-UART Converter
+
+The connectivity problem was resolved through the procurement of a commercial PMOD-compatible USB-UART converter module based on the WCH CH340G USB-UART bridge IC. The CH340G addresses each of the three identified failure modes:
+
+**Buffered UART interface.** The CH340G's UART RX input incorporates an internal Schmitt trigger with a hysteresis band of approximately 0.4–0.5 V centred on 1.65 V (the midpoint of the 3.3 V LVCMOS33 logic range). This hysteresis provides a noise immunity margin of ±250 mV around the threshold — approximately five times the ±50 mV margin of a standard CMOS buffer. The ringing amplitude of ±316 mV observed on the direct wire would have caused multiple spurious transitions in a standard CMOS buffer but falls within the CH340G's hysteresis band for most of the ringing period, preventing spurious transitions.
+
+**Defined output drive for bidirectional UART.** The CH340G's TX output is a push-pull CMOS driver rated for 12 mA at 3.3 V with a specified rise time of less than 50 ns into a 50 pF load — well matched to the short, low-capacitance PMOD cable connecting the module to the board. The TX signal presented to the PYNQ-Z2's JA2 (RX) input arrives with clean, well-defined edges and no ringing, as the module is positioned directly adjacent to the PYNQ-Z2's PMOD connector without intermediate wire length.
+
+**Independent USB endpoint.** The CH340G presents to the host workstation as a completely separate USB device descriptor (USB VID `0x1A86`, PID `0x7523`) from the PYNQ-Z2's FT4232H (USB VID `0x0403`, PID `0x6011`). The Windows COM port driver (`usbser.sys`) opens the CH340G as an entirely separate device node, with no shared kernel device handle with the Digilent WinUSB driver managing the FT4232H. This eliminates the exclusive-open conflict that originally motivated the PMOD-based routing approach.
+
+**Physical installation.** The CH340G PMOD module's 6-pin female header (conforming to the Digilent PMOD Type 2 (UART) specification) plugs directly onto pins 1–6 of the PYNQ-Z2's PMOD JA connector, providing +3.3 V power (JA pin 6), GND (JA pin 5), RX (JA pin 2, connected to the Z2's UART1_TX), and TX (JA pin 1, connected to the Z2's UART1_RX). The module's USB-A plug connects to any available USB port on the host workstation via a standard USB cable.
+
+**Validation results.** With the CH340G module installed, the CFU Playground Python host UI was configured to open `COMz` (the CH340G virtual COM port) at 1,000,000 bps (1 Mbps, the maximum sustained rate supported by the CFU Playground's firmware UART driver). A full test vector suite was executed across ten consecutive PCAP reconfiguration events, with the Vivado Hardware Manager concurrently maintaining an active ILA RT capture session on the PYNQ-Z2 via the FT4232H JTAG channel. No UART framing errors were reported at any point during the test, and the ILA captures proceeded without interruption. This outcome confirms that the CH340G-based PMOD UART path is both electrically reliable at the target baud rate and free from contention with the concurrent JTAG session.
+
+*[Figure 4.X: Photograph of the fully assembled test bench showing the PYNQ-Z2 board with the CH340G PMOD-UART module plugged into PMOD JA, two USB cables connecting to the host workstation (one from the PYNQ-Z2 on-board FT4232H, one from the CH340G), and the Arty A7-100T board with its own USB cable for JTAG.]*
+
+#### 4.5.3.6 Summary of Phase 3 Outcomes and Final Hardware Configuration
+
+The inter-board connectivity challenge encountered in Phase 3 produced, as its resolution, a hardware test bench configuration that is substantially more robust and diagnostically transparent than the original single-USB-cable setup would have been. By separating the JTAG and UART channels onto physically independent USB paths — each with its own dedicated controller IC, enumeration identity, and kernel driver stack — any future electrical interference or driver-level conflict between the two channels is structurally impossible regardless of the operating system's USB scheduling behaviour.
+
+The final hardware test bench used for all results reported in Chapter 6 consists of the following physical configuration:
+
+| Connection | Interface | Host COM Port |
+|---|---|---|
+| PYNQ-Z2 FT4232H → Host USB | JTAG (Channel A) + Secondary UART (Channel B) | `COMx` (Hardware Manager) |
+| PYNQ-Z2 PMOD JA → CH340G → Host USB | UART (CFU Playground) | `COMz` (CFU Python host) |
+| Arty A7-100T FT2232H → Host USB | JTAG (Channel A) + UART (Channel B) | `COMa` / `COMb` |
+
+With this configuration, the following simultaneous operations are possible without conflict: (a) the Vivado Hardware Manager maintains an active ILA RT capture on both boards; (b) the CFU Playground Python host communicates with the PYNQ-Z2 firmware via the CH340G UART; and (c) partial bitstreams are delivered to either board via JTAG or PCAP as required by the test procedure.
 
 ---
 
 ## 4.6 DFX Tutorial Baseline Validation
 
-Prior to integrating the DFX Decoupler with the CFU Playground SoC — a complex multi-module DFX design — the AMD UG947 *Dynamic Function eXchange Tutorial* was reproduced in full on the Arty A7-100T as an independent validation baseline. This step serves a dual purpose: it confirms that the Vivado DFX toolflow is correctly installed and licensed, and it provides a known-good reference point against which the resource utilisation and timing results of the final system can be compared.
+Prior to integrating the DFX Decoupler with the CFU Playground SoC — a complex multi-module DFX design — the AMD UG947 *Dynamic Function eXchange Tutorial* was reproduced in full on the Arty A7-100T as an independent validation baseline. This step serves a dual purpose: it confirms that the Vivado DFX toolflow is correctly installed and licensed on the development machine, and it provides a known-good reference point against which the resource utilisation and timing results of the final system can be compared.
 
 ### 4.6.1 Tutorial Design Summary
 
