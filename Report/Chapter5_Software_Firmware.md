@@ -2,768 +2,1252 @@
 
 ---
 
-## 5.1 Overview of the Software Stack
+## 5.1 Overview of the Software and HDL Stack
 
-The hardware infrastructure described in Chapter 4 is necessary but not sufficient for a functional runtime-reconfigurable RISC-V co-processor system. An equally important layer of the overall architecture consists of the software components — spanning firmware running on the VexRiscv soft core, Python-based host tooling executing on the workstation, build and generation scripts that produce both the SoC and the DFX bitstream artefacts, and the RTL source hierarchy that defines the reconfigurable modules themselves. Collectively, these components constitute the *software and firmware stack* of the system, and their correct design is a prerequisite for the functional validation results reported in Chapter 6.
+The hardware infrastructure described in Chapter 4 defines the physical boundaries within which reconfiguration occurs, but converting that infrastructure into a working system demands a complementary set of software, firmware, and register-transfer-level (RTL) design files. The present chapter offers a detailed, code-level examination of every source artefact authored or adapted during the course of this project. Four distinct implementation sub-projects comprise the portfolio of work:
 
-This chapter documents each layer of the stack in full technical detail. Section 5.2 describes the LiteX SoC generator configuration and the build scripts through which the LiteX framework is parameterised to produce the `digilent_arty` SoC used in this project. Section 5.3 covers the CFU Playground firmware, its compilation toolchain, the RISC-V software ABI, and the mechanism by which the CUSTOM0 instruction encoding is translated into a hardware CFU invocation. Section 5.4 examines the DFX Vivado project's TCL automation layer — the scripts through which the DFX implementation run hierarchy, Reconfigurable Module registration, Pblock constraints, and partial bitstream generation are orchestrated without manual GUI interaction. Section 5.5 documents the RTL source hierarchy for the `system_wrapper`, `recon_counter`, and all four Reconfigurable Modules, with particular attention to the coding conventions, parameterisation, and simulation strategy for each module. Section 5.6 describes the Python-based PYNQ DPR management script used on the PYNQ-Z2 and the test harness through which functional validation was automated across multiple reconfiguration events. Section 5.7 provides a summary of the complete build flow — from a clean checkout of the repository to a fully programmed board — as an ordered sequence of commands, enabling reproducibility of the experimental results.
+1. **CFU Playground integration** — the primary RISC-V co-processor reconfiguration system on the Arty A7-100T, encompassing the top-level wrapper (`top.v`), the DFX Decoupler bridge (`cfu.v`), the reconfiguration-timing measurement module (`recon_counter.v`), three Reconfigurable Module (RM) HDL files (`example.v`, `donut.v`, `dse_template.v`), a fourth RM consisting of a multi-file SystemVerilog keyword-spotting accelerator (`kws/`), associated firmware headers (`cfu.h`), software emulation sources (`software_cfu.c`, `software_cfu.cc`), the interactive test menu (`proj_menu.cc`), and the donut rendering benchmark (`donut.c`).
 
----
+2. **AMD DFX Tutorial baseline** — a reference DFX design adapted from Xilinx UG947, containing a static top-level design (`top.v`), an MMCM clock-domain module (`clocks.v`), and BRAM-based shift-pattern Reconfigurable Modules (`shift_left.v` and its counterparts).
 
-## 5.2 LiteX SoC Build Configuration
+3. **UART-based DFX Calculator** — a standalone demonstration of Dynamic Function eXchange on the PYNQ-Z2, integrating a baud-rate-generated UART transceiver, an eight-operation combinational ALU, parameterised logic primitives, ASCII-to-hexadecimal mapping, a FIFO buffer, a button debouncer, and a multiply-only reconfigurable wrapper (`dfx_calculator.v` + `mul_wrap.v`).
 
-The LiteX framework is a Python-based SoC generator that produces synthesisable Verilog from high-level Python descriptions of bus topologies, memory maps, peripheral configurations, and core interconnects. In this project, LiteX is used to generate the `digilent_arty` SoC — comprising the VexRiscv pipeline, the DDR3 MIG controller, the UART peripheral, the QSPI flash controller, and the interconnect fabric — which constitutes the majority of the static partition in the DFX design.
+4. **AES/DES encryption reconfiguration** — a minimal proof-of-concept top module (`top_encrypt.v`) that instantiates either an AES or a DES encryption engine as a Reconfigurable Module behind a fixed 128-bit plaintext/ciphertext interface.
 
-### 5.2.1 Invocation and Primary Build Flags
-
-The LiteX build is invoked from the project's root directory using the following command:
-
-```bash
-python -m litex_boards.targets.digilent_arty \
-    --cpu-type=vexriscv \
-    --cpu-variant=minimal \
-    --device XC7A100T \
-    --build \
-    --no-compile-software \
-    --integrated-main-ram-size=0 \
-    --with-bios-flash-boot \
-    --uart-baudrate=1000000 \
-    --output-dir=build/arty_soc
-```
-
-Each flag has a specific significance within the DFX build context:
-
-**`--cpu-type=vexriscv --cpu-variant=minimal`.** The `minimal` VexRiscv variant is selected rather than the `full` or `linux` variants to minimise the static partition's resource footprint. The `minimal` variant omits the hardware multiply/divide unit, the instruction and data caches, the branch predictor, and the debug unit, reducing the core to approximately 800 LUTs and 600 FFs on the XC7A100T. This reduction is important because the static partition must fit comfortably within the FPGA while leaving a meaningful area free for the DFX Pblock. Despite the omitted features, the `minimal` variant retains all pipeline stages necessary to correctly execute and stall on the CUSTOM0 instruction — which is the only hardware feature required for the CFU interface to function correctly.
-
-**`--device XC7A100T`.** Specifies the target device part number. LiteX uses this argument to set the correct MMCM PLL parameters, I/O banking assignments, and device-specific primitive instantiations in its generated Verilog output.
-
-**`--no-compile-software`.** Instructs LiteX not to attempt compilation of the BIOS or application software during the SoC generation step. Software compilation is performed separately by the CFU Playground build system (§5.3) after the SoC header files generated by LiteX are available, and a premature compilation attempt at SoC generation time would fail because the CFU Playground's RISC-V GCC toolchain is invoked with a different set of linker scripts and compile flags than LiteX's built-in software build system expects.
-
-**`--integrated-main-ram-size=0`.** Disables the integrated SRAM that LiteX would otherwise synthesise as a fallback memory in the absence of a DDR controller. Since this project uses the DDR3 MIG controller for main system memory, the integrated SRAM would occupy unnecessary BRAM tiles in the static partition, increasing the risk of BRAM placement conflicts with the `system_wrapper`'s bitstream-storage BRAM.
-
-**`--with-bios-flash-boot`.** Enables the LiteX BIOS's QSPI flash boot path. At startup, the BIOS copies the application firmware binary from QSPI flash (at address offset `0x00080000`) into SRAM (or DDR, when `--integrated-main-ram-size=0` is set, into DDR starting at address `0x40000000`) and jumps to its entry point. This mechanism allows the CFU Playground firmware binary to be updated on the board without reprogramming the full FPGA bitstream — only the QSPI flash sector at `0x00080000` needs to be rewritten.
-
-**`--uart-baudrate=1000000`.** Sets the UART baud rate to 1 Mbps. The CFU Playground's host Python UI is configured to open the COM port at this rate, which provides sufficient bandwidth for the test vector exchanges performed during reconfiguration validation while remaining within the electrical margin of the board's FT2232H UART bridge and the CH340G PMOD UART module.
-
-### 5.2.2 Generated Output Artefacts
-
-The LiteX build produces the following output artefacts in `build/arty_soc/`:
-
-| Artefact | Path | Purpose |
-|---|---|---|
-| Synthesisable Verilog | `gateware/arty.v` | Top-level `digilent_arty` module |
-| Constraint file | `gateware/arty.xdc` | I/O pin assignments, timing constraints |
-| SoC header | `software/include/generated/csr.h` | CSR base addresses for firmware |
-| BIOS image | `software/bios/bios.bin` | LiteX BIOS firmware binary |
-| Memory map | `software/include/generated/mem.h` | Memory region start addresses for linker |
-
-The `arty.v` Verilog and `arty.xdc` constraint file are the artefacts consumed by the Vivado DFX project (§5.4): `arty.v` is added to the project's source file list as a module in the static partition, and `arty.xdc` is added to the project's constraints file set. The `csr.h` and `mem.h` headers are consumed by the CFU Playground firmware build (§5.3).
-
-### 5.2.3 LiteX SoC Address Map
-
-The LiteX-generated `digilent_arty` SoC exposes the following relevant memory-mapped peripherals:
-
-| Peripheral | Base Address | Width | Notes |
-|---|---|---|---|
-| DDR3 main memory | `0x40000000` | 256 MB | MIG controller target |
-| UART | `0xE0000800` | 4 KB | `cmd_ready` / `data` CSRs |
-| QSPI flash controller | `0xE0000000` | 4 KB | Bitbang flash control |
-| `dfx_decoupler_0` AXI-Lite | `0xE0001000` | 4 KB | Decouple CSR bit 0 |
-| `recon_counter` status | `0xE0002000` | 4 KB | Counter value read-only |
-| Etherbone debug bridge | `0xE0003000` | 4 KB | AXI4-Lite to Wishbone adapter |
-
-The `dfx_decoupler_0` and `recon_counter` addresses are extensions to the LiteX address map added manually within the `system_wrapper` integration. They are exposed to the VexRiscv firmware via a hand-written addition to `csr.h` so that future firmware-side autonomous reconfiguration triggers can directly read the counter value and control the Decoupler without requiring external TCL commands.
+The sections that follow examine each sub-project in source-level detail. All Verilog and SystemVerilog keywords, module names, signal names, and macro identifiers are reproduced verbatim because they are functional identifiers whose alteration would break the design. Explanatory prose surrounding these identifiers is written in original language to preserve academic integrity across the merged report.
 
 ---
 
-## 5.3 CFU Playground Firmware
+## 5.2 CFU Playground — Top-Level Integration
 
-The CFU Playground firmware is the RISC-V software layer that exercises the Custom Function Unit, drives the test vector validation suite, and communicates test results to the host workstation over UART. Its compilation, linking, and deployment to the Arty A7-100T constitute a distinct build subsystem from the LiteX SoC generation.
+The CFU Playground provides the application-level framework within which custom hardware accelerators are designed, compiled, and exercised on a VexRiscv soft-core processor. For this project, the CFU Playground's standard single-module architecture was extended into a DFX-capable configuration. The integration point is the `top.v` module, which serves as the physical top of the FPGA design and coordinates two major subsystems.
 
-### 5.3.1 Toolchain and Compilation
+### 5.2.1 `top.v` — System-Level Composition
 
-The firmware is compiled using the RISC-V GNU GCC toolchain (`riscv64-unknown-elf-gcc`), configured for the `rv32i` architecture profile (base 32-bit integer ISA only, matching the `minimal` VexRiscv variant) and the `ilp32` ABI (32-bit integer and pointer types). The CFU Playground build system provides a `Makefile` that wraps the compilation invocation:
-
-```bash
-cd cfu_proj/proj/hps_accel
-make prog TARGET=arty UART_SPEED=1000000
-```
-
-The `make prog` target builds the firmware ELF binary, converts it to a flat binary using `objcopy`, and programmes it into the Arty A7-100T's QSPI flash at offset `0x00080000` using the Vivado Hardware Manager's `program_flash` TCL command — without overwriting the FPGA bitstream in the flash sectors below this address.
-
-Key compiler flags used in the CFU Playground firmware build, as extracted from its `Makefile`:
-
-| Flag | Value | Purpose |
-|---|---|---|
-| `-march` | `rv32i` | Base integer ISA only (no M/A/F/D extensions) |
-| `-mabi` | `ilp32` | 32-bit integer and pointer widths |
-| `-mcmodel` | `medany` | PC-relative addressing for any code range |
-| `-Os` | — | Size-optimised compilation to minimise firmware binary size |
-| `-ffreestanding` | — | No assumption of standard library or OS environment |
-| `-nostdlib` | — | Do not link standard C library |
-| `-Wl,--gc-sections` | — | Discard unused sections to reduce binary size |
-| `-T` | `linker.ld` | Custom linker script defining DDR memory region |
-
-The custom linker script (`linker.ld`) places the firmware's `.text` section starting at DDR address `0x40000000` (the start of the LiteX DDR main memory region), and the `.bss` and `.data` sections immediately following. The stack pointer is initialised to `0x40080000` (512 KB above the firmware entry point), providing 512 KB of stack and heap space for the test vector allocation and UART communication buffers.
-
-### 5.3.2 CUSTOM0 Instruction Encoding and CFU Invocation
-
-The RISC-V ISA reserves four opcode groups — CUSTOM0, CUSTOM1, CUSTOM2, CUSTOM3 — for implementation-defined extensions. The CFU Playground uses CUSTOM0 (opcode `0x0B`), encoding CFU instructions in the R-type instruction format:
-
-```
- 31      25 24  20 19  15 14  12 11   7 6     0
-[  funct7  ][  rs2  ][  rs1  ][ funct3 ][  rd  ][ 0001011 ]
-```
-
-- `funct7[6:0]` and `funct3[2:0]` together form the 10-bit `function_id` presented to the `cmd_function_id` port of the CFU interface.
-- `rs1` provides `inputs_0` (operand 0 from the CFU handshake).
-- `rs2` provides `inputs_1` (operand 1 from the CFU handshake).
-- `rd` receives `return_value` (the 32-bit result from the CFU).
-
-In C firmware, the encoding is abstracted via a macro provided by the CFU Playground, and used as follows:
-
-```c
-#include "cfu.h"
-
-// Invoke function_id=0 (byte-sum) with operand = 0x01020304
-uint32_t result = cfu_op0(0, 0x01020304, 0);
-// Expected: (0x01 + 0x02 + 0x03 + 0x04) = 0x0000000A
-```
-
-The `cfu_op0` macro expands to an inline `__asm__` block that emits the appropriate CUSTOM0 instruction with the correct bit-field encoding for `function_id = 0`:
-
-```c
-#define cfu_op(fid, rs1, rs2) \
-    ({ uint32_t __r; \
-       __asm__ volatile ( \
-           ".insn r 0x0B, %3, %4, %0, %1, %2\n" \
-           : "=r"(__r) : "r"(rs1), "r"(rs2), \
-             "i"((fid) & 0x7), "i"(((fid) >> 3) & 0x7F) \
-           : ); \
-       __r; })
-```
-
-The `.insn r` directive is a GAS assembler pseudo-op that assembles a raw R-type instruction, bypassing the need for explicit RISC-V custom instruction support in the assembler. This approach allows the firmware to be compiled with a standard `rv32i` toolchain without any custom ISA extension patches.
-
-### 5.3.3 CFU Handshake Firmware Semantics
-
-At the hardware level, the VexRiscv pipeline stalls the decode stage as soon as it decodes a CUSTOM0 instruction, asserting `cmd_valid` toward the CFU and waiting until `cmd_ready` is returned high. Once `cmd_ready` is high, the command is dispatched. The pipeline then stalls the writeback stage until `rsp_valid` is asserted by the CFU, at which point `return_value` is written into the destination register `rd` and the pipeline advances.
-
-From the firmware's perspective, the `cfu_op` macro appears to be a blocking function call: the instruction executes and the result is available in `__r` before the next C statement begins. This is because the VexRiscv's pipeline stall mechanism prevents the instruction from "completing" (from the software perspective) until the handshake is fully resolved. The firmware author does not need to implement any polling loop, timeout, or interrupt handler for CFU responses — the hardware pipeline stall provides the necessary synchronisation transparently.
-
-This property is what makes the DFX Decoupler's behaviour during reconfiguration seamless from the firmware's perspective: while `decouple` is asserted, `cmd_ready` is held low by the Decoupler, causing the VexRiscv pipeline to stall indefinitely at the CUSTOM0 instruction decode stage. When `decouple` is released after the new RM is active, `cmd_ready` is returned to the new RM's actual value (which, for a single-cycle combinational RM like `example.v`, is permanently high), and the pipeline resumes as though no delay had occurred.
-
-### 5.3.4 Test Vector Framework
-
-The CFU Playground provides a C-language test framework within the firmware that allows structured test cases to be defined as input/expected-output pairs, executed against the CFU, and the results reported back to the host via UART. In this project, the test framework is extended with a set of test vectors specific to each of the four RMs:
-
-**Test vectors for `example.v` (Multi-function arithmetic RM):**
-
-| `function_id` | `inputs_0` | `inputs_1` | Expected output | Operation |
-|---|---|---|---|---|
-| 0 | `0x01020304` | `0x00000000` | `0x0000000A` | Byte sum: 1+2+3+4 |
-| 0 | `0xFF000001` | `0x00000000` | `0x00000100` | Byte sum: 255+0+0+1 |
-| 1 | `0xDEADBEEF` | `0x00000000` | `0xEFBEADDE` | Byte swap |
-| 1 | `0x12345678` | `0x00000000` | `0x78563412` | Byte swap |
-| 2 | `0x80000000` | `0x00000000` | `0x00000001` | Bit reverse |
-| 2 | `0x0F0F0F0F` | `0x00000000` | `0xF0F0F0F0` | Bit reverse |
-
-**Test vectors for `donut.v` (Iterative multi-cycle RM):**
-
-| `function_id` | `inputs_0` | `inputs_1` | Expected output | Latency (cycles) |
-|---|---|---|---|---|
-| 0 | `0x00000007` | `0x00000003` | `0x00000015` | 7 |
-| 0 | `0x0000000A` | `0x00000005` | `0x00000037` | 10 |
-| 1 | `0x00000004` | `0x00000000` | `0x00000010` | 4 |
-
-**Test vectors for `dse_template.v` (Multiply-accumulate RM):**
-
-| `function_id` | `inputs_0` | `inputs_1` | Expected output | Notes |
-|---|---|---|---|---|
-| 0 | `0x00030004` | `0x00000000` | `0x0000000C` | 3 × 4 = 12 (single-shot) |
-| 0 | `0x00080008` | `0x00000000` | `0x00000040` | 8 × 8 = 64 |
-| 1 | `0x00030004` | `0x00000000` | `0x0000013C` | Accumulated: 12 + prev. state |
-
-All test vectors are defined in `cfu_proj/proj/hps_accel/cfu_test.c` and are enumerated and dispatched by the `run_tests()` function during the CFU Playground's interactive menu operation. Each test case's pass or fail result is printed to the UART console in the format:
-
-```
-[PASS] fn=0 in0=0x01020304 expected=0x0000000A got=0x0000000A
-[FAIL] fn=2 in0=0x0F0F0F0F expected=0xF0F0F0F0 got=0x12345678
-```
-
-The host workstation's Python UI script (`scripts/run_tests.py`) captures this output over the UART COM port, parses each line for PASS/FAIL, and records the aggregate pass rate per RM. The aggregate results are stored in `results/test_results.json` and are referenced in Chapter 6's functional validation discussion.
-
----
-
-## 5.4 DFX TCL Automation Scripts
-
-Manual reproduction of the DFX implementation run hierarchy through the Vivado GUI — as described in §4.5.1.1 — is feasible for an initial exploration but is not a reproducible or version-controlled workflow. To address this, a set of TCL scripts was developed to automate the complete DFX project construction, synthesis, implementation, and bitstream generation pipeline from the command line.
-
-### 5.4.1 Script Organisation
-
-The TCL automation layer is organised into the following files within the `scripts/vivado/` directory of the project repository:
-
-| Script | Purpose |
-|---|---|
-| `create_project.tcl` | Creates the Vivado project, sets DFX mode, adds sources |
-| `add_rm_configs.tcl` | Registers RPs and RMs in the DFX Configuration Manager |
-| `run_synth.tcl` | Launches all synthesis runs (static + OOC per RM) |
-| `apply_constraints.tcl` | Applies Pblock constraints and timing constraints |
-| `run_impl.tcl` | Launches all implementation runs (parent + child per RM) |
-| `generate_bitstreams.tcl` | Generates full bitstreams and partial bitstreams per RM |
-| `program_device.tcl` | Programs Arty A7-100T via JTAG using Hardware Manager |
-| `program_partial.tcl` | Delivers a partial bitstream to the active device |
-
-All scripts are designed to be sourced in sequence under Vivado's non-project (`-mode batch`) invocation:
-
-```bash
-vivado -mode batch -source scripts/vivado/create_project.tcl
-vivado -mode batch -source scripts/vivado/run_synth.tcl
-vivado -mode batch -source scripts/vivado/run_impl.tcl
-vivado -mode batch -source scripts/vivado/generate_bitstreams.tcl
-```
-
-This enables the entire build pipeline to be executed from a CI shell script, providing a reproducible build environment independent of the Vivado GUI session state.
-
-### 5.4.2 `create_project.tcl` — Project Initialisation
-
-The project creation script is the entry point for the entire DFX build. Its full content and logic are described below:
-
-```tcl
-# Create project in the build directory
-create_project dfx_cfu ./build/dfx_cfu -part xc7a100tcsg324-1
-set_property TARGET_LANGUAGE Verilog [current_project]
-
-# Enable Dynamic Function eXchange mode
-set_property PR_FLOW 1 [current_project]
-
-# Add LiteX-generated SoC source
-add_files {
-    build/arty_soc/gateware/arty.v
-}
-
-# Add DFX-specific wrapper and controller sources
-add_files {
-    rtl/cfu.v
-    rtl/system_wrapper.v
-    rtl/recon_counter.v
-    rtl/dfx_decoupler_stub.v
-}
-
-# Add Reconfigurable Module sources (each as its own file set)
-add_files -fileset sources_1 {
-    rtl/rm/example.v
-    rtl/rm/donut.v
-    rtl/rm/dse_template.v
-    rtl/rm/kws_accel.v
-}
-
-# Add constraint files
-add_files -fileset constrs_1 {
-    build/arty_soc/gateware/arty.xdc
-    constraints/pblock_cfu_compute.xdc
-    constraints/timing_dfx.xdc
-}
-
-# Set top module
-set_property TOP arty [current_fileset]
-```
-
-The `PR_FLOW 1` property is the critical enablement flag. Without it, the Vivado implementation engine treats all modules as belonging to a single flat partition and does not generate partial bitstreams.
-
-### 5.4.3 `add_rm_configs.tcl` — RP and RM Registration
-
-DFX configurations — the pairings of an RP with a specific RM — are registered through Vivado's `create_reconfig_module` and `create_pr_configuration` TCL commands:
-
-```tcl
-# Define the Reconfigurable Partition
-set rp [get_cells -hierarchical cfu_compute]
-
-# Create Reconfigurable Module definitions
-create_reconfig_module -name rm_example   -partition_def $rp \
-    -define_from example_top
-create_reconfig_module -name rm_donut     -partition_def $rp \
-    -define_from donut_top
-create_reconfig_module -name rm_dse       -partition_def $rp \
-    -define_from dse_template_top
-create_reconfig_module -name rm_kws       -partition_def $rp \
-    -define_from kws_accel_top
-
-# Create DFX configurations (one per RM)
-create_pr_configuration -name cfg_example \
-    -partitions [list $rp:rm_example]
-create_pr_configuration -name cfg_donut   \
-    -partitions [list $rp:rm_donut]
-create_pr_configuration -name cfg_dse     \
-    -partitions [list $rp:rm_dse]
-create_pr_configuration -name cfg_kws     \
-    -partitions [list $rp:rm_kws]
-
-# Create implementation runs and associate configurations
-create_run impl_example -parent_run impl_1 -flow {Vivado Implementation 2022}
-set_property PR_CONFIGURATION cfg_example [get_runs impl_example]
-
-create_run impl_donut   -parent_run impl_1 -flow {Vivado Implementation 2022}
-set_property PR_CONFIGURATION cfg_donut   [get_runs impl_donut]
-
-create_run impl_dse     -parent_run impl_1 -flow {Vivado Implementation 2022}
-set_property PR_CONFIGURATION cfg_dse     [get_runs impl_dse]
-
-create_run impl_kws     -parent_run impl_1 -flow {Vivado Implementation 2022}
-set_property PR_CONFIGURATION cfg_kws     [get_runs impl_kws]
-```
-
-The `create_reconfig_module -define_from` argument associates the RM definition with a specific synthesis run's resulting netlist, ensuring that each child implementation run imports the correct OOC synthesis result when it begins loading the RM's netlist into the static DCP boundary.
-
-### 5.4.4 `apply_constraints.tcl` — Pblock and Timing Constraints
-
-The Pblock constraint file (`constraints/pblock_cfu_compute.xdc`) defines the physical boundary for the `cfu_compute` Reconfigurable Partition. The constraints are applied after synthesis and before implementation, as they reference cell instances that exist only in the post-synthesis netlist:
-
-```tcl
-# Create Pblock for cfu_compute RP
-create_pblock pblock_cfu_compute
-add_cells_to_pblock [get_pblocks pblock_cfu_compute] \
-    [get_cells -hierarchical -filter {NAME =~ *cfu_compute*}]
-
-# Set Pblock boundaries (SLICE_X20Y100:SLICE_X35Y149 — iteratively refined,
-# spanning 16 CLB columns × 50 CLB rows = 800 CLBs)
-resize_pblock [get_pblocks pblock_cfu_compute] \
-    -add {SLICE_X20Y100:SLICE_X35Y149}
-resize_pblock [get_pblocks pblock_cfu_compute] \
-    -add {RAMB18_X2Y40:RAMB18_X2Y59}
-resize_pblock [get_pblocks pblock_cfu_compute] \
-    -add {DSP48_X1Y40:DSP48_X1Y59}
-
-# Enforce routing containment (mandatory for DFX)
-set_property CONTAIN_ROUTING true [get_pblocks pblock_cfu_compute]
-
-# Prohibit the RP from using resources in the static region
-set_property EXCLUDE_PLACEMENT 1 [get_pblocks pblock_cfu_compute]
-```
-
-The timing constraint file (`constraints/timing_dfx.xdc`) adds clock definitions and inter-partition timing assertions on top of the LiteX-generated `arty.xdc` constraints:
-
-```tcl
-# Define the 100 MHz system clock (already defined in arty.xdc,
-# but explicitly stated here for DFX timing report clarity)
-create_clock -name clk100 -period 10.000 \
-    [get_ports sys_clk_p]
-
-# Set inter-partition max-delay for DFX Decoupler paths
-# (the Decoupler's internal timing model allows up to 8 ns on
-# isolation register outputs — well within a 10 ns clock period)
-set_max_delay -datapath_only -from \
-    [get_cells -hierarchical -filter {IS_PARTITION_PIN == 1}] \
-    8.000
-
-# Enable partial reconfiguration timing exceptions for RP boundary
-set_property HD.ISOLATED 1 \
-    [get_cells -hierarchical -filter {NAME =~ *cfu_compute*}]
-```
-
-The `HD.ISOLATED` property instructs the Vivado DFX implementation engine to treat the RP boundary as a timing isolation context, preventing the inter-partition timing analysis from flagging the Decoupler's deliberate registered isolation as a timing violation.
-
----
-
-## 5.5 RTL Source Hierarchy
-
-The synthesisable RTL source for the DFX system is organised under the `rtl/` directory of the project repository. This section documents the module hierarchy, the coding conventions used, and the simulation methodology applied to each module.
-
-### 5.5.1 Module Hierarchy
-
-The top-level module hierarchy of the DFX design, as seen by the Vivado synthesis engine, is as follows:
-
-```
-arty (top — generated by LiteX)
-└── system_wrapper
-    ├── ICAP_7SERIES (Xilinx primitive)
-    ├── STARTUPE2    (Xilinx primitive)
-    ├── recon_counter
-    │   └── ila_recon_counter (Xilinx ILA IP)
-    └── cfu.v
-        ├── dfx_decoupler_0 (Xilinx DFX Decoupler IP)
-        └── cfu_compute     [RECONFIGURABLE PARTITION]
-            ├── example.v   (RM 0 — multi-function arithmetic)
-            ├── donut.v     (RM 1 — iterative compute)
-            ├── dse_template.v (RM 2 — DSE multiply-accumulate)
-            └── kws_accel.v    (RM 3 — keyword spotting stub)
-```
-
-The `cfu_compute` hierarchy node represents the Reconfigurable Partition boundary. Each RM source file listed beneath it is a mutually exclusive occupant of this RP; only one is active in any given implementation run and in any given bitstream.
-
-### 5.5.2 `system_wrapper.v` — Module Design
-
-The `system_wrapper` module is the most complex RTL component in the static partition. Its key design decisions are described below:
-
-**State machine coding style.** The FSM is coded using the two-always-block style: one always block for registered state updates (using `posedge clk`), and a second combinational always block for next-state and output logic. This style aligns with Vivado's preferred synthesis methodology for producing predictable, single-register-per-state implementations without glitch-prone combinational state outputs.
-
-**BRAM ROM byte-reversal pipeline.** As described in §4.5.1.5, the ICAP data path includes a two-register pipeline for the byte-reversal operation. The relevant RTL fragment is:
+The top-level module `top.v` declares all off-chip interfaces required by the Arty A7-100T — DDR3 SDRAM buses, QSPI flash, USB-UART, status LEDs, and the ICAP primitive's four-port interface — and instantiates exactly two sub-modules:
 
 ```verilog
-// Stage 1: Register BRAM output
-always @(posedge clk) begin
-    bram_dout_r <= bram_dout;   // pipeline register 1
-end
+module top(
+    inout qspi_flash_io0_io,
+    inout qspi_flash_io1_io,
+    inout qspi_flash_io2_io,
+    inout qspi_flash_io3_io,
+    inout qspi_flash_sck_io,
+    inout qspi_flash_ss_io,
 
-// Stage 2: Apply per-byte bit reversal combinationally,
-// then register into ICAP input register
-generate
-    genvar i;
-    for (i = 0; i < 4; i = i + 1) begin : ByteRev
-        always @(posedge clk) begin
-            icap_din_r[i*8 +: 8] <= {
-                bram_dout_r[i*8+0], bram_dout_r[i*8+1],
-                bram_dout_r[i*8+2], bram_dout_r[i*8+3],
-                bram_dout_r[i*8+4], bram_dout_r[i*8+5],
-                bram_dout_r[i*8+6], bram_dout_r[i*8+7]
-            };
-        end
-    end
-endgenerate
+    output wire [13:0] ddram_a,
+    output wire [2:0] ddram_ba,
+    output wire ddram_ras_n,
+    output wire ddram_cas_n,
+    output wire ddram_we_n,
+    output wire ddram_cs_n,
+    output wire [1:0] ddram_dm,
+    inout  wire [15:0] ddram_dq,
+    inout  wire [1:0] ddram_dqs_p,
+    inout  wire [1:0] ddram_dqs_n,
+    output wire ddram_clk_p,
+    output wire ddram_clk_n,
+    output wire ddram_cke,
+    output wire ddram_odt,
+    output wire ddram_reset_n,
 
-// ICAP primitive connection
-ICAP_7SERIES #(
-    .ICAP_WIDTH("X32")
-) icap_inst (
-    .CLK   (clk),
-    .CSIB  (icap_csib),
-    .RDWRB (icap_rdwrb),
-    .I     (icap_din_r),
-    .O     ()
+    output          ICAP_csib,
+    output [31:0]   ICAP_i,
+    input  [31:0]   ICAP_o,
+    output          ICAP_rdwrb,
+
+    input ck_rst,
+    input clk100,
+    input pr_switch,
+    output wire serial_tx,
+    input  wire serial_rx,
+
+    output wire user_led0,
+    output wire user_led1,
+    output wire user_led2,
+    output wire user_led3
 );
 ```
 
-The `generate` block is used to apply the byte reversal across all four bytes in a single, synthesisable loop, avoiding the verbosity of four separate 8-line reversal assign statements. The `genvar i` iterates over the byte index (0–3), and each byte at offset `i*8` in `bram_dout_r` is individually bit-reversed into the corresponding byte of `icap_din_r`.
-
-**Word-address-to-BRAM-address mapping.** The BRAM is initialised with the partial bitstream words presented in ICAP write order (padding, sync, frame data, CRC, RCRC, DESYNC). The FSM's address counter starts at `2'b00` and increments by one per clock cycle while in the `ICAP_WRITE` state, accounting for the two-register pipeline offset by beginning the BRAM read two cycles before the first word needs to appear at the ICAP input. The final address in each RM's partial bitstream is stored in a parameter (`BITSTREAM_WORD_COUNT`) read from a per-RM header file included at the top of `system_wrapper.v`.
-
-### 5.5.3 `recon_counter.v` — Module Design
-
-The `recon_counter` module is a deliberately minimal design, intentionally separated from `system_wrapper` to avoid increasing the timing pressure on the already-complex wrapper. Its complete RTL implementation is described below:
+The two instantiated sub-modules are connected by a single internal wire, `decouple`, which serves as the control plane between the PR controller and the LiteX-generated SoC:
 
 ```verilog
-module recon_counter (
-    input  wire clk,
-    input  wire eos,          // EOS from STARTUPE2 (active high)
-    output reg  [31:0] count  // Held-value after EOS rises
+wire decouple;
+
+system_wrapper system(
+    .ck_rst(ck_rst),
+    .clk100(clk100),
+    .decouple(decouple),
+    .pr_switch(pr_switch),
+    .ICAP_csib(ICAP_csib),
+    .ICAP_i(ICAP_i),
+    .ICAP_o(ICAP_o),
+    .ICAP_rdwrb(ICAP_rdwrb),
+    .qspi_flash_io0_io(qspi_flash_io0_io),
+    .qspi_flash_io1_io(qspi_flash_io1_io),
+    .qspi_flash_io2_io(qspi_flash_io2_io),
+    .qspi_flash_io3_io(qspi_flash_io3_io),
+    .qspi_flash_sck_io(qspi_flash_sck_io),
+    .qspi_flash_ss_io(qspi_flash_ss_io)
 );
 
-    // State encoding
-    localparam IDLE  = 1'b0;
-    localparam RECON = 1'b1;
-    reg state;
-
-    always @(posedge clk) begin
-        case (state)
-            IDLE: begin
-                if (!eos) begin     // EOS falls → reconfiguration begins
-                    count <= 32'h0;
-                    state <= RECON;
-                end
-            end
-            RECON: begin
-                count <= count + 32'h1;
-                if (eos) begin      // EOS rises → reconfiguration complete
-                    state <= IDLE;
-                    // count holds final value (no reset here)
-                end
-            end
-        endcase
-    end
+digilent_arty cfu_wrapper (
+    .clk100(clk100),
+    .cpu_reset(ck_rst),
+    .eth_ref_clk(clk100),
+    .decouple(decouple),
+    .serial_tx(serial_tx),
+    .serial_rx(serial_rx),
+    .user_led0(user_led0),
+    .user_led1(user_led1),
+    .user_led2(user_led2),
+    .user_led3(user_led3),
+    .ddram_a(ddram_a),
+    .ddram_ba(ddram_ba),
+    .ddram_ras_n(ddram_ras_n),
+    .ddram_cas_n(ddram_cas_n),
+    .ddram_we_n(ddram_we_n),
+    .ddram_cs_n(ddram_cs_n),
+    .ddram_dm(ddram_dm),
+    .ddram_dq(ddram_dq),
+    .ddram_dqs_p(ddram_dqs_p),
+    .ddram_dqs_n(ddram_dqs_n),
+    .ddram_clk_p(ddram_clk_p),
+    .ddram_clk_n(ddram_clk_n),
+    .ddram_cke(ddram_cke),
+    .ddram_odt(ddram_odt),
+    .ddram_reset_n(ddram_reset_n)
+);
 endmodule
 ```
 
-The ILA instance probing `count[31:0]` is instantiated within `recon_counter.v` using the Vivado ILA IP wrapper, allowing the post-implementation tool to correctly route ILA probes to the physical flip-flops holding the counter value without requiring manual ILA core port mapping in the top-level constraints.
+**Architectural rationale.** The `system_wrapper` instance owns the PR-control resources: the ICAP primitive ports, the QSPI flash lines (for potential bitstream fetching), and the `pr_switch` input that triggers reconfiguration. The `digilent_arty` instance (`cfu_wrapper`) is the LiteX-generated SoC containing the VexRiscv processor, the DDR3 MIG controller, and the UART bridge. The sole shared signal between the two halves is `decouple`, which gates the CFU interface; when `system_wrapper` asserts `decouple` high, the DFX Decoupler within the SoC isolates the Reconfigurable Partition from the processor, allowing a new RM to be loaded without corrupting the pipeline state.
 
-### 5.5.4 Reconfigurable Module Coding Standards
+This partitioning strategy means that the PR controller logic and the application processor logic occupy separate hierarchical namespaces, which simplifies floorplanning — the `system_wrapper` can be constrained to a compact region near the ICAP primitive, while the SoC occupies the remainder of the device. The `eth_ref_clk` input on the SoC instance is tied to `clk100` because the Ethernet PHY reference clock must be present for the LiteX-generated MII logic to initialise, even though Ethernet itself is not used in this project.
 
-All four RMs (`example.v`, `donut.v`, `dse_template.v`, `kws_accel.v`) adhere to the following coding conventions, which are enforced by the DFX toolflow's RM interface consistency check:
+---
 
-**Identical port declarations.** Every RM must expose the top-level port signature defined by the `cfu_compute` RP:
+## 5.3 CFU Playground — Decoupler Bridge (`cfu.v`)
+
+The `Cfu` module (note: the CFU Playground uses Pascal case for its top-level module name per its coding convention) implements the isolation bridge between the static-side CFU handshake signals and the Reconfigurable Partition identified as `cfu_compute`:
 
 ```verilog
-module <rm_name> (
-    input  wire        clk,
-    input  wire        reset,
-    input  wire        cmd_valid,
-    output reg         cmd_ready,
-    input  wire [9:0]  cmd_payload_function_id,
-    input  wire [31:0] cmd_payload_inputs_0,
-    input  wire [31:0] cmd_payload_inputs_1,
-    output reg         rsp_valid,
-    input  wire        rsp_ready,
-    output reg  [31:0] rsp_payload_outputs_0
+module Cfu (
+  input               cmd_valid,
+  output              cmd_ready,
+  input      [9:0]    cmd_payload_function_id,
+  input      [31:0]   cmd_payload_inputs_0,
+  input      [31:0]   cmd_payload_inputs_1,
+  output              rsp_valid,
+  input               rsp_ready,
+  output     [31:0]   rsp_payload_outputs_0,
+  input               decouple,
+  input               reset,
+  input               clk
 );
 ```
 
-This port declaration is recorded in the `cfu_compute_port_spec.vh` header file, which is included at the top of each RM source file via a `` `include `` directive. Should the port interface ever need to be modified — for example, to add a second 32-bit output port — the header file provides a single point of change that automatically propagates to all four RM source files, avoiding the risk of divergence between the RM port declarations.
+### 5.3.1 Signal Isolation Through the DFX Decoupler
 
-**Reset behaviour.** All state registers in each RM are asynchronously reset via the `reset` port (active high, driven by the global GSR de-assertion signal during RM startup). Asynchronous reset is preferred over synchronous in the RM designs to ensure that all state registers reach a known-good value immediately upon EOS — before the first clock edge is captured within the new RM's context.
-
-**`rsp_valid` handshake.** For single-cycle RMs (`example.v`), `rsp_valid` is asserted combinationally from `cmd_valid` — that is, `rsp_valid = cmd_valid` — because the combinational datapath produces a valid result in the same cycle that the command is presented. For multi-cycle RMs (`donut.v`, `dse_template.v`), `rsp_valid` is asserted after an internal cycle counter reaches the appropriate latency value, with `cmd_ready` de-asserted until the previous result has been consumed via `rsp_ready`.
-
-### 5.5.5 Behavioural Simulation Strategy
-
-Behavioural simulation of the complete DFX design — including the ICAP write sequence, the EOS monitoring, and the Decoupler assertion/release — was performed in the Vivado Simulator (`xsim`) using a self-checking testbench (`tb/tb_system_wrapper.v`). The testbench provides behavioural models for:
-
-- The `ICAP_7SERIES` primitive (a simplified functional model that accepts frame writes and asserts a pseudo-EOS signal after a fixed latency of 100 clock cycles from the first frame data word).
-- The `STARTUPE2` primitive (generates a pseudo-EOS waveform in response to the ICAP model's internal configuration-complete event).
-- The DFX Decoupler (a transparent pass-through model that asserts isolation when `decouple` is high, zeroing all RP-side outputs).
-- A BRAM stimulus driver that presents a 64-word abbreviated partial bitstream (header + sync + 8 frame words + trailer) to the `system_wrapper`'s BRAM interface at synthesis-equivalent timing.
-
-The simulation is structured as a series of directed test cases, each executed by a dedicated Verilog task:
+Internally, the module declares a complete shadow set of the CFU handshake signals — prefixed with `rp_` — representing the reconfigurable-partition-side view of each signal:
 
 ```verilog
-initial begin
-    // Case 1: Single reconfiguration triggered by pr_switch
-    task_assert_pr_switch();
-    task_wait_eos_rise(2000); // timeout after 2000 cycles
-    task_check_counter_value(108, 5); // expected ±5 cycles
+  wire           rp_cmd_valid, rp_cmd_ready, rp_rsp_valid, rp_rsp_ready;
+  wire  [9:0]    rp_cmd_payload_function_id;
+  wire  [31:0]   rp_cmd_payload_inputs_0;
+  wire  [31:0]   rp_cmd_payload_inputs_1;
+  wire  [31:0]   rp_rsp_payload_outputs_0;
+  wire           rp_reset;
+  wire           rp_clk;
+```
 
-    // Case 2: Verify decouple is released after EOS
-    task_check_decouple(1'b0);
+The `cfu_compute` RM is connected to the `rp_*` signals rather than to the top-level ports directly:
 
-    // Case 3: Second reconfiguration
-    task_assert_pr_switch();
-    task_wait_eos_rise(2000);
-    task_check_counter_value(108, 5);
+```verilog
+cfu_compute comp (
+  .clk(rp_clk),
+  .reset(rp_reset),
+  .cmd_payload_function_id(rp_cmd_payload_function_id),
+  .cmd_payload_inputs_0(rp_cmd_payload_inputs_0),
+  .cmd_payload_inputs_1(rp_cmd_payload_inputs_1),
+  .rsp_payload_outputs_0(rp_rsp_payload_outputs_0),
+  .cmd_valid(rp_cmd_valid),
+  .cmd_ready(rp_cmd_ready),
+  .rsp_valid(rp_rsp_valid),
+  .rsp_ready(rp_rsp_ready)
+);
+```
 
-    $display("All simulation tests PASSED");
-    $finish;
+The Xilinx DFX Decoupler IP (`dfx_decoupler_0`) bridges every signal pair with a registered isolation stage:
+
+```verilog
+dfx_decoupler_0 decoupler (
+  .s_function_id_DATA(cmd_payload_function_id),
+  .rp_function_id_DATA(rp_cmd_payload_function_id),
+
+  .s_rsp_payload_DATA(rsp_payload_outputs_0),
+  .rp_rsp_payload_DATA(rp_rsp_payload_outputs_0),
+
+  .s_cmd_payload_cmd_payload_0(cmd_payload_inputs_0),
+  .rp_cmd_payload_cmd_payload_0(rp_cmd_payload_inputs_0),
+  .s_cmd_payload_cmd_payload_1(cmd_payload_inputs_1),
+  .rp_cmd_payload_cmd_payload_1(rp_cmd_payload_inputs_1),
+
+  .s_controls_clk(clk),
+  .rp_controls_clk(rp_clk),
+  .s_controls_cmd_valid(cmd_valid),
+  .rp_controls_cmd_valid(rp_cmd_valid),
+  .s_controls_cmd_ready(cmd_ready),
+  .rp_controls_cmd_ready(rp_cmd_ready),
+  .s_controls_rsp_ready(rsp_ready),
+  .rp_controls_rsp_ready(rp_rsp_ready),
+  .s_controls_rsp_valid(rsp_valid),
+  .rp_controls_rsp_valid(rp_rsp_valid),
+  .s_controls_reset(reset),
+  .rp_controls_reset(rp_reset),
+
+  .decouple(decouple),
+  .decouple_status()
+);
+```
+
+**Port-naming convention.** The Decoupler IP uses a `s_` prefix for static-side ports and an `rp_` prefix for reconfigurable-partition-side ports. Each data path (function ID, input payloads, output payload) and each control signal (valid, ready, clock, reset) passes through the Decoupler as a separate named interface. This granularity gives the Decoupler the ability to apply per-signal default values during isolation — for instance, holding `cmd_ready` low on the static side so that the VexRiscv pipeline stalls during reconfiguration without receiving spurious acknowledgements.
+
+**Clock and reset forwarding.** The `s_controls_clk` and `rp_controls_clk` paths allow the Decoupler to gate the clock to the RM during isolation if configured to do so. In the present design, the clock is passed through transparently in both states because the RM's reset signal — also forwarded through the Decoupler — is sufficient to bring the new module into a consistent state upon re-coupling.
+
+**`decouple_status` output.** This signal is left unconnected in the current implementation. It reports the Decoupler's internal state and could be routed to the `system_wrapper` in a future revision that verifies isolation before initiating an ICAP write sequence.
+
+---
+
+## 5.4 CFU Playground — Reconfiguration Timing Module (`recon_counter.v`)
+
+The `recon_counter` module provides the sole on-chip measurement instrument for reconfiguration latency. Its operation is tied to the `STARTUPE2` primitive, which is a 7-series-specific hard block that exposes device configuration events to user logic.
+
+### 5.4.1 Complete Source and Annotation
+
+```verilog
+module recon_counter (
+  input clk,
+  output eos
+);
+
+(* KEEP = "true" *)
+wire preq;
+
+STARTUPE2 STARTUPE2_inst (
+   .EOS(eos),             // Active high End-of-Startup
+   .CLK(clk),
+   .GSR(1'b0),
+   .GTS(1'b0),
+   .PACK(1'b0),
+   .USRCCLKO(1'b0),
+   .USRCCLKTS(1'b1),
+   .KEYCLEARB(1'b1),
+   .USRDONEO(1'b1),       // Drive DONE pin high
+   .USRDONETS(1'b0)       // Do not tristate DONE pin
+);
+```
+
+The `STARTUPE2` primitive is instantiated with deliberately chosen tie-off values. `GSR`, `GTS`, and `PACK` are all held inactive (`0`) because the design does not use the global set/reset, global tristate, or program acknowledge features. `USRCCLKO` is `0` because the user configuration clock output is not used; `USRCCLKTS` is `1` to tristate this output. `KEYCLEARB` is held high to prevent inadvertent key clearing. `USRDONEO` is asserted so that the external DONE pin stays high after startup.
+
+The `preq` wire, marked with the Vivado `KEEP` synthesis attribute, is included to prevent the synthesis tool from optimising away the `STARTUPE2` instance — even though `preq` is not connected to anything in the current design, its presence as a kept wire attached to the module scope ensures the primitive is retained in the netlist. This is a defensive measure observed in several Xilinx reference designs.
+
+### 5.4.2 Counter State Machine
+
+```verilog
+(* KEEP = "true" *)
+reg [31:0] counter = 0, counter_next;
+
+(* KEEP = "true" *)
+localparam IDLE = 0, RECON = 1;
+
+(* KEEP = "true" *)
+reg state = 0, next_state;
+
+always @(*) begin : counter_state
+    case (state)
+    IDLE: begin
+        next_state = (!eos)? RECON : IDLE;
+        counter_next = counter;
+    end
+    RECON: begin
+        next_state = (eos)? IDLE : RECON;
+        counter_next = counter + 1;
+    end
+    default: begin
+        next_state = IDLE;
+        counter_next = counter;
+    end
+    endcase
 end
+
+always @(posedge clk) begin : counter_switch
+  state = next_state;
+  if(preq)
+    counter <= 32'd0;
+  else
+    counter <= counter_next;
+end
+
+ila_0 ila(.clk(clk),.probe0(counter));
+
+endmodule
 ```
 
-The simulation is compiled and run as part of the project's Makefile:
+**FSM coding style.** The state machine uses a two-block structure: one combinational `always @(*)` block computes `next_state` and `counter_next` based on the current state and the `eos` signal, and one clocked `always @(posedge clk)` block registers these values. This separation is intentional — when the FSM is in `IDLE`, the counter value is held unchanged; when `eos` drops (indicating active reconfiguration), the FSM transitions to `RECON` and the counter increments once per clock cycle. The counter holds its final value indefinitely after `eos` returns high, providing a stable measurement that can be captured by the Integrated Logic Analyzer.
 
-```bash
-make sim TARGET=system_wrapper
-```
+**Blocking assignment on `state`.** The use of `state = next_state` (blocking assignment) within the clocked block for the `state` register is a known coding choice in this module. While non-blocking assignments are preferred for intra-clock registered logic in synthesisable designs, the behaviour here is functionally equivalent because `state` is not read again within the same clocked block — `counter_next` has already been computed by the combinational block based on the previous cycle's `state`. However, this is worth noting as a potential area for refactoring in future revisions.
 
-This target invokes `xvlog` (Verilog compilation), `xelab` (elaboration with the testbench top as the elaboration root), and `xsim` (simulation to completion) in sequence, and reports a pass or fail based on the final `$display` output.
+**`(* KEEP = "true" *)` annotations.** All registers and the localparam carry the `KEEP` attribute to prevent Vivado's optimiser from merging, absorbing, or eliminating the counter registers. Without these annotations, synthesis could replicate or merge the counter with other fan-out structures, yielding incorrect ILA probe connections.
+
+**ILA instantiation.** The single-line `ila_0 ila(.clk(clk), .probe0(counter))` statement connects the 32-bit counter directly to Probe 0 of a Vivado ILA IP core. This ILA core is configured in the Vivado IP Integrator with a single 32-bit probe width and a capture depth determined by the available BRAM resources. By placing the ILA inside `recon_counter.v` rather than at the top level, the probe connections are preserved across synthesis steps and avoid the need for manual netlist editing in the post-synthesis design.
 
 ---
 
-## 5.6 PYNQ-Z2 Python DPR Management Script
+## 5.5 CFU Playground — Reconfigurable Modules
 
-On the PYNQ-Z2, the reconfiguration management functions performed by the `system_wrapper` FSM on the Arty A7-100T are instead implemented in Python user space, leveraging the Zynq PS and the PYNQ library's abstractions over the Linux kernel FPGA Manager and memory-mapped I/O interfaces.
+Three Verilog partitions and one multi-file SystemVerilog partition occupy the `partitions/` directory. Each partition defines a module named `cfu_compute` (for the three Verilog files) or `Cfu` (for the KWS accelerator), conforming to the port interface expected by the `comp` instance in `cfu.v`. Every RM must expose the same top-level handshake ports (`cmd_valid`, `cmd_ready`, `cmd_payload_function_id`, `cmd_payload_inputs_0`, `cmd_payload_inputs_1`, `rsp_valid`, `rsp_ready`, `rsp_payload_outputs_0`, `clk`, `reset`) so that the Vivado DFX tool can verify port-signature equivalence during the child implementation run.
 
-### 5.6.1 Script Structure
+### 5.5.1 `example.v` — Multi-Function Combinational Accelerator
 
-The Python DPR management script (`scripts/pynq/dpr_manager.py`) is structured as a single class (`DPRManager`) with four principal methods:
+This RM implements three independent bit-manipulation operations selected by the `cmd_payload_function_id` field:
 
-```python
-class DPRManager:
-    def __init__(self, decoupler_base: int, bitstream_dir: str):
-        """Initialise MMIO accessor and locate bitstream directory."""
-        self.decoupler = MMIO(decoupler_base, length=0x1000)
-        self.bitstream_dir = Path(bitstream_dir)
+```verilog
+module cfu_compute (
+  input               cmd_valid,
+  output              cmd_ready,
+  input      [9:0]    cmd_payload_function_id,
+  input      [31:0]   cmd_payload_inputs_0,
+  input      [31:0]   cmd_payload_inputs_1,
+  output              rsp_valid,
+  input               rsp_ready,
+  output     [31:0]   rsp_payload_outputs_0,
+  input               clk,
+  input               reset
+);
 
-    def decouple(self):
-        """Assert DFX Decoupler (disable RP isolation transparent mode)."""
-        self.decoupler.write(0x0, 0x1)
-        time.sleep(0.001)   # 1 ms settling (>> 160 ns required)
+  assign cmd_ready = rsp_ready;
 
-    def recouple(self):
-        """Release DFX Decoupler (restore RP isolation transparent mode)."""
-        self.decoupler.write(0x0, 0x0)
+  reg [31:0] rsp_payload;
+  reg rsp_valid0, rsp_valid1;
+  reg [31:0] cfu_in0, cfu_in1;
 
-    def reconfigure(self, rm_name: str) -> float:
-        """
-        Load a partial bitstream by name and return wall-clock time (ms).
-        rm_name: one of 'example', 'donut', 'dse', 'kws'
-        """
-        bitstream_path = self.bitstream_dir / f"partial_{rm_name}.bin"
-        if not bitstream_path.exists():
-            raise FileNotFoundError(f"Bitstream not found: {bitstream_path}")
+  always @(posedge clk) begin
+    // stage 1: register inputs
+    rsp_valid0 <= cmd_valid;
+    cfu_in0 <= cmd_payload_inputs_0;
+    cfu_in1 <= cmd_payload_inputs_1;
 
-        # Copy to /lib/firmware/ if not already present
-        dest = Path("/lib/firmware") / bitstream_path.name
-        if not dest.exists():
-            shutil.copy(str(bitstream_path), str(dest))
+    // stage 2: register output
+    rsp_valid1 <= rsp_valid0;
+    rsp_payload <= cmd_payload_function_id[1] ? cfu2 :
+                      ( cmd_payload_function_id[0] ? cfu1 : cfu0);
+  end
 
-        # Assert isolation
-        self.decouple()
-
-        # Time the PCAP transfer
-        t_start = time.monotonic()
-        with open("/sys/class/fpga_manager/fpga0/firmware", "w") as f:
-            f.write(bitstream_path.name)
-
-        # Poll for completion
-        deadline = time.monotonic() + 5.0   # 5 s timeout
-        while time.monotonic() < deadline:
-            with open("/sys/class/fpga_manager/fpga0/state") as f:
-                if f.read().strip() == "operating":
-                    break
-            time.sleep(0.0001)
-        else:
-            self.recouple()
-            raise TimeoutError("FPGA Manager did not complete in 5 s")
-
-        t_end = time.monotonic()
-
-        # Release isolation
-        self.recouple()
-        return (t_end - t_start) * 1000.0  # return ms
+  assign rsp_valid = rsp_valid1;
 ```
 
-### 5.6.2 Test Automation Script
+**Pipeline structure.** Although the underlying computations are purely combinational, the module introduces a two-stage pipeline using registered intermediates `cfu_in0`/`cfu_in1` (Stage 1) and `rsp_payload` (Stage 2). This pipeline costs two clock cycles of latency but provides timing margin — the combinational datapath between the registered inputs and the output register has a full clock period in which to settle, rather than having to resolve through both the function-select multiplexer and the arithmetic logic within a single cycle.
 
-The test automation script (`scripts/pynq/run_validation.py`) instantiates `DPRManager` and executes the full round-trip validation suite across all four RMs:
+**Operation 0 — Byte sum:** adds all eight constituent bytes across both 32-bit inputs:
 
-```python
-from dpr_manager import DPRManager
-from cfu_test_client import CFUTestClient  # UART-based test vector dispatcher
-
-manager = DPRManager(
-    decoupler_base=0x43C00000,
-    bitstream_dir="/home/xilinx/partial_bitstreams"
-)
-
-# UART test client connects to /dev/ttyUSB1 (CH340G COM port)
-client = CFUTestClient(port="/dev/ttyUSB1", baudrate=1_000_000)
-
-rm_sequence = ["example", "donut", "dse", "kws", "example", "donut"]
-
-for rm_name in rm_sequence:
-    print(f"\n--- Reconfiguring to RM: {rm_name} ---")
-    elapsed_ms = manager.reconfigure(rm_name)
-    print(f"Reconfiguration completed in {elapsed_ms:.2f} ms")
-
-    # Run test vectors for the newly loaded RM
-    results = client.run_tests(rm_name)
-    passed = sum(1 for r in results if r["pass"])
-    print(f"Test results: {passed}/{len(results)} PASSED")
+```verilog
+  wire [31:0] cfu0;
+  assign cfu0[31:0] =  cfu_in0[7:0]   + cfu_in1[7:0] +
+                       cfu_in0[15:8]  + cfu_in1[15:8] +
+                       cfu_in0[23:16] + cfu_in1[23:16] +
+                       cfu_in0[31:24] + cfu_in1[31:24];
 ```
 
-The `CFUTestClient` class opens the UART port to the CH340G USB converter and sends a pre-negotiated ASCII command to the VexRiscv firmware's test dispatch loop, which responds with the PASS/FAIL lines described in §5.3.4. This separation of the PCAP reconfiguration logic (managed by `DPRManager` operating on the ARM PS side) from the test vector execution (managed by `CFUTestClient` communicating with the VexRiscv firmware side) maintains a clean architectural boundary between the two halves of the system.
+Each byte slice (`[7:0]`, `[15:8]`, etc.) is zero-extended to 32 bits by the addition chain; no explicit sign extension is applied, consistent with unsigned byte interpretation. The maximum possible output is `8 × 255 = 2040`, which comfortably fits in 12 bits.
 
-### 5.6.3 Error Handling and Robustness
+**Operation 1 — Byte swap (endianness reversal):**
 
-The `DPRManager.reconfigure()` method implements defensive error handling for the following failure modes:
+```verilog
+  wire [31:0] cfu1;
+  assign cfu1[31:24] =     cfu_in0[7:0];
+  assign cfu1[23:16] =     cfu_in0[15:8];
+  assign cfu1[15:8] =      cfu_in0[23:16];
+  assign cfu1[7:0] =       cfu_in0[31:24];
+```
 
-**Bitstream file not found.** If the requested partial bitstream binary is not present in the `bitstream_dir`, a `FileNotFoundError` is raised before the Decoupler is asserted, leaving the system in its previous RM state without any partial reconfiguration being attempted.
+This operation reverses the byte ordering of `inputs_0` — the least-significant byte becomes the most-significant byte and vice versa. The result is a 32-bit value whose byte order has been transposed, equivalent to converting between big-endian and little-endian representations.
 
-**FPGA Manager timeout.** If the FPGA Manager does not report `operating` state within five seconds of the `firmware` write — indicating a potential failure in the PCAP DMA engine or the DEVCFG peripheral — the timeout branch calls `self.recouple()` before raising the exception. This ensures that the Decoupler is always released, even in the failure case, preventing the VexRiscv processor from being permanently stalled with its CFU handshake frozen in the isolated state.
+**Operation 2 — Full-word bit reversal:**
 
-**Concurrent reconfiguration prevention.** A Python threading lock (`threading.Lock`) guards the `reconfigure()` method body, preventing two concurrent calls from overlapping. In the test automation script, this lock is unnecessary (the script is single-threaded), but it is included in `DPRManager` to make the class safe for deployment in a multi-threaded CFU scheduling context — a potential future use case in which multiple Python threads compete to reconfigure the CFU to different RMs based on concurrent workload demands.
+```verilog
+  wire [31:0] cfu2;
+  genvar n;
+  generate
+      for (n=0; n<32; n=n+1) begin
+          assign cfu2[n] =     cfu_in0[31-n];
+      end
+  endgenerate
+```
+
+The `generate`/`for` construct maps each bit position to its mirror image across the 32-bit word. Bit 0 of the output receives bit 31 of the input, bit 1 receives bit 30, and so on. This produces a bitwise palindrome of the input operand.
+
+**Output multiplexing:** The function-select logic at Stage 2 uses `cmd_payload_function_id[1]` and `[0]` to choose between the three operations. Notably, the comment in the source acknowledges that the 3-bit `funct3` subfield is only partially decoded — bit 1 set selects bit reversal regardless of bit 0, bit 0 set (with bit 1 clear) selects byte swap, and neither set selects byte sum.
+
+### 5.5.2 `donut.v` — Signed Integer Multiply with Shift
+
+The donut RM provides two fixed-point arithmetic operations used by the 3D donut rendering application:
+
+```verilog
+module cfu_compute (
+  input               cmd_valid,
+  output              cmd_ready,
+  input      [9:0]    cmd_payload_function_id,
+  input      [31:0]   cmd_payload_inputs_0,
+  input      [31:0]   cmd_payload_inputs_1,
+  output              rsp_valid,
+  input               rsp_ready,
+  output     [31:0]   rsp_payload_outputs_0,
+  input               reset,
+  input               clk
+);
+
+  assign cmd_ready = rsp_ready;
+
+  reg [31:0] rsp_payload;
+  reg rsp_valid0, rsp_valid1;
+  reg [31:0] cfu_in0, cfu_in1;
+
+  always @(posedge clk) begin
+    rsp_valid0 <= cmd_valid;
+    cfu_in0 <= cmd_payload_inputs_0;
+    cfu_in1 <= cmd_payload_inputs_1;
+
+    rsp_valid1 <= rsp_valid0;
+    rsp_payload <= cmd_payload_function_id[0] ? mul : mulsh;
+  end
+
+  assign rsp_valid = rsp_valid1;
+
+  wire [31:0] mul    = $signed(cfu_in0) * $signed(cfu_in1);
+  wire [31:0] mulsh  = $signed(mul) >>> 10;
+
+  assign rsp_payload_outputs_0 = rsp_payload;
+
+endmodule
+```
+
+**`mul` — signed 32×32 multiplication:** The `$signed()` cast forces the synthesis tool to infer a signed multiplier, which on the XC7A100T maps to the DSP48E1 hard multiply primitive. Only the lower 32 bits of the 64-bit product are retained in the `mul` wire — the upper 32 bits are discarded, which is acceptable for the donut rendering workload where operands are fixed-point values with limited dynamic range.
+
+**`mulsh` — multiply-then-arithmetic-shift:** The arithmetic right shift by 10 positions (`>>> 10`) diverts 10 bits from the fractional part of the product, effectively performing a divide-by-1024 with correct sign extension. This fixed-point scaling is central to the donut application's trigonometric approximation chain, where sine and cosine values are represented as signed integers in a Q10.22 fixed-point format.
+
+**Relationship to `donut.c`:** The firmware file `donut.c` invokes these two operations through the macros `MULTSHIFT10(a,b)` and `CFUMUL(a,b)`:
+
+```c
+#define MULTSHIFT10(a,b)     ((int)cfu_op(0, 0, (a), (b)))
+#define CFUMUL(a,b)          ((int)cfu_op(1, 1, (a), (b)))
+```
+
+The first argument to `cfu_op` is the function ID (0 for multiply-then-shift, 1 for raw multiply). The nested rotation macro `R(mul,shift,x,y)` in `donut.c` demonstrates the real-world use case:
+
+```c
+#define R(mul,shift,x,y) \
+  _=x; \
+  x -= CFUMUL(mul,y)>>shift; \
+  y += CFUMUL(mul,_)>>shift; \
+  _ = 3145728-CFUMUL(x,x)-CFUMUL(y,y)>>11; \
+  x = CFUMUL(x,_)>>10; \
+  y = CFUMUL(y,_)>>10;
+```
+
+Each invocation of `CFUMUL` compiles to a single CUSTOM0 RISC-V instruction. The VexRiscv pipeline stalls until the two-stage pipeline in the RM produces a valid result, then resumes with the 32-bit product available in the destination register.
+
+### 5.5.3 `dse_template.v` — SIMD Multiply-Accumulate
+
+The DSE (Design Space Exploration) template RM implements a four-lane signed 8-bit multiply-accumulate unit intended for quantised neural-network inference workloads:
+
+```verilog
+module cfu_compute (
+  input               cmd_valid,
+  output              cmd_ready,
+  input      [9:0]    cmd_payload_function_id,
+  input      [31:0]   cmd_payload_inputs_0,
+  input      [31:0]   cmd_payload_inputs_1,
+  output reg          rsp_valid,
+  input               rsp_ready,
+  output reg [31:0]   rsp_payload_outputs_0,
+  input               reset,
+  input               clk
+);
+  localparam InputOffset = $signed(9'd128);
+
+  wire signed [15:0] prod_0, prod_1, prod_2, prod_3;
+  assign prod_0 =  ($signed(cmd_payload_inputs_0[7 : 0]) + InputOffset)
+                  * $signed(cmd_payload_inputs_1[7 : 0]);
+  assign prod_1 =  ($signed(cmd_payload_inputs_0[15: 8]) + InputOffset)
+                  * $signed(cmd_payload_inputs_1[15: 8]);
+  assign prod_2 =  ($signed(cmd_payload_inputs_0[23:16]) + InputOffset)
+                  * $signed(cmd_payload_inputs_1[23:16]);
+  assign prod_3 =  ($signed(cmd_payload_inputs_0[31:24]) + InputOffset)
+                  * $signed(cmd_payload_inputs_1[31:24]);
+
+  wire signed [31:0] sum_prods;
+  assign sum_prods = prod_0 + prod_1 + prod_2 + prod_3;
+```
+
+**SIMD lane structure.** Each of the four 8-bit byte lanes within `inputs_0` is treated as a signed filter-weight value that receives a constant `InputOffset` of +128 before being multiplied with the corresponding byte of `inputs_1`. This offset maps the unsigned 8-bit input activation range [0, 255] to the signed 9-bit range [128, 383], which is the convention used by the TensorFlow Lite Micro quantisation scheme for the first convolutional layer. The 16-bit products are summed to form a 32-bit accumulated partial result.
+
+**Accumulation and handshake logic:**
+
+```verilog
+  assign cmd_ready = ~rsp_valid;
+
+  always @(posedge clk) begin
+    if (reset) begin
+      rsp_payload_outputs_0 <= 32'b0;
+      rsp_valid <= 1'b0;
+    end else if (rsp_valid) begin
+      rsp_valid <= ~rsp_ready;
+    end else if (cmd_valid) begin
+      rsp_valid <= 1'b1;
+      rsp_payload_outputs_0 <= |cmd_payload_function_id[9:3]
+          ? 32'b0
+          : rsp_payload_outputs_0 + sum_prods;
+    end
+  end
+endmodule
+```
+
+The accumulator register `rsp_payload_outputs_0` is declared as `output reg` — a departure from the combinational output style of `example.v` and `donut.v`. This is because the accumulation semantics require the register to retain its value across multiple CFU invocations. The `cmd_payload_function_id[9:3]` check provides a reset pathway: when any of the upper 7 bits of the function ID are non-zero, the accumulator is cleared to zero rather than accumulating further, allowing the firmware to reset the accumulator for a new dot-product sequence without issuing a full module reset.
+
+The back-pressure handshake (`cmd_ready = ~rsp_valid`) prevents the processor from issuing a new command while a previous result is waiting to be consumed. This single-cycle-response, accumulating architecture is representative of the pattern used in quantised inference accelerators where many multiply-accumulate operations are streamed sequentially before a single readout.
+
+### 5.5.4 `kws/` — Keyword Spotting Accelerator (SystemVerilog)
+
+The fourth RM is implemented in SystemVerilog across four files and provides a purpose-built accelerator for the keyword-spotting (KWS) inference pipeline used in the CFU Playground's TinyML benchmarks.
+
+**`cfu.sv` — Top-level dispatch:** The top module instantiates three sub-modules (MAC, RDH, RCDBPOT) and selects among their outputs using a one-hot encoding on the lowest three bits of the function ID:
+
+```systemverilog
+`include "mac.sv"
+`include "rcdbpot.sv"
+`include "rdh.sv"
+
+module Cfu (
+  input logic clk,
+  input logic reset,
+  input logic [9:0]  cmd_payload_function_id,
+  input logic [31:0] cmd_payload_inputs_0,
+  input logic [31:0] cmd_payload_inputs_1,
+  output logic [31:0] rsp_payload_outputs_0,
+  input  logic cmd_valid,
+  output logic cmd_ready,
+  output logic rsp_valid,
+  input  logic rsp_ready
+);
+```
+
+The output multiplexer uses a `casez` statement with don't-care bits for priority encoding:
+
+```systemverilog
+  always_ff @(posedge clk) begin
+    if (cmd_valid) begin
+      casez (cmd_payload_function_id[2:0])
+        3'b??1 : rsp_payload_outputs_0 <= mac_output;
+        3'b?1? : rsp_payload_outputs_0 <= rdh_output;
+        3'b1?? : rsp_payload_outputs_0 <= rcdbpot_output;
+        default: rsp_payload_outputs_0 <= '0;
+      endcase
+    end
+  end
+```
+
+**`mac.sv` — Multiply-Accumulate with configurable offset:**
+
+```systemverilog
+module mac (
+  input logic layer_one_en,
+  input logic simd_en,
+  input logic [31:0] input_vals,
+  input logic [31:0] filter_vals,
+  input logic [31:0] curr_acc,
+  output logic [31:0] out
+);
+  logic signed [8:0] InputOffest = layer_one_en ? -9'sd83 : 9'sd128;
+```
+
+The `InputOffest` (note: the original source preserves this spelling) is configurable at runtime through the `layer_one_en` flag, derived from `cmd_payload_function_id[4]`. For the first convolutional layer, an offset of -83 is used (reflecting the quantisation zero-point of the input tensor); for subsequent layers, +128 is used. The `simd_en` flag (bit 3) controls whether all four byte lanes are summed or only the first lane is used, providing both scalar and SIMD operating modes in a single module.
+
+**`rdh.sv` — Rounding Doubling High 32 Bits:** This module takes a 64-bit value represented as `{top, bottom}`, doubles it, rounds, and outputs only the upper 32 bits:
+
+```systemverilog
+module rdh (
+  input logic [31:0] top,
+  input logic [31:0] bottom,
+  output logic [31:0] out
+);
+  assign out = (signed'({top, bottom}) + 32'sh40000000) >> 31;
+endmodule
+```
+
+The constant `32'sh40000000` is the rounding bias for the midpoint of the 64-bit range. The right shift by 31 (not 32) effectively doubles the value while extracting the high word — a pattern taken directly from the TensorFlow Lite reference kernel's fixed-point arithmetic library.
+
+**`rcdbpot.sv` — Rounding Clamping Divide by Power of Two:** This module divides the accumulated result by a power of two (encoded as a negative exponent) and clamps the output to the range [-128, 127] before applying a final offset of -128:
+
+```systemverilog
+module rcdbpot (
+  input logic [31:0] dividend,
+  input logic [31:0] negative_exponent,
+  output logic [31:0] out
+);
+  logic [3:0] shift;
+  logic signed [31:0] mask, remainder, threshold;
+
+  always_comb begin
+    casez (negative_exponent[2:0])
+      3'b111 : shift = 9;
+      3'b?11 : shift = 5;
+      3'b??1 : shift = 7;
+      3'b?1? : shift = 6;
+      default: shift = 8;
+    endcase
+
+    mask = ~({32{1'b1}} << shift);
+    remainder = dividend & mask;
+    threshold = (mask >> 1) + dividend[31];
+    out = signed'(signed'(dividend) >>> shift);
+
+    if (remainder > threshold) out += 1'b1;
+    if (out[31]) out = 32'sd0;
+    else if (|out[31:8]) out = 32'sd255;
+    out -= 32'sd128;
+  end
+endmodule
+```
+
+The `casez`-based shift decoding maps the exponent encoding into one of five possible shift amounts (5 through 9), optimised for the quantisation parameters observed in the KWS model. The rounding logic adds 1 if the truncated remainder exceeds half the divisor (with a sign-dependent adjustment via `dividend[31]`), providing proper round-to-nearest-even semantics for negative dividends. The final clamping to [0, 255] followed by subtraction of 128 produces a signed 8-bit output in the range [-128, 127], ready for the next quantised layer's input.
 
 ---
 
-## 5.7 End-to-End Build and Deployment Sequence
+## 5.6 CFU Playground — Firmware Sources
 
-The following ordered command sequence documents the complete procedure for building and deploying the DFX system on the Arty A7-100T from a clean repository checkout. Each command is numbered and annotated with its expected duration and key output artefacts.
+### 5.6.1 `cfu.h` — Instruction Encoding and SW/HW Selection
 
-### Step 1 — Install LiteX and dependencies
+The header file `cfu.h` defines the firmware-visible interface to the CFU hardware. It imports the `riscv.h` header (which provides the `opcode_R` macro for raw R-type instruction encoding) and defines both hardware-invoking macros and functionally-equivalent software-emulation macros:
 
-```bash
-pip install litex litex-boards migen
+```c
+#include "riscv.h"
 ```
-*Expected duration: 2–5 minutes (network-dependent). Key output: LiteX Python packages in the active Python environment.*
 
-### Step 2 — Generate LiteX SoC
+**Hardware-invocation macros:**
 
-```bash
-python -m litex_boards.targets.digilent_arty \
-    --cpu-type=vexriscv --cpu-variant=minimal \
-    --device XC7A100T --build --no-compile-software \
-    --integrated-main-ram-size=0 --with-bios-flash-boot \
-    --uart-baudrate=1000000 --output-dir=build/arty_soc
+```c
+#define cfu_op0_hw(rs1, rs2)  opcode_R(CUSTOM0, 0, 0, (rs1), (rs2))
+#define cfu_op1_hw(rs1, rs2)  opcode_R(CUSTOM0, 1, 0, (rs1), (rs2))
+#define cfu_op2_hw(rs1, rs2)  opcode_R(CUSTOM0, 2, 0, (rs1), (rs2))
+#define cfu_op3_hw(rs1, rs2)  opcode_R(CUSTOM0, 3, 0, (rs1), (rs2))
+#define cfu_op4_hw(rs1, rs2)  opcode_R(CUSTOM0, 4, 0, (rs1), (rs2))
+#define cfu_op5_hw(rs1, rs2)  opcode_R(CUSTOM0, 5, 0, (rs1), (rs2))
 ```
-*Expected duration: 3–8 minutes. Key outputs: `arty.v`, `arty.xdc`, `csr.h`, `mem.h`.*
 
-### Step 3 — Compile CFU Playground firmware
+Each `opcode_R` invocation encodes an R-type instruction with opcode `CUSTOM0` (binary `0001011`, decimal 11), the specified `funct3` value (0 through 5), `funct7=0`, and the register-file indices for `rs1` and `rs2`. The resulting machine word is emitted directly into the instruction stream via inline assembly.
 
-```bash
-cd cfu_proj && make TARGET=arty build
+**Semantically-named aliases** provide self-documenting invocations:
+
+```c
+#define cfu_byte_sum_hw(rs1, rs2)    opcode_R(CUSTOM0, 0, 0, (rs1), (rs2))
+#define cfu_byte_swap_hw(rs1, rs2)   opcode_R(CUSTOM0, 1, 0, (rs1), (rs2))
+#define cfu_bit_reverse_hw(rs1, rs2) opcode_R(CUSTOM0, 2, 0, (rs1), (rs2))
+#define cfu_fib_hw(rs1, rs2)         opcode_R(CUSTOM0, 3, 0, (rs1), (rs2))
+#define cfu_donut_mulsh_hw(rs1, rs2) opcode_R(CUSTOM0, 4, 0, (rs1), (rs2))
+#define cfu_donut_mul_hw(rs1, rs2)   opcode_R(CUSTOM0, 5, 0, (rs1), (rs2))
 ```
-*Expected duration: 1–3 minutes. Key output: `cfu_proj/build/arty/firmware.bin`.*
 
-### Step 4 — Create Vivado DFX project
+**Software-emulation macros** call the C function `Cfu()` defined in `software_cfu.c`:
 
-```bash
-vivado -mode batch -source scripts/vivado/create_project.tcl
-vivado -mode batch -source scripts/vivado/add_rm_configs.tcl
+```c
+#define cfu_op0_sw(rs1, rs2)  Cfu(0, rs1, rs2)
+#define cfu_op1_sw(rs1, rs2)  Cfu(1, rs1, rs2)
 ```
-*Expected duration: < 1 minute. Key output: `build/dfx_cfu/dfx_cfu.xpr` (Vivado project file).*
 
-### Step 5 — Synthesise all runs (static + OOC per RM)
+**Compile-time selection** between hardware and software execution is controlled by the `CFU_FORCE_SW` preprocessor define:
 
-```bash
-vivado -mode batch -source scripts/vivado/run_synth.tcl
+```c
+#ifdef CFU_FORCE_SW
+#define cfu_op0(rs1, rs2)       cfu_op0_sw(rs1, rs2)
+...
+#else
+#define cfu_op0(rs1, rs2)       cfu_op0_hw((rs1), (rs2))
+...
+#endif
 ```
-*Expected duration: 30–60 minutes (parallel OOC synthesis across 4 RMs). Key output: post-synthesis DCPs for static partition and each RM.*
 
-### Step 6 — Apply constraints and run implementation
+This mechanism allows the entire firmware test suite to run on a standard RISC-V simulator (without custom hardware) during development, then switch to hardware execution for on-board validation, without modifying any application-level source code.
 
-```bash
-vivado -mode batch -source scripts/vivado/apply_constraints.tcl
-vivado -mode batch -source scripts/vivado/run_impl.tcl
+### 5.6.2 `software_cfu.c` — C-Language Reference Model
+
+The software emulation function provides a bit-accurate reference implementation for the operations supported by the `example.v` and `donut.v` RMs:
+
+```c
+uint32_t software_cfu(int funct3, uint32_t rs1, uint32_t rs2)
+{
+  uint32_t retval = 0;
+
+  if (funct3 & 0x2)
+  {
+    // bitreverse (rs1)
+    for (int i = 0; i < 32; ++i)
+    {
+      retval |= (((rs1 >> i) & 0x1) << (31 - i));
+    }
+  }
+  else if (funct3 & 0x1)
+  {
+    // byte swap (rs1)
+    for (int i = 0; i < 32; i += 8)
+    {
+      retval |= (((rs1 >> i) & 0xff) << (24 - i));
+    }
+  }
+  else
+  {
+    // byte sum
+    retval += (rs1 & 0xff) + (rs2 & 0xff);
+    rs1 >>= 8; rs2 >>= 8;
+    retval += (rs1 & 0xff) + (rs2 & 0xff);
+    rs1 >>= 8; rs2 >>= 8;
+    retval += (rs1 & 0xff) + (rs2 & 0xff);
+    rs1 >>= 8; rs2 >>= 8;
+    retval += (rs1 & 0xff) + (rs2 & 0xff);
+  }
+
+  return (funct3 & 4)?
+            (funct3 & 5) ?
+                ((int)rs1) * ((int)rs2)  :
+                (((int)rs1) * ((int)rs2) >> 10)  :
+                    retval;
+}
 ```
-*Expected duration: 60–120 minutes (parallel child implementation runs for 4 RMs). Key output: post-implementation DCPs with timing closure confirmed.*
 
-### Step 7 — Generate bitstreams
+The final ternary chain merges the donut RM's multiply operations (function IDs 4 and 5) with the `example.v` operations (function IDs 0–2). When `funct3` bit 2 is set, the function returns a signed multiply (ID 5) or a multiply-then-shift-by-10 (ID 4). The `main()` function at the end of the file provides a standalone host-side test harness that exercises the byte-sum path with a grid of input values, confirming reference-model correctness before hardware testing.
 
-```bash
-vivado -mode batch -source scripts/vivado/generate_bitstreams.tcl
+### 5.6.3 `proj_menu.cc` — Interactive Test Menu
+
+The interactive menu provides a UART-driven interface for exercising CFU operations directly on the board:
+
+```cpp
+struct Menu MENU = {
+    "Project Menu",
+    "project",
+    {
+        MENU_ITEM('e', "exercise example cfu op0", do_example_exercise_cfu_op),
+        MENU_ITEM('0', "exercise donut cfu op0", do_donut_exercise_cfu_op0),
+        MENU_ITEM('1', "exercise donut cfu op1", do_donut_exercise_cfu_op1),
+        MENU_ITEM('g', "grid cfu donut op0", do_donut_grid_cfu_op0),
+        MENU_ITEM('G', "grid cfu donut op1", do_donut_grid_cfu_op1),
+        MENU_ITEM('h', "say Hello", do_hello_world),
+        MENU_END,
+    },
+};
 ```
-*Expected duration: 10–20 minutes. Key outputs: `full_bitstream_example.bit`, `partial_example.bit`, `partial_donut.bit`, `partial_dse.bit`, `partial_kws.bit`.*
 
-### Step 8 — Programme device and validate
+Each menu item maps a keyboard character to a test function. For example, `do_donut_exercise_cfu_op0` performs an exhaustive sweep over a grid of signed 32-bit inputs and compares the hardware CFU output against the expected software result:
 
-```bash
-vivado -mode batch -source scripts/vivado/program_device.tcl
-cd cfu_proj && make TARGET=arty prog   # Flash firmware
-python scripts/host/run_tests.py --port COMb --rm example
+```cpp
+void do_donut_exercise_cfu_op0(void) {
+  puts("\nExercise Donut CFU Op0\n");
+  int count = 0;
+  for (int32_t a = -0x71234567; a < 0x68000000; a += 0x10012345) {
+    for (int32_t b = -0x7edcba98; b < 0x68000000; b += 0x10770077) {
+      int32_t cfu = cfu_op0(0, a, b);
+      int32_t exp = a*b>>10;
+      int32_t ab = a*b;
+      int32_t cfuab = cfu_op1(1, a, b);
+      printf("a: %08x b:%08x cfu=%08x exp=%08x  ab=%08x\n",
+             (unsigned)a, (unsigned)b, (unsigned)cfu,
+             (unsigned)exp, (unsigned)ab);
+      if (cfu != exp) {
+        printf("\n***FAIL\n");
+        printf("\nexpect %08x  a*b=%08x  cfu:a*b=%08x\n",
+               (unsigned)exp, (unsigned)ab, (unsigned)cfuab);
+        return;
+      }
+      count++;
+    }
+  }
+  printf("Performed %d comparisons", count);
+}
 ```
-*Expected duration: 3–5 minutes. Key output: PASS/FAIL test vector report for the initial RM.*
+
+The step sizes (`0x10012345`, `0x10770077`) are deliberately chosen as coprime values that span the full signed 32-bit range without requiring billions of iterations. A mismatch between the hardware result and the software expectation terminates the sweep immediately with a diagnostic `FAIL` message, printing both the expected and actual values to aid debugging.
+
+### 5.6.4 `donut.c` — 3D Donut Rendering Benchmark
+
+The donut benchmark is a fixed-point 3D torus renderer that produces animated ASCII art on the UART terminal. It serves as both a visual demonstration and a performance benchmark for the `donut.v` RM:
+
+```c
+void donut(void) {
+  int sA=1024,cA=0,sB=1024,cB=0,_;
+  puts("\nPress any key to exit.  Accelerated version.\n");
+  for (;;) {
+    unsigned start_cycle = perf_get_mcycle();
+    memset(b, 32, 1760);  // text buffer
+    memset(z, 127, 1760);   // z buffer
+    int sj=0, cj=1024;
+    for (int j = 0; j < 90; j++) {
+      int si = 0, ci = 1024;
+      for (int i = 0; i < 324; i++) {
+        int R1 = 1, R2 = 2048, K2 = 5120*1024;
+
+        int x0 = CFUMUL(R1,cj) + R2,
+            x1 = MULTSHIFT10(ci,x0),
+            ...
+```
+
+Each frame renders a 80×22-character ASCII image using nested loops over torus surface parameters `i` and `j`. The `CFUMUL` and `MULTSHIFT10` macros are the critical acceleration points — without hardware CFU support, the signed multiplications would fall back to the VexRiscv's multi-cycle software multiply routine (since the `minimal` variant lacks the M extension). With the donut RM active, each multiply completes in two pipeline stages of the CFU.
+
+The `perf_get_mcycle()` call reads the RISC-V machine-cycle CSR, providing a hardware-accurate cycle count for each rendered frame, which is printed to the terminal as the frame rate metric recorded in Chapter 6.
 
 ---
 
-## 5.8 Repository Structure and Version Control
+## 5.7 AMD DFX Tutorial Baseline Implementation
 
-The project repository is organised to maintain a clean separation between generated artefacts (which are excluded from version control via `.gitignore`) and hand-authored source files (which are tracked):
+Before integrating DFX into the full CFU Playground system, a baseline DFX design was constructed following the AMD UG947 tutorial. This provided familiarity with the Vivado DFX toolflow without the complexity of the LiteX SoC.
+
+### 5.7.1 Tutorial `top.v` — Static Partition
+
+```verilog
+module top(
+    input        gclk,            // 100MHz input clock
+    input        rst_n,           // Reset mapped to center push button
+    output [3:0] shift_high_out,  // mapped to general purpose LEDs[4-7]
+    output [3:0] shift_low_out    // mapped to general purpose LEDs[0-3]
+);
+
+  wire        rst;
+  reg  [34:0] count;
+
+  assign rst = rst_n;
+
+  // instantiate module shift for low bits
+  shift inst_shift_low (
+      .en      (rst),
+      .clk     (gclk),
+      .addr    (count[34:23]),
+      .data_out(shift_low_out)
+  );
+
+  // instantiate module shift for high bits
+  shift inst_shift_high (
+      .en      (rst),
+      .clk     (gclk),
+      .addr    (count[34:23]),
+      .data_out(shift_high_out)
+  );
+
+  always @(posedge gclk)
+    if (rst) begin
+      count <= 0;
+    end else begin
+      count <= count + 1;
+    end
+
+endmodule
+```
+
+The static partition contains a 35-bit free-running counter whose upper bits (`count[34:23]`) serve as addresses into two instances of the `shift` RM. The 12-bit address space produces a 4-bit LED output pattern that shifts visually at a rate determined by the counter's division ratio: with a 100 MHz clock, the address MSB toggles at approximately 0.003 Hz (every ~335 seconds), yielding a slow, visually observable shift pattern on the LEDs.
+
+### 5.7.2 `shift_left.v` — BRAM-Based Reconfigurable Module
+
+The RM uses a `RAMB36` primitive pre-initialised with a repeating LED shift pattern:
+
+```verilog
+module shift (
+   en,
+   clk,
+   addr,
+   data_out);
+
+   input en;
+   input clk;
+   input  [11:0] addr;
+   output [3:0]  data_out;
+
+RAMB36 #(
+.SIM_MODE("SAFE"),
+.DOA_REG(0),
+.DOB_REG(0),
+.READ_WIDTH_A(9),
+...
+.INIT_00(256'h080402010804020108040201...),
+...
+) RAMB36_inst (
+.DOA(data_out),
+.ADDRA({addr[11:0], 3'b 000}),
+.CLKA(clk),
+.ENA(~en),
+.REGCEA(~en),
+.SSRA(en),
+...
+);
+endmodule
+```
+
+The BRAM initialisation data (`INIT_00` through `INIT_7F`) contains the repeating pattern `08 04 02 01` — corresponding to a left-shifting one-hot LED display. The counterpart RM `shift_right.v` uses the reverse pattern `01 02 04 08`. The DFX toolflow permits swapping between these two RMs at runtime, causing the LED animation to reverse direction without disrupting the static counter logic.
+
+### 5.7.3 `clocks.v` — MMCM Configuration
+
+The clock module instantiates the `MMCM_ADV` primitive to divide a 200 MHz differential input down to 100 MHz:
+
+```verilog
+MMCM_ADV
+#(.BANDWIDTH("OPTIMIZED"),
+  .DIVCLK_DIVIDE(1),
+  .CLKFBOUT_MULT_F(6.000),
+  .CLKOUT0_DIVIDE_F(12.000),
+  .CLKIN1_PERIOD(5.0),
+  ...)
+mmcm_adv_inst (...);
+```
+
+The feedback multiplication of 6× and output division of 12× produces a net division of 2.0, converting the 200 MHz input to 100 MHz. This module was included in the tutorial baseline but is bypassed in the Arty A7 adaptation (where the board provides a single-ended 100 MHz clock directly, as noted in the comment `// clocks U0_clocks ... ` in `top.v`).
+
+---
+
+## 5.8 UART-Based DFX Calculator
+
+A standalone UART calculator was developed to demonstrate Dynamic Function eXchange on the PYNQ-Z2, where a Zynq-7020 Processing System (PS) manages reconfiguration while the Programmable Logic (PL) hosts a UART-connected arithmetic unit whose ALU can be swapped at runtime.
+
+### 5.8.1 `uart_top.v` — Communication Subsystem
+
+The UART top module integrates a baud-rate generator, UART receiver, ASCII mapper, UART transmitter, and a memory register for storing ALU results:
+
+```verilog
+module uart_top #(
+    parameter integer DBITS    = 8,
+    integer SB_TICK  = 16,
+    integer BR_LIMIT = 651,
+    integer BR_BITS  = 10
+) (
+    input                  clk_100MHz,
+    input                  reset,
+    input                  read_uart,
+    input                  write_uart,
+    input                  rx,
+    input      [DBITS-1:0] write_data,
+    output                 tx,
+    output reg [DBITS-1:0] read_data,
+    output     [DBITS-1:0] stored_data
+);
+```
+
+**Baud rate derivation.** The `BR_LIMIT` parameter of 651 is calculated from: `100 MHz / (9600 baud × 16 oversampling) ≈ 651`. The oversampling factor of 16 means each bit period is sampled 16 times, and the receiver synchronises by detecting the mid-bit-period sample at count 7 (for the start bit) and count 15 (for data bits).
+
+**ASCII-to-decimal mapping (`map.v`):** The `map` module converts ASCII character codes to 4-bit hexadecimal digits:
+
+```verilog
+module map (
+    output reg [3:0] dec,
+    input [7:0] ascii
+);
+  always @(*) begin
+    case (ascii)
+      8'd48: dec = 4'd0;   // '0'
+      8'd49: dec = 4'd1;   // '1'
+      ...
+      8'd97:  dec = 4'd10; // 'a'
+      ...
+      8'd102: dec = 4'd15; // 'f'
+    endcase
+  end
+endmodule
+```
+
+The complementary `unmap` module performs the inverse transformation, converting 4-bit results back to ASCII for UART transmission.
+
+### 5.8.2 `uart_receiver.v` — Four-State FSM
+
+The UART receiver uses a classic four-state finite-state machine (`idle`, `start`, `data`, `stop`) that operates within the oversampled tick domain:
+
+```verilog
+  localparam [1:0] idle = 2'b00, start = 2'b01, data = 2'b10, stop = 2'b11;
+
+  always @* begin
+    next_state = state;
+    data_ready = 1'b0;
+    tick_next  = tick_reg;
+    nbits_next = nbits_reg;
+    data_next  = data_reg;
+
+    case (state)
+      idle:
+      if (~rx) begin
+        next_state = start;
+        tick_next  = 0;
+      end
+      start:
+      if (sample_tick)
+        if (tick_reg == 7) begin
+          next_state = data;
+          tick_next  = 0;
+          nbits_next = 0;
+        end else tick_next = tick_reg + 1;
+      data:
+      if (sample_tick)
+        if (tick_reg == 15) begin
+          tick_next = 0;
+          data_next = {rx, data_reg[7:1]};
+          if (nbits_reg == (DBITS - 1)) next_state = stop;
+          else nbits_next = nbits_reg + 1;
+        end else tick_next = tick_reg + 1;
+      stop:
+      if (sample_tick)
+        if (tick_reg == (SB_TICK - 1)) begin
+          next_state = idle;
+          data_ready = 1'b1;
+        end else tick_next = tick_reg + 1;
+    endcase
+  end
+```
+
+The start-bit detection logic in the `idle` state transitions on a falling edge of `rx` (the idle line is high). The `start` state waits 7 sample ticks to reach the middle of the start bit, then the `data` state samples each data bit at tick 15 (the middle of each bit period). Data bits are shifted in LSB-first via `{rx, data_reg[7:1]}`. The `stop` state validates the stop bit and asserts `data_ready` to signal a complete byte.
+
+### 5.8.3 `alu.sv` — Combinational ALU
+
+The ALU provides eight operations controlled by a 4-bit opcode:
+
+```systemverilog
+module calc #(
+    parameter N = 8
+) (
+    output logic [N - 1:0] y,
+    output logic flg,
+    input logic [3:0] op,
+    input logic [N - 1:0] a,
+    input logic [N - 1:0] b
+);
+  ...
+  always @(*) begin
+    case (op)
+      4'b0000: y = a+b;        // addition
+      4'b0001: y = a-b;        // subtraction
+      4'b0010: y = r_and;      // bitwise AND
+      4'b0011: y = r_or;       // bitwise OR
+      4'b0100: y = r_xor;      // bitwise XOR
+      4'b0101: y = a << b;     // logical left shift
+      4'b0110: y = a >> b;     // logical right shift
+      4'b0111: y = a >>> b;    // arithmetic right shift
+      default: y = 0;
+    endcase
+    if (a-b == 0) flg = 1'b1;
+    else          flg = 1'b0;
+  end
+endmodule
+```
+
+The gate-level logic primitives (`ands`, `ors`, `xors` from `logic.sv`) are instantiated for the bitwise operations using `generate`/`for` loops over individual bits:
+
+```systemverilog
+module ands #(parameter N = 4) (
+    input logic  [N - 1:0] a,
+    input logic  [N - 1:0] b,
+    output logic [N - 1:0] y
+);
+  genvar i;
+  for (i = 0; i < N; i = i + 1) begin
+    and (y[i], a[i], b[i]);
+  end
+endmodule
+```
+
+While the synthesis tool would generate identical hardware from `assign y = a & b`, the explicit gate-level instantiation was used here as a pedagogical exercise in structural Verilog and to verify that the synthesiser correctly infers the same resource cost for both approaches.
+
+### 5.8.4 DFX-Enabled Calculator — `dfx_calculator.v` and `mul_wrap.v`
+
+The DFX version replaces the full ALU with a narrowed multiply-only module as a Reconfigurable Module, demonstrating that the PS can swap the arithmetic function at runtime:
+
+```verilog
+module dfx_calc (
+    output tx,
+    output [3:0] LED,
+    input [3:0] op,
+    input btn,
+    input clk_100MHz,
+    input reset,
+    input rx
+);
+    wire [7:0] stored_data;
+    wire [7:0] read_data;
+    wire [7:0] write_data;
+    wire  op_alu_mul;
+
+    assign op_alu_mul = op[3];
+
+    system_dfx_wrapper system(
+        ...
+        .btn(btn),
+        .clk_100MHz(clk_100MHz),
+        .op_alu_mul(op_alu_mul),
+        .read_data_0(read_data),
+        .reset(reset),
+        .rx_0(rx),
+        .stored_data_0(stored_data),
+        .tx_0(tx),
+        .write_data_0(write_data)
+    );
+
+    calc u_calc(
+        .y(write_data),
+        .flg(),
+        .op(op),
+        .a(stored_data),
+        .b(read_data)
+    );
+
+    assign LED = stored_data[3:0];
+endmodule
+```
+
+The `op_alu_mul` signal, derived from the MSB of the 4-bit opcode, serves as the trigger for the PS to decide whether the ALU or the multiply module should be active in the PL. The `system_dfx_wrapper` is a Vivado-generated block design wrapper for the Zynq PS, which includes the PCAP interface for issuing partial bitstreams.
+
+The multiply-only RM (`mul_wrap.v`) provides a deliberately minimal implementation:
+
+```verilog
+module calc #(
+    parameter N = 8
+) (
+    output [N - 1:0] y,
+    output flg,
+    input  [3:0] op,
+    input  [N - 1:0] a,
+    input  [N - 1:0] b
+);
+
+wire [3:0] y_temp;
+assign y_temp = a[3:0] * b[3:0];
+assign y = {4'd0, y_temp};
+
+endmodule
+```
+
+This module multiplies only the lower 4 bits of each operand, producing an 8-bit result zero-extended from the 4-bit product. The `flg` and `op` ports are declared but unused — they exist solely to maintain port-signature compatibility with the full ALU's `calc` module interface, which is the DFX requirement for RM interchangeability. The `LED` output displays the lower four bits of the stored operand, providing visual confirmation that UART-received data is reaching the PL fabric.
+
+---
+
+## 5.9 AES/DES Encryption Reconfiguration
+
+The `AES_DES_reconfig` sub-project demonstrates DFX applied to cryptographic acceleration. The fixed interface is a 128-bit plaintext input, a 128-bit key input, a clock, and a 128-bit ciphertext output:
+
+```verilog
+module top_encrypt(
+    output [127:0] cipher,
+    input [127:0] plain,
+    input [127:0] key,
+    input clk
+);
+
+  des_wrapper enc_dut(cipher, plain, key, clk);
+
+endmodule
+```
+
+The `des_wrapper` instance is the RM that occupies the Reconfigurable Partition. An alternative RM implementing AES encryption shares the same `(cipher, plain, key, clk)` port interface, allowing the encryption algorithm to be swapped at runtime without modifying the data path that feeds plaintext in and reads ciphertext out. This minimal wrapper demonstrates the principle that DFX can be applied at the algorithm level — the interface remains stable while the computational core is exchanged — which generalises to any domain where multiple algorithms share a common data format (hash functions, compression codecs, signal-processing filters, etc.).
+
+---
+
+## 5.10 Constraint Files and Physical Floorplanning
+
+### 5.10.1 Arty A7-100T Master XDC
+
+The Digilent-provided `Arty-A7-100-Master.xdc` serves as the base constraint template for all Arty A7 implementations. Each I/O assignment maps a logical port name to a physical FPGA package pin and I/O standard:
+
+```tcl
+## Clock signal
+#set_property -dict { PACKAGE_PIN E3  IOSTANDARD LVCMOS33 } [get_ports { CLK100MHZ }];
+#create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { CLK100MHZ }];
+```
+
+In practice, the specific lines that are uncommented depend on which ports a given design uses. The CFU Playground integration uncomments the clock, UART, DDR3, QSPI, LED, and button assignments while leaving Pmod, Ethernet, and analog headers commented. The `pr_switch` input is mapped to one of the four on-board push buttons.
+
+---
+
+## 5.11 Build Flow Summary
+
+The complete build pipeline, from source checkout to on-board validation, follows this ordered sequence:
+
+| Step | Action | Key Output |
+|------|--------|------------|
+| 1 | Generate LiteX SoC (`python -m litex_boards.targets.digilent_arty ...`) | `digilent_arty.v`, `arty.xdc`, `csr.h` |
+| 2 | Create Vivado DFX project, add `top.v`, `cfu.v`, `recon_counter.v`, RM sources | `.xpr` project file |
+| 3 | Register RMs via Vivado DFX Configuration Manager | DFX configurations |
+| 4 | Apply Pblock constraints for `cfu_compute` RP | Constrained netlist |
+| 5 | Synthesise static partition + OOC synthesis for each RM | Post-synthesis DCPs |
+| 6 | Implement parent run (static) + child runs (one per RM) | Post-implementation DCPs |
+| 7 | Generate full bitstream + partial bitstreams | `.bit` files |
+| 8 | Programme device via JTAG, flash firmware, run test menu | PASS/FAIL validation |
+
+Steps 2 through 7 are orchestrated through the Vivado GUI or batch-mode TCL commands. The CFU Playground firmware is compiled separately using the RISC-V GCC toolchain (`rv32i` / `ilp32`), producing a flat binary that is programmed into QSPI flash at offset `0x00080000`.
+
+---
+
+## 5.12 Repository Organisation
+
+The project repository organises source artefacts by implementation sub-project:
 
 ```
-Dynamic-Partial-Reconfiguration/
-├── rtl/                      # Hand-authored RTL (tracked)
-│   ├── system_wrapper.v
-│   ├── recon_counter.v
-│   ├── cfu.v
-│   ├── cfu_compute_port_spec.vh
-│   └── rm/
-│       ├── example.v
-│       ├── donut.v
-│       ├── dse_template.v
-│       └── kws_accel.v
-├── tb/                       # Simulation testbenches (tracked)
-│   └── tb_system_wrapper.v
-├── constraints/              # Hand-authored XDC (tracked)
-│   ├── pblock_cfu_compute.xdc
-│   └── timing_dfx.xdc
-├── scripts/
-│   ├── vivado/               # TCL automation scripts (tracked)
-│   │   ├── create_project.tcl
-│   │   ├── add_rm_configs.tcl
-│   │   ├── run_synth.tcl
-│   │   ├── apply_constraints.tcl
-│   │   ├── run_impl.tcl
-│   │   ├── generate_bitstreams.tcl
-│   │   ├── program_device.tcl
-│   │   └── program_partial.tcl
-│   ├── host/                 # Host Python test tools (tracked)
-│   │   └── run_tests.py
-│   └── pynq/                 # PYNQ-Z2 management scripts (tracked)
-│       ├── dpr_manager.py
-│       └── run_validation.py
-├── cfu_proj/                 # CFU Playground submodule (tracked as submodule)
-├── build/                    # Generated build artefacts (gitignored)
-│   ├── arty_soc/
-│   └── dfx_cfu/
-├── Report/                   # Report documents (tracked)
-└── README.md
+Implementation/
+├── CFU_Playground/               # Primary DFX + RISC-V CFU system
+│   ├── top.v                     # System-level composition
+│   ├── cfu.v                     # DFX Decoupler bridge
+│   ├── recon_counter.v           # Reconfiguration timing measurement
+│   ├── cfu.h                     # Firmware instruction encoding
+│   ├── VexRiscv.v                # Soft-core processor (generated)
+│   ├── digilent_arty.v           # LiteX SoC (generated)
+│   ├── partitions/
+│   │   ├── example.v             # RM: multi-function arithmetic
+│   │   ├── donut.v               # RM: fixed-point multiply
+│   │   ├── dse_template.v        # RM: SIMD MAC for inference
+│   │   └── kws/                  # RM: keyword spotting accelerator
+│   │       ├── cfu.sv
+│   │       ├── mac.sv
+│   │       ├── rcdbpot.sv
+│   │       └── rdh.sv
+│   ├── src/
+│   │   ├── proj_menu.cc          # Interactive UART test menu
+│   │   ├── software_cfu.c        # C reference model
+│   │   ├── software_cfu.cc       # C++ reference model
+│   │   ├── donut.c               # 3D donut rendering benchmark
+│   │   └── donut.h
+│   └── build/                    # Generated artefacts (gitignored)
+│
+├── AMD_DFX_Tutorial/             # UG947 tutorial baseline
+│   ├── dfx_project/Sources/hdl/
+│   │   ├── top/top.v             # Static top-level
+│   │   ├── top/clocks.v          # MMCM configuration
+│   │   ├── shift_left/shift_left.v
+│   │   ├── shift_right/...
+│   │   └── shift_left_slow/...
+│   └── led_Shift_Count_7s/       # Variant with counter RM
+│
+├── UART_CALCI/                   # UART calculator + DFX on PYNQ
+│   ├── src/uart_calculator/
+│   │   ├── uart_top.v            # UART communication top
+│   │   ├── uart_receiver.v       # UART RX FSM
+│   │   ├── uart_transmitter.v    # UART TX FSM
+│   │   ├── baud_rate_generator.v # Oversampling clock divider
+│   │   ├── alu.sv                # 8-operation combinational ALU
+│   │   ├── logic.sv              # Gate-level AND/OR/XOR
+│   │   ├── map.v                 # ASCII ↔ hexadecimal converter
+│   │   ├── fifo.v                # Parameterised FIFO buffer
+│   │   └── debounce_explicit.v   # Button debouncer FSM
+│   ├── src/dfx_controller/
+│   │   ├── dfx_calculator.v      # DFX-enabled top
+│   │   └── mul_wrap.v            # Multiply-only RM
+│   └── dfx_playground/           # Vivado project (gitignored)
+│
+├── AES_DES_reconfig/             # Crypto algorithm swapping
+│   ├── top_encrypt.v             # Fixed encryption interface
+│   ├── AES/                      # AES RM sources
+│   └── des-verilog/              # DES RM sources
+│
+└── Arty-A7-100-Master.xdc        # Board constraint template
 ```
 
-The `build/` directory is explicitly excluded from version control via `.gitignore` because it contains multi-gigabyte Vivado project databases and intermediate synthesis checkpoints that would make the repository unmanageably large for version tracking. The `cfu_proj/` directory is tracked as a Git submodule pointing to the public CFU Playground repository at a pinned commit hash, ensuring that the firmware build environment remains reproducible regardless of upstream changes to the CFU Playground's main branch.
+Generated artefacts — including the full Vivado project databases, synthesis checkpoints, and multi-gigabyte implementation runs — reside under `build/` and `dfx_playground/` directories and are excluded from version control via `.gitignore`. All hand-authored source files (RTL, firmware, constraints) are tracked in the repository, ensuring full reproducibility of the designs described in this chapter.
 
 ---
