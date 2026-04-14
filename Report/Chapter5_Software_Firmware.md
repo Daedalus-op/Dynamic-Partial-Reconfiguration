@@ -4,15 +4,11 @@
 
 ## 5.1 Overview of the Software and HDL Stack
 
-The hardware infrastructure described in Chapter 4 defines the physical boundaries within which reconfiguration occurs, but converting that infrastructure into a working system demands a complementary set of software, firmware, and register-transfer-level (RTL) design files. The present chapter offers a detailed, code-level examination of every source artefact authored or adapted during the course of this project. Four distinct implementation sub-projects comprise the portfolio of work:
+The hardware infrastructure described in Chapter 4 defines the physical boundaries within which reconfiguration occurs, but converting that infrastructure into a working system demands a complementary set of software, firmware, and register-transfer-level (RTL) design files. The present chapter offers a detailed, code-level examination of every source artefact authored or adapted during the course of this project. Two distinct implementation sub-projects comprise the portfolio of work:
 
-1. **CFU Playground integration** — the primary RISC-V co-processor reconfiguration system on the Arty A7-100T, encompassing the top-level wrapper (`top.v`), the DFX Decoupler bridge (`cfu.v`), the reconfiguration-timing measurement module (`recon_counter.v`), three Reconfigurable Module (RM) HDL files (`example.v`, `donut.v`, `dse_template.v`), a fourth RM consisting of a multi-file SystemVerilog keyword-spotting accelerator (`kws/`), associated firmware headers (`cfu.h`), software emulation sources (`software_cfu.c`, `software_cfu.cc`), the interactive test menu (`proj_menu.cc`), and the donut rendering benchmark (`donut.c`).
+1. **CFU Playground integration** — the primary RISC-V co-processor reconfiguration system on the Arty A7-35T, encompassing the top-level wrapper (`top.v`), the DFX Decoupler bridge (`cfu.v`), the reconfiguration-timing measurement module (`recon_counter.v`), three Reconfigurable Module (RM) HDL files (`example.v`, `donut.v`, `dse_template.v`), a fourth RM consisting of a multi-file SystemVerilog keyword-spotting accelerator (`kws/`), associated firmware headers (`cfu.h`), software emulation sources (`software_cfu.c`, `software_cfu.cc`), the interactive test menu (`proj_menu.cc`), and the donut rendering benchmark (`donut.c`).
 
 2. **AMD DFX Tutorial baseline** — a reference DFX design adapted from Xilinx UG947, containing a static top-level design (`top.v`), an MMCM clock-domain module (`clocks.v`), and BRAM-based shift-pattern Reconfigurable Modules (`shift_left.v` and its counterparts).
-
-3. **UART-based DFX Calculator** — a standalone demonstration of Dynamic Function eXchange on the PYNQ-Z2, integrating a baud-rate-generated UART transceiver, an eight-operation combinational ALU, parameterised logic primitives, ASCII-to-hexadecimal mapping, a FIFO buffer, a button debouncer, and a multiply-only reconfigurable wrapper (`dfx_calculator.v` + `mul_wrap.v`).
-
-4. **AES/DES encryption reconfiguration** — a minimal proof-of-concept top module (`top_encrypt.v`) that instantiates either an AES or a DES encryption engine as a Reconfigurable Module behind a fixed 128-bit plaintext/ciphertext interface.
 
 The sections that follow examine each sub-project in source-level detail. All Verilog and SystemVerilog keywords, module names, signal names, and macro identifiers are reproduced verbatim because they are functional identifiers whose alteration would break the design. Explanatory prose surrounding these identifiers is written in original language to preserve academic integrity across the merged report.
 
@@ -24,7 +20,7 @@ The CFU Playground provides the application-level framework within which custom 
 
 ### 5.2.1 `top.v` — System-Level Composition
 
-The top-level module `top.v` declares all off-chip interfaces required by the Arty A7-100T — DDR3 SDRAM buses, QSPI flash, USB-UART, status LEDs, and the ICAP primitive's four-port interface — and instantiates exactly two sub-modules:
+The top-level module `top.v` declares all off-chip interfaces required by the Arty A7-35T — DDR3 SDRAM buses, QSPI flash, USB-UART, status LEDs, and the ICAP primitive's four-port interface — and instantiates exactly two sub-modules:
 
 ```verilog
 module top(
@@ -432,7 +428,7 @@ module cfu_compute (
 endmodule
 ```
 
-**`mul` — signed 32×32 multiplication:** The `$signed()` cast forces the synthesis tool to infer a signed multiplier, which on the XC7A100T maps to the DSP48E1 hard multiply primitive. Only the lower 32 bits of the 64-bit product are retained in the `mul` wire — the upper 32 bits are discarded, which is acceptable for the donut rendering workload where operands are fixed-point values with limited dynamic range.
+**`mul` — signed 32×32 multiplication:** The `$signed()` cast forces the synthesis tool to infer a signed multiplier, which on the XC7A35T maps to the DSP48E1 hard multiply primitive. Only the lower 32 bits of the 64-bit product are retained in the `mul` wire — the upper 32 bits are discarded, which is acceptable for the donut rendering workload where operands are fixed-point values with limited dynamic range.
 
 **`mulsh` — multiply-then-arithmetic-shift:** The arithmetic right shift by 10 positions (`>>> 10`) diverts 10 bits from the fractional part of the product, effectively performing a divide-by-1024 with correct sign extension. This fixed-point scaling is central to the donut application's trigonometric approximation chain, where sine and cosine values are represented as signed integers in a Q10.22 fixed-point format.
 
@@ -909,250 +905,9 @@ The feedback multiplication of 6× and output division of 12× produces a net di
 
 ---
 
-## 5.8 UART-Based DFX Calculator
+## 5.8 Constraint Files and Physical Floorplanning
 
-A standalone UART calculator was developed to demonstrate Dynamic Function eXchange on the PYNQ-Z2, where a Zynq-7020 Processing System (PS) manages reconfiguration while the Programmable Logic (PL) hosts a UART-connected arithmetic unit whose ALU can be swapped at runtime.
-
-### 5.8.1 `uart_top.v` — Communication Subsystem
-
-The UART top module integrates a baud-rate generator, UART receiver, ASCII mapper, UART transmitter, and a memory register for storing ALU results:
-
-```verilog
-module uart_top #(
-    parameter integer DBITS    = 8,
-    integer SB_TICK  = 16,
-    integer BR_LIMIT = 651,
-    integer BR_BITS  = 10
-) (
-    input                  clk_100MHz,
-    input                  reset,
-    input                  read_uart,
-    input                  write_uart,
-    input                  rx,
-    input      [DBITS-1:0] write_data,
-    output                 tx,
-    output reg [DBITS-1:0] read_data,
-    output     [DBITS-1:0] stored_data
-);
-```
-
-**Baud rate derivation.** The `BR_LIMIT` parameter of 651 is calculated from: `100 MHz / (9600 baud × 16 oversampling) ≈ 651`. The oversampling factor of 16 means each bit period is sampled 16 times, and the receiver synchronises by detecting the mid-bit-period sample at count 7 (for the start bit) and count 15 (for data bits).
-
-**ASCII-to-decimal mapping (`map.v`):** The `map` module converts ASCII character codes to 4-bit hexadecimal digits:
-
-```verilog
-module map (
-    output reg [3:0] dec,
-    input [7:0] ascii
-);
-  always @(*) begin
-    case (ascii)
-      8'd48: dec = 4'd0;   // '0'
-      8'd49: dec = 4'd1;   // '1'
-      ...
-      8'd97:  dec = 4'd10; // 'a'
-      ...
-      8'd102: dec = 4'd15; // 'f'
-    endcase
-  end
-endmodule
-```
-
-The complementary `unmap` module performs the inverse transformation, converting 4-bit results back to ASCII for UART transmission.
-
-### 5.8.2 `uart_receiver.v` — Four-State FSM
-
-The UART receiver uses a classic four-state finite-state machine (`idle`, `start`, `data`, `stop`) that operates within the oversampled tick domain:
-
-```verilog
-  localparam [1:0] idle = 2'b00, start = 2'b01, data = 2'b10, stop = 2'b11;
-
-  always @* begin
-    next_state = state;
-    data_ready = 1'b0;
-    tick_next  = tick_reg;
-    nbits_next = nbits_reg;
-    data_next  = data_reg;
-
-    case (state)
-      idle:
-      if (~rx) begin
-        next_state = start;
-        tick_next  = 0;
-      end
-      start:
-      if (sample_tick)
-        if (tick_reg == 7) begin
-          next_state = data;
-          tick_next  = 0;
-          nbits_next = 0;
-        end else tick_next = tick_reg + 1;
-      data:
-      if (sample_tick)
-        if (tick_reg == 15) begin
-          tick_next = 0;
-          data_next = {rx, data_reg[7:1]};
-          if (nbits_reg == (DBITS - 1)) next_state = stop;
-          else nbits_next = nbits_reg + 1;
-        end else tick_next = tick_reg + 1;
-      stop:
-      if (sample_tick)
-        if (tick_reg == (SB_TICK - 1)) begin
-          next_state = idle;
-          data_ready = 1'b1;
-        end else tick_next = tick_reg + 1;
-    endcase
-  end
-```
-
-The start-bit detection logic in the `idle` state transitions on a falling edge of `rx` (the idle line is high). The `start` state waits 7 sample ticks to reach the middle of the start bit, then the `data` state samples each data bit at tick 15 (the middle of each bit period). Data bits are shifted in LSB-first via `{rx, data_reg[7:1]}`. The `stop` state validates the stop bit and asserts `data_ready` to signal a complete byte.
-
-### 5.8.3 `alu.sv` — Combinational ALU
-
-The ALU provides eight operations controlled by a 4-bit opcode:
-
-```systemverilog
-module calc #(
-    parameter N = 8
-) (
-    output logic [N - 1:0] y,
-    output logic flg,
-    input logic [3:0] op,
-    input logic [N - 1:0] a,
-    input logic [N - 1:0] b
-);
-  ...
-  always @(*) begin
-    case (op)
-      4'b0000: y = a+b;        // addition
-      4'b0001: y = a-b;        // subtraction
-      4'b0010: y = r_and;      // bitwise AND
-      4'b0011: y = r_or;       // bitwise OR
-      4'b0100: y = r_xor;      // bitwise XOR
-      4'b0101: y = a << b;     // logical left shift
-      4'b0110: y = a >> b;     // logical right shift
-      4'b0111: y = a >>> b;    // arithmetic right shift
-      default: y = 0;
-    endcase
-    if (a-b == 0) flg = 1'b1;
-    else          flg = 1'b0;
-  end
-endmodule
-```
-
-The gate-level logic primitives (`ands`, `ors`, `xors` from `logic.sv`) are instantiated for the bitwise operations using `generate`/`for` loops over individual bits:
-
-```systemverilog
-module ands #(parameter N = 4) (
-    input logic  [N - 1:0] a,
-    input logic  [N - 1:0] b,
-    output logic [N - 1:0] y
-);
-  genvar i;
-  for (i = 0; i < N; i = i + 1) begin
-    and (y[i], a[i], b[i]);
-  end
-endmodule
-```
-
-While the synthesis tool would generate identical hardware from `assign y = a & b`, the explicit gate-level instantiation was used here as a pedagogical exercise in structural Verilog and to verify that the synthesiser correctly infers the same resource cost for both approaches.
-
-### 5.8.4 DFX-Enabled Calculator — `dfx_calculator.v` and `mul_wrap.v`
-
-The DFX version replaces the full ALU with a narrowed multiply-only module as a Reconfigurable Module, demonstrating that the PS can swap the arithmetic function at runtime:
-
-```verilog
-module dfx_calc (
-    output tx,
-    output [3:0] LED,
-    input [3:0] op,
-    input btn,
-    input clk_100MHz,
-    input reset,
-    input rx
-);
-    wire [7:0] stored_data;
-    wire [7:0] read_data;
-    wire [7:0] write_data;
-    wire  op_alu_mul;
-
-    assign op_alu_mul = op[3];
-
-    system_dfx_wrapper system(
-        ...
-        .btn(btn),
-        .clk_100MHz(clk_100MHz),
-        .op_alu_mul(op_alu_mul),
-        .read_data_0(read_data),
-        .reset(reset),
-        .rx_0(rx),
-        .stored_data_0(stored_data),
-        .tx_0(tx),
-        .write_data_0(write_data)
-    );
-
-    calc u_calc(
-        .y(write_data),
-        .flg(),
-        .op(op),
-        .a(stored_data),
-        .b(read_data)
-    );
-
-    assign LED = stored_data[3:0];
-endmodule
-```
-
-The `op_alu_mul` signal, derived from the MSB of the 4-bit opcode, serves as the trigger for the PS to decide whether the ALU or the multiply module should be active in the PL. The `system_dfx_wrapper` is a Vivado-generated block design wrapper for the Zynq PS, which includes the PCAP interface for issuing partial bitstreams.
-
-The multiply-only RM (`mul_wrap.v`) provides a deliberately minimal implementation:
-
-```verilog
-module calc #(
-    parameter N = 8
-) (
-    output [N - 1:0] y,
-    output flg,
-    input  [3:0] op,
-    input  [N - 1:0] a,
-    input  [N - 1:0] b
-);
-
-wire [3:0] y_temp;
-assign y_temp = a[3:0] * b[3:0];
-assign y = {4'd0, y_temp};
-
-endmodule
-```
-
-This module multiplies only the lower 4 bits of each operand, producing an 8-bit result zero-extended from the 4-bit product. The `flg` and `op` ports are declared but unused — they exist solely to maintain port-signature compatibility with the full ALU's `calc` module interface, which is the DFX requirement for RM interchangeability. The `LED` output displays the lower four bits of the stored operand, providing visual confirmation that UART-received data is reaching the PL fabric.
-
----
-
-## 5.9 AES/DES Encryption Reconfiguration
-
-The `AES_DES_reconfig` sub-project demonstrates DFX applied to cryptographic acceleration. The fixed interface is a 128-bit plaintext input, a 128-bit key input, a clock, and a 128-bit ciphertext output:
-
-```verilog
-module top_encrypt(
-    output [127:0] cipher,
-    input [127:0] plain,
-    input [127:0] key,
-    input clk
-);
-
-  des_wrapper enc_dut(cipher, plain, key, clk);
-
-endmodule
-```
-
-The `des_wrapper` instance is the RM that occupies the Reconfigurable Partition. An alternative RM implementing AES encryption shares the same `(cipher, plain, key, clk)` port interface, allowing the encryption algorithm to be swapped at runtime without modifying the data path that feeds plaintext in and reads ciphertext out. This minimal wrapper demonstrates the principle that DFX can be applied at the algorithm level — the interface remains stable while the computational core is exchanged — which generalises to any domain where multiple algorithms share a common data format (hash functions, compression codecs, signal-processing filters, etc.).
-
----
-
-## 5.10 Constraint Files and Physical Floorplanning
-
-### 5.10.1 Arty A7-100T Master XDC
+### 5.8.1 Arty A7-35T Master XDC
 
 The Digilent-provided `Arty-A7-100-Master.xdc` serves as the base constraint template for all Arty A7 implementations. Each I/O assignment maps a logical port name to a physical FPGA package pin and I/O standard:
 
@@ -1166,7 +921,7 @@ In practice, the specific lines that are uncommented depend on which ports a giv
 
 ---
 
-## 5.11 Build Flow Summary
+## 5.9 Build Flow Summary
 
 The complete build pipeline, from source checkout to on-board validation, follows this ordered sequence:
 
@@ -1185,7 +940,7 @@ Steps 2 through 7 are orchestrated through the Vivado GUI or batch-mode TCL comm
 
 ---
 
-## 5.12 Repository Organisation
+## 5.10 Repository Organisation
 
 The project repository organises source artefacts by implementation sub-project:
 
@@ -1223,28 +978,6 @@ Implementation/
 │   │   ├── shift_right/...
 │   │   └── shift_left_slow/...
 │   └── led_Shift_Count_7s/       # Variant with counter RM
-│
-├── UART_CALCI/                   # UART calculator + DFX on PYNQ
-│   ├── src/uart_calculator/
-│   │   ├── uart_top.v            # UART communication top
-│   │   ├── uart_receiver.v       # UART RX FSM
-│   │   ├── uart_transmitter.v    # UART TX FSM
-│   │   ├── baud_rate_generator.v # Oversampling clock divider
-│   │   ├── alu.sv                # 8-operation combinational ALU
-│   │   ├── logic.sv              # Gate-level AND/OR/XOR
-│   │   ├── map.v                 # ASCII ↔ hexadecimal converter
-│   │   ├── fifo.v                # Parameterised FIFO buffer
-│   │   └── debounce_explicit.v   # Button debouncer FSM
-│   ├── src/dfx_controller/
-│   │   ├── dfx_calculator.v      # DFX-enabled top
-│   │   └── mul_wrap.v            # Multiply-only RM
-│   └── dfx_playground/           # Vivado project (gitignored)
-│
-├── AES_DES_reconfig/             # Crypto algorithm swapping
-│   ├── top_encrypt.v             # Fixed encryption interface
-│   ├── AES/                      # AES RM sources
-│   └── des-verilog/              # DES RM sources
-│
 └── Arty-A7-100-Master.xdc        # Board constraint template
 ```
 

@@ -1,0 +1,22 @@
+Command: pr_verify -full_check -initial /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/impl_2/top_tut_routed.dcp -additional /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/child_0_impl_2/top_tut_routed.dcp -file child_0_impl_2_pr_verify.log
+Sat Nov 15 00:25:18 2025
+
+INFO: [Constraints 18-1020] PR Verify Summary:
+DCP1: /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/impl_2/top_tut_routed.dcp
+  Number of reconfigurable modules compared = 1
+  Number of partition pins compared         = 6
+  Number of static tiles compared           = 204
+  Number of static sites compared           = 1995
+  Number of static cells compared           = 12270
+  Number of static routed nodes compared    = 118414
+  Number of static routed pips compared     = 108508
+
+DCP2: /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/child_0_impl_2/top_tut_routed.dcp
+  Number of reconfigurable modules compared = 1
+  Number of partition pins compared         = 6
+  Number of static tiles compared           = 204
+  Number of static sites compared           = 1995
+  Number of static cells compared           = 12270
+  Number of static routed nodes compared    = 118414
+  Number of static routed pips compared     = 108508
+INFO: [Vivado 12-3253] PR_VERIFY: check points /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/impl_2/top_tut_routed.dcp and /home/xubundadu/Desktop/Capstone/dfx_playground/dfx_playground.runs/child_0_impl_2/top_tut_routed.dcp are compatible
