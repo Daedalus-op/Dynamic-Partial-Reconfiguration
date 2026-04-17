@@ -1,0 +1,88 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Design and Implementation}{47}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Design Goals}{47}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Static Partition Design}{48}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}The \texttt  {system\_wrapper} Reconfiguration Controller}{48}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Clock and Reset Distribution}{49}{subsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Board I/O Allocation}{49}{subsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Reconfigurable Partition Design}{49}{section.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}The \texttt  {cfu.v} Wrapper and DFX Decoupler Placement}{50}{subsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Reconfigurable Module Implementations}{50}{subsection.4.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}Pblock Constraints and Floorplanning}{51}{subsection.4.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Reconfiguration Control Flow}{51}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Step-by-Step Reconfiguration Sequence}{51}{subsection.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Current Implementation State}{52}{subsection.4.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Hardware Implementation Phases}{53}{section.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Phase 1 — Arty A7-35T (Standalone DPR Validation)}{53}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Vivado DFX Project Setup}{53}{section*.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Vivado Project Manager screenshot showing the DFX implementation run hierarchy — one parent run for the static partition and four child runs (one per RM), with timing closure status indicators for each run.}}{55}{figure.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{JTAG-Based Partial Reconfiguration (Validated ✅)}{55}{section*.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Vivado Hardware Manager screenshot showing partial bitstream programming of the \texttt  {cfu\_compute} RP on the Arty A7-35T, with the ILA waveform panel displaying the \texttt  {recon\_counter} EOS transition immediately following the partial programming command.}}{56}{figure.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{ILA Configuration and \texttt  {recon\_counter} Capture}{56}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{ICAP-Based Partial Reconfiguration (Work In Progress)}{57}{section*.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Vivado behavioural simulation waveform showing the \texttt  {system\_wrapper} FSM state register, \texttt  {decouple}, \texttt  {CSIB}, \texttt  {RDWRB}, and \texttt  {I[31:0]} signals across a complete single-trigger reconfiguration event. States are annotated with text labels at the state register trace.}}{58}{figure.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Engineering Challenges Encountered on the Arty A7-35T}{58}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Phase 2 — PYNQ-Z2 (Zynq-7020, Standalone Validation)}{60}{subsection.4.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Vivado DFX Flow for Zynq-7020}{60}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{JTAG-Based Partial Reconfiguration on PYNQ-Z2 (Validated ✅)}{61}{section*.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Vivado device floorplan view for the PYNQ-Z2 DFX implementation, showing the static partition (shaded blue), the \texttt  {cfu\_compute} Pblock boundary (red rectangle in the upper-right quadrant), and the placed RM logic (green dots) within the Pblock.}}{62}{figure.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{PCAP-Based Partial Reconfiguration (Validated ✅)}{62}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{ICAP on Zynq-7020: Architectural Constraint and Investigation}{64}{section*.11}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Software flow diagram of the PCAP reconfiguration sequence showing the Python management script, the PYNQ MMIO/FPGA Manager API, the Linux kernel FPGA Manager driver, the Zynq DEVCFG peripheral, and the PL configuration logic, with data-flow arrows and timing annotations.}}{65}{figure.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Phase 3 — Arty A7 + PYNQ-Z2 Inter-Board Bridge}{66}{subsection.4.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{PYNQ-Z2 USB Architecture and the Source of the Conflict}{66}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{UART Routing via PMOD: Signal Assignment}{67}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Attempted Workaround: PMOD-to-Arty Direct Wire UART Bridge}{68}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Failure Analysis: Signal Integrity of the Direct Wire Bridge}{68}{section*.15}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Wiring diagram of the direct PMOD-to-PMOD UART bridge, showing the signal path from PYNQ-Z2 UART1\_TX (JA1) through hookup wire to Arty JA1, through the FPGA fabric (wire assignment), and out to the Arty's USB-UART FTDI TX input.}}{69}{figure.4.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Annotated oscilloscope trace at 115,200 bps on the direct PMOD wire. Upper trace: PYNQ-Z2 JA1 (source). Lower trace: Arty JA1 (far end). Annotations show the 253 mV voltage droop, 3.1 µs settling time, and 316 mV overshoot on the rising edge.}}{70}{figure.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Resolution: Commercial PMOD-to-USB-UART Converter}{70}{section*.16}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Photograph of the fully assembled test bench showing the PYNQ-Z2 board with the CH340G PMOD-UART module plugged into PMOD JA, two USB cables connecting to the host workstation (one from the PYNQ-Z2 on-board FT4232H, one from the CH340G), and the Arty A7-35T board with its own USB cable for JTAG.}}{71}{figure.4.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Summary of Phase 3 Outcomes and Final Hardware Configuration}{71}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}DFX Tutorial Baseline Validation}{72}{section.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1}Tutorial Design Summary}{72}{subsection.4.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2}Measured Baseline Results}{73}{subsection.4.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.3}Partial Bitstream Validation}{73}{subsection.4.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Partial Bitstream Storage — Current State and Roadmap}{73}{section.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Current State: In-Fabric ROM (Synthesis-Time Embedding)}{74}{subsection.4.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Near-Term Plan: QSPI Flash Fetch}{74}{subsection.4.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}Longer-Term Plan: DDR3 SDRAM Storage}{75}{subsection.4.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}Report Scope Clarification}{75}{subsection.4.7.4}\protected@file@percent }
+\@setckpt{Chapter4_Design_Implementation}{
+\setcounter{page}{76}
+\setcounter{equation}{0}
+\setcounter{enumi}{3}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{4}
+\setcounter{section}{7}
+\setcounter{subsection}{4}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{8}
+\setcounter{table}{0}
+\setcounter{parentequation}{0}
+\setcounter{float@type}{8}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{lstnumber}{10}
+\setcounter{mdf@globalstyle@cnt}{0}
+\setcounter{mdfcountframes}{0}
+\setcounter{mdf@env@i}{0}
+\setcounter{mdf@env@ii}{0}
+\setcounter{mdf@zref@counter}{0}
+\setcounter{section@level}{2}
+\setcounter{Item}{48}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{85}
+\setcounter{lstlisting}{0}
+}
