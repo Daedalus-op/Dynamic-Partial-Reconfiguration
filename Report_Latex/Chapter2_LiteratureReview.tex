@@ -100,7 +100,7 @@ The three toolflows surveyed in this chapter — RapidStream, HPR, and ZyPR — 
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{p{2.5cm} X X X}
 \toprule
 Toolflow & Primary Focus & Parallelism Model & Runtime Reconfiguration \\
 \midrule
@@ -108,7 +108,7 @@ RapidStream [ASPLOS 2022] & Compile-time reduction & Island-based parallel PnR v
 HPR [FCCM 2022] & Adaptive PR for dataflow & Per-operator HLS + parallel PnR per PR page & Yes (runtime NoC reconfiguration) \\
 ZyPR [IEEE ESL 2023] & End-to-end build \& runtime manager & Incremental per-RP module builds & Yes (ZyCAP DMA-based PR) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 This distinction is significant: RapidStream's contribution is exclusively on the compilation side and does not directly address runtime management, while HPR and ZyPR are concerned with both the compilation workflow and the runtime infrastructure for performing partial reconfiguration on a live system. The following three sections review each toolflow in detail.
@@ -234,7 +234,7 @@ The HPR paper includes explicit comparisons with two baseline approaches: a conv
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Criterion & PR with NoC (Fixed) & RapidStream & HPR \\
 \midrule
@@ -245,7 +245,7 @@ Criterion & PR with NoC (Fixed) & RapidStream & HPR \\
 \textbf{NoC role} & Routing only & N/A (fixed wire routes) & Routing + reconfiguration control \\
 \textbf{Area efficiency} & Low for small operators & N/A & High (smallest fitting page) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The key differentiator of HPR relative to \textit{PR with NoC} is area efficiency: because each operator occupies only the smallest page that fits it, a larger number of operators can coexist simultaneously on the device compared to a system in which every operator is allocated a fixed-size page sized for the largest operator in the library. In a library of operators with highly varied resource footprints — which is typical of machine learning accelerators, where tasks range from simple data formatters requiring tens of LUTs to convolutional cores requiring thousands of LUTs and many BRAM tiles — this adaptive sizing can substantially increase system throughput.

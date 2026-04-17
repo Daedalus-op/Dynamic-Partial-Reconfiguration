@@ -50,7 +50,7 @@ The CFU port interface is defined by the following signals:
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Signal & Direction (processor → CFU) & Width & Description \\
 \midrule
@@ -63,7 +63,7 @@ Signal & Direction (processor → CFU) & Width & Description \\
 \texttt{rsp\_ready} & Output & 1 & Asserted by the processor when it is ready to accept the response \\
 \texttt{rsp\_payload\_outputs\_0} & Input & 32 & The 32-bit result, written into the destination register (rd) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The handshake protocol operates in the style of AXI4-Stream: a transaction is accepted when both \texttt{cmd\_valid} and \texttt{cmd\_ready} are simultaneously asserted, and a response is consumed when both \texttt{rsp\_valid} and \texttt{rsp\_ready} are simultaneously asserted. The processor pipeline stalls at the Execute stage from the moment a CUSTOM0 instruction is dispatched (i.e., \texttt{cmd\_valid} is asserted) until \texttt{rsp\_valid} is returned by the CFU, at which point the result is written into the destination architectural register and the pipeline is released. This stall behaviour ensures functional correctness for any CFU that is not pipelined relative to the processor, at the cost of throughput equal to one CFU operation per dispatch-to-response cycle count.
@@ -86,7 +86,7 @@ The ICAP interface signals relevant to partial reconfiguration are:
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Signal & Direction & Width & Description \\
 \midrule
@@ -96,7 +96,7 @@ Signal & Direction & Width & Description \\
 \texttt{I} & Input & 32 & Configuration data word to write \\
 \texttt{O} & Output & 32 & Configuration readback data \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 A partial bitstream write sequence proceeds as follows: the ICAP controller drives \texttt{CSIB} low and \texttt{RDWRB} low to enable write mode, and then presents the 32-bit configuration words — beginning with the synchronisation word \texttt{0xAA995566} and continuing through the FAR, FDRI, and frame data sequences described in §3.1.1 — at the \texttt{I} input on consecutive rising clock edges. The ICAP accepts one word per clock cycle. At the conclusion of the sequence, a DESYNC command is issued (\texttt{0x0000000D} to the CMD register), \texttt{CSIB} is de-asserted, and \texttt{RDWRB} is returned high.

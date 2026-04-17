@@ -20,7 +20,7 @@ Both configurations, produced by separate Vivado implementation runs, yielded id
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Resource & Used & Available & Utilisation (\%) \\
 \midrule
@@ -32,7 +32,7 @@ Slices & 21 & 15,850 & 0.13 \\
 BUFGCTRL & 1 & 32 & 3.13 \\
 Bonded IOB & 10 & 210 & 4.76 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The exceptionally low logic utilisation — ten LUTs and sixty-four flip-flops in total — is consistent with the tutorial's intentionally minimal scope: the shift module uses a single RAMB36E1 to store LED patterns, while the counter module implements a simple 4-bit programmable counter using only combinational carry-chain arithmetic and synchronous registers. The single BUFG primitive confirms that the entire design operates within one clock domain, driven by the on-board differential clock after IBUF insertion.
@@ -47,14 +47,14 @@ Timing closure was achieved in both configurations. The design was constrained t
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Configuration & WNS Setup (ns) & WHS Hold (ns) & Failing Endpoints \\
 \midrule
 \texttt{shift\_left} + \texttt{count\_down} (import) & +2.023 & +0.109 & 0 \\
 \texttt{shift\_right} + \texttt{count\_up} (implement) & +2.022 & +0.109 & 0 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 A Worst Negative Slack (WNS) of +2.022 ns indicates that the critical path in both configurations required approximately 2.978 ns — well within the 5.0 ns clock period. The critical path traversed the boundary between the static partition and the reconfigurable region: a FDRE flip-flop in \texttt{inst\_count} (within \texttt{pblock\_inst\_count}) propagated through two LUT levels (LUT6 and LUT5) before clocking a downstream FDSE register in the same reconfigurable block. The net crossing the static/reconfigurable boundary — carrying the counter's address bits to the BRAM in \texttt{inst\_shift} — was the timing-critical hold path, exhibiting a WHS of +0.109 ns. This narrow hold margin at the partition boundary is characteristic of DFX designs, where the router must work within fixed floorplan constraints that can limit the routing flexibility available to hold-repair buffers. Nonetheless, all timing constraints were satisfied in both configurations, confirming that the floorplan and clock constraints were correctly specified.
@@ -73,7 +73,7 @@ Vivado executed two implementation runs: \texttt{impl\_2} (the parent run, in wh
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Resource & Used & Available & Utilisation (\%) \\
 \midrule
@@ -93,7 +93,7 @@ DSPs & 0 & 90 & 0.00 \\
 Bonded IOB & 18 & 210 & 8.57 \\
 BUFGCTRL & 2 & 32 & 6.25 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The LUT count of 4,311 (20.73\%) reflects the combined logic cost of the VexRiscv pipeline, the LiteX interconnect fabric, and the DFX infrastructure. The substantial LUT-as-Memory allocation (535, 5.57\%) is characteristic of LiteX SoC designs, in which the CPU register file, instruction queues, and AXI interconnect buffering are frequently implemented using distributed RAM and shift-register primitives rather than dedicated BRAM, in order to preserve the block RAM tiles for higher-capacity use cases. The 6,608 flip-flops (15.88\%) represent pipeline stage registers in the VexRiscv core and handshake registers in the AXI fabric.
@@ -115,7 +115,7 @@ Across all categories, the Arty A7-35T fabric is used at roughly one-fifth to on
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{ll}
+\begin{tabularx}{\textwidth}{X X}
 \toprule
 Component & Power (W) \\
 \midrule
@@ -128,7 +128,7 @@ I/O & 0.003 \\
 Device Static (W) & 0.062 \\
 \textbf{Total On-Chip (W)} & \textbf{0.134} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The by-hierarchy breakdown reveals that the ILA-related infrastructure (\texttt{system\_ila} and \texttt{ila\_0}) accounts for 34 mW of the dynamic budget — nearly 48\% of all dynamic power. This is a well-known characteristic of Vivado's ILA cores, which instantiate dense shift-register chains and capture memories that toggle at high rates during operation. In a production system from which debug infrastructure would be removed, the dynamic power would drop substantially. The DFX controller IP (\texttt{dfx\_controller\_0}) contributes 12 mW, and the AXI Quad SPI peripheral (\texttt{axi\_quad\_spi\_0}) an additional 6 mW. The remaining dynamic power is distributed across the VexRiscv core, the LiteX AXI interconnect, and miscellaneous glue logic within the \texttt{system} hierarchy.
@@ -149,7 +149,7 @@ The system was constrained to a \texttt{clk} of 5.0 ns (200 MHz), as carried ove
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{ll}
+\begin{tabularx}{\textwidth}{X X}
 \toprule
 Metric & Value \\
 \midrule
@@ -160,7 +160,7 @@ Failing Endpoints (Setup) & 307 \\
 WHS — Hold & +0.054 ns (MET) \\
 Failing Endpoints (Hold) & 0 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \textbf{Critical Path Analysis.} Inspection of the ten worst timing paths reveals that every single failing endpoint sources from \texttt{ICAPE2\_inst/CLK} — the clock pin of the ICAPE2 primitive. The ICAPE2 cell model carries an intrinsic propagation delay of \textbf{5.200 ns} from the clock edge to its output ports (\texttt{Prop\_icape2\_CLK\_O}). Since the data path from the ICAPE2 output then traverses three LUT levels (LUT3 → LUT5 → LUT6) before reaching its destination register, the cumulative path delay is approximately 8.08 ns — well exceeding the 5.0 ns clock period.
@@ -187,14 +187,14 @@ Both the \texttt{Cfu\_comp\_*\_partial.bit} files (for the \texttt{donut} and \t
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{ll}
+\begin{tabularx}{\textwidth}{X X}
 \toprule
 Platform & Partial Bitstream Size \\
 \midrule
 Arty A7-35T & 164,534 bytes (≈ 160.7 KB) \\
 PYNQ-Z2 & 203,308 bytes (≈ 198.5 KB) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The PYNQ-Z2 partial bitstream is approximately 24\% larger. This reflects the different fabric geometry of the PYNQ-Z2's Zynq-7020 device (xc7z020), which has a different configuration frame layout compared to the Artix-7 xc7a35t, even for an equivalent pblock area.
@@ -245,7 +245,7 @@ This represents a \textbf{57× improvement} in throughput compared to JTAG (183.
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lllll}
+\begin{tabularx}{\textwidth}{X X X X X}
 \toprule
 Platform & Interface & Bitstream Size & Latency (s) & Throughput \\
 \midrule
@@ -254,7 +254,7 @@ PYNQ-Z2 & JTAG & 203,308 bytes & 0.0628 s & 3.235 MB/s \\
 PYNQ-Z2 & PCAP & 203,308 bytes & 0.0011 s & 183.2 MB/s \\
 Arty A7-35T & ICAP & — & Pending & Pending \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The ICAP interface on the Arty A7-35T, which is physically implemented and verified in the design (the ICAPE2 primitive is instantiated and consumes 50\% of the device's two available ICAP sites), is expected to provide throughput comparable to PCAP — the Xilinx 7-series ICAPE2 supports up to a 100 MHz configuration clock and a 32-bit wide data bus, yielding a theoretical peak of 400 MB/s. Practical throughput with static-fabric logic driving the ICAP is typically quoted at 100–200 MB/s in published implementations. Realising this in the current system requires resolving the partial bitstream source (flash or DDR), which is targeted for the next development phase.

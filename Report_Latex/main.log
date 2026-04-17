@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.12.30)  17 APR 2026 13:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.12.30)  17 APR 2026 14:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -249,24 +249,34 @@ Package: longtable 2023-11-01 v4.19 Multi-page Table package (DPC)
 \c@LT@chunks=\count286
 \LT@p@ftn=\toks29
 )
+(/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen176
+\TX@old@table=\dimen177
+\TX@old@col=\dimen178
+\TX@target=\dimen179
+\TX@delta=\dimen180
+\TX@cols=\count287
+\TX@ftn=\toks30
+)
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count287
+\lst@mode=\count288
 \lst@gtempboxa=\box62
-\lst@token=\toks30
-\lst@length=\count288
-\lst@currlwidth=\dimen176
-\lst@column=\count289
-\lst@pos=\count290
-\lst@lostspace=\dimen177
-\lst@width=\dimen178
-\lst@newlines=\count291
-\lst@lineno=\count292
-\lst@maxwidth=\dimen179
+\lst@token=\toks31
+\lst@length=\count289
+\lst@currlwidth=\dimen181
+\lst@column=\count290
+\lst@pos=\count291
+\lst@lostspace=\dimen182
+\lst@width=\dimen183
+\lst@newlines=\count292
+\lst@lineno=\count293
+\lst@maxwidth=\dimen184
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count293
-\lst@skipnumbers=\count294
+\c@lstnumber=\count294
+\lst@skipnumbers=\count295
 \lst@framebox=\box63
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -311,14 +321,14 @@ Package: expl3 2024-01-22 L3 programming layer (loader)
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count295
+\l__color_backend_stack_int=\count296
 \l__pdf_internal_box=\box64
 ))
 Package: xparse 2023-10-10 L3 Experimental document command parser
 )
 (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count296
+\etb@tempcnta=\count297
 )
 (/usr/share/texlive/texmf-dist/tex/latex/zref/zref-abspage.sty
 Package: zref-abspage 2023-09-14 v2.35 Module abspage for zref (HO)
@@ -360,14 +370,14 @@ Package zref Info: New property list: main on input line 767.
 Package zref Info: New property: default on input line 768.
 Package zref Info: New property: page on input line 769.
 )
-\c@abspage=\count297
+\c@abspage=\count298
 Package zref Info: New property: abspage on input line 67.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
 \mdf@templength=\skip59
-\c@mdf@globalstyle@cnt=\count298
+\c@mdf@globalstyle@cnt=\count299
 \mdf@skipabove@length=\skip60
 \mdf@skipbelow@length=\skip61
 \mdf@leftmargin@length=\skip62
@@ -443,21 +453,28 @@ File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
 \mdf@horizontalspaceofbox=\skip123
 \mdfsubtitleheight=\skip124
 \mdfsubsubtitleheight=\skip125
-\c@mdfcountframes=\count299
+\c@mdfcountframes=\count300
 
 ****** mdframed patching \endmdf@trivlist
 
 ****** -- success******
 
-\mdf@envdepth=\count300
-\c@mdf@env@i=\count301
-\c@mdf@env@ii=\count302
-\c@mdf@zref@counter=\count303
+\mdf@envdepth=\count301
+\c@mdf@env@i=\count302
+\c@mdf@env@ii=\count303
+\c@mdf@zref@counter=\count304
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
 )
+(/usr/share/texlive/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2022/01/09 v 0.10 modify URL breaks
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+))
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
 
@@ -483,11 +500,11 @@ LaTeX Warning: You have requested, on input line 156, version
 ) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count304
+\c@section@level=\count305
 )
-\@linkdim=\dimen180
-\Hy@linkcounter=\count305
-\Hy@pagecounter=\count306
+\@linkdim=\dimen185
+\Hy@linkcounter=\count306
+\Hy@pagecounter=\count307
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -496,7 +513,7 @@ Now handling font encoding PD1 ...
 (/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count307
+\Hy@SavedSpaceFactor=\count308
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
@@ -511,14 +528,9 @@ Package hyperref Info: Plain pages OFF on input line 4194.
 Package hyperref Info: Backreferencing OFF on input line 4199.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4446.
-\c@Hy@tempcnt=\count308
-
-(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip17
-Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-)
+\c@Hy@tempcnt=\count309
 LaTeX Info: Redefining \url on input line 4784.
-\XeTeXLinkMargin=\dimen181
+\XeTeXLinkMargin=\dimen186
 
 (/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -527,14 +539,14 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count309
-\Field@Width=\dimen182
-\Fld@charsize=\dimen183
+\Fld@menulength=\count310
+\Field@Width=\dimen187
+\Fld@charsize=\dimen188
 Package hyperref Info: Hyper figures OFF on input line 6063.
 Package hyperref Info: Link nesting OFF on input line 6068.
 Package hyperref Info: Hyper index ON on input line 6071.
 Package hyperref Info: backreferencing OFF on input line 6078.
-Package hyperref Info: Link coloring ON on input line 6081.
+Package hyperref Info: Link coloring OFF on input line 6083.
 Package hyperref Info: Link coloring with OCG OFF on input line 6088.
 Package hyperref Info: PDF/A mode OFF on input line 6093.
 
@@ -542,9 +554,9 @@ Package hyperref Info: PDF/A mode OFF on input line 6093.
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count310
-\c@Item=\count311
-\c@Hfootnote=\count312
+\Hy@abspage=\count311
+\c@Item=\count312
+\c@Hfootnote=\count313
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
@@ -554,12 +566,8 @@ File: hpdftex.def 2024-01-20 v7.01h Hyperref driver for pdfTeX
 ! Undefined control sequence.
 l.39 \pdf@ifdraftmode
                      {%
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
+? R
+OK, entering \nonstopmode...
 (/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
 kage
@@ -574,9 +582,9 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-\HyAnn@Count=\count313
-\Fld@listcount=\count314
-\c@bookmark@seq@number=\count315
+\HyAnn@Count=\count314
+\Fld@listcount=\count315
+\c@bookmark@seq@number=\count316
 (/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
 
@@ -601,8 +609,8 @@ Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
 \f@nch@O@olf=\skip134
 \f@nch@O@orf=\skip135
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 98
-.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 10
+0.
 
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -612,24 +620,24 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 (./Chapter6_Results_Analysis.aux) (./Chapter7_Conclusion_FutureWork.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 100.
+LaTeX Font Info:    ... okay on input line 100.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -639,14 +647,14 @@ LaTeX Font Info:    ... okay on input line 98.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(99.58464pt, 426.79135pt, 71.13188pt)
+* h-part:(L,W,R)=(42.67912pt, 512.14963pt, 42.67912pt)
 * v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=426.79135pt
+* \textwidth=512.14963pt
 * \textheight=702.78308pt
-* \oddsidemargin=27.31465pt
-* \evensidemargin=27.31465pt
+* \oddsidemargin=-29.59087pt
+* \evensidemargin=-29.59087pt
 * \topmargin=-38.1381pt
 * \headheight=12.0pt
 * \headsep=25.0pt
@@ -667,17 +675,17 @@ LaTeX Font Info:    ... okay on input line 98.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count316
-\scratchdimen=\dimen184
+\scratchcounter=\count317
+\scratchdimen=\dimen189
 \scratchbox=\box70
-\nofMPsegments=\count317
-\nofMParguments=\count318
-\everyMPshowfont=\toks31
-\MPscratchCnt=\count319
-\MPscratchDim=\dimen185
-\MPnumerator=\count320
-\makeMPintoPDFobject=\count321
-\everyMPtoPDFconversion=\toks32
+\nofMPsegments=\count318
+\nofMParguments=\count319
+\everyMPshowfont=\toks32
+\MPscratchCnt=\count320
+\MPscratchDim=\dimen190
+\MPnumerator=\count321
+\makeMPintoPDFobject=\count322
+\everyMPtoPDFconversion=\toks33
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -687,14 +695,14 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count322
-Package hyperref Info: Link coloring ON on input line 98.
+\c@lstlisting=\count323
+Package hyperref Info: Link coloring OFF on input line 100.
 
 ! Undefined control sequence.
 \ReadBookmarks ->\pdf@ifdraftmode 
                                   {}{\begingroup \def \do ##1{\ifnum \catcod...
-l.98 \begin{document}
-                     
+l.100 \begin{document}
+                      
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -709,7 +717,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 \PDF@FinishDoc ->\pdf@ifdraftmode 
                                   {}{\Hy@UseMaketitleInfos \HyInfo@GenerateA...
-l.113 \end{titlepage}
+l.115 \end{titlepage}
                      
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -760,27 +768,17 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (5.68279pt too wide) in paragraph at lines 19--19
- [][] [][][]\T1/lmr/m/n/12 RapidStream 2.0: HBM-Based Boards and SLR-Crossing R
-out- 
- []
-
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.32 ...CAP/ICAP Controller}{25}{subsection.2.5.2}
+l.38 ...bedded Applications}{28}{subsection.2.6.2}
                                                   % [1
 
 ]
-Overfull \hbox (9.24837pt too wide) in paragraph at lines 39--39
- [][] [][][]\T1/lmr/m/n/12 RV-CAP: En-abling Dy-namic Par-tial Re-con-fig-u-ra-
-tion for FPGA- 
- []
-
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6
 3.
+
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -793,11 +791,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [2]
-Overfull \hbox (5.94772pt too wide) in paragraph at lines 107--107
- [][] [][][]\T1/lmr/m/n/12 CFU Play-ground ^^V Re-con-fig-u-ra-tion Tim-ing Mod
--ule (\T1/lmtt/m/n/12 recon_counter.v\T1/lmr/m/n/12 )[][] [][]  
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -806,13 +799,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3]
-Overfull \hbox (2.29085pt too wide) in paragraph at lines 158--158
- [][] [][][]\T1/lmr/m/n/12 ICAP Through-put Char-ac-ter-i-sa-tion and Com-par-i
--son with PCAP[][] [][]  
- []
-
-)
+[3])
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
@@ -835,6 +822,11 @@ Chapter 1.
 
 
 ]
+Overfull \hbox (6.61221pt too wide) in paragraph at lines 19--20
+\T1/lmr/m/n/12 space trade-off, cou-pling the high-performance ac-cel-er-a-tion
+ of cus-tom dig-i-tal logic with post-fabrication
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -844,11 +836,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [6]
-Overfull \hbox (6.85039pt too wide) in paragraph at lines 33--34
-[]\T1/lmr/m/n/12 This project in-ves-ti-gates the de-sign, im-ple-men-ta-tion, 
-and val-i-da-tion of such a runtime-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -858,11 +845,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [7]
-Overfull \hbox (13.24492pt too wide) in paragraph at lines 45--46
-\T1/lmr/m/n/12 strated ICAP-based re-con-fig-u-ra-tion or-ches-trated by a VexR
-iscv soft core, and AMPER-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -886,14 +868,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
  (./Chapter2_LiteratureReview.tex
 Chapter 2.
 
-Overfull \hbox (27.78822pt too wide) in paragraph at lines 5--5
-[]\T1/lmr/bx/n/17.28 Foundational Sur-vey: DPR Ar-chi-tec-tures, Meth-
- []
-
-
-Overfull \hbox (7.20653pt too wide) in paragraph at lines 11--12
-\T1/lmr/m/n/12 hard-ware layer com-pris-ing Con-fig-urable Logic Blocks (CLBs),
- Block RAMs (BRAMs),
+Overfull \hbox (5.87988pt too wide) in paragraph at lines 5--5
+[]\T1/lmr/bx/n/17.28 Foundational Sur-vey: DPR Ar-chi-tec-tures, Meth-ods, and
  []
 
 [10
@@ -902,6 +878,11 @@ Overfull \hbox (7.20653pt too wide) in paragraph at lines 11--12
 
 
 ]
+Overfull \hbox (12.16498pt too wide) in paragraph at lines 27--27
+[]\T1/lmr/bx/n/14.4 The Frame-Based Con-fig-u-ra-tion Model and Par-tial Bit-st
+ream Struc-
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -916,6 +897,11 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 4
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
+Overfull \hbox (6.05722pt too wide) in paragraph at lines 49--50
+\T1/lmr/m/n/12 Efficient man-age-ment of mul-ti-ple re-con-fig-urable tasks thr
+ough-out sys-tem op-er-a-tion in-tro-duces schedul-
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -925,6 +911,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [12{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]
+Overfull \hbox (0.39284pt too wide) in paragraph at lines 68--68
+[]\T1/lmr/bx/n/17.28 The Compile-Time Prob-lem and the Mo-ti-va-tion for Par-
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -942,22 +932,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[14]
-Overfull \hbox (6.27463pt too wide) in paragraph at lines 87--88
-\T1/lmr/m/n/12 nets at the phys-i-cal rout-ing level, with-out re-running globa
-l place-ment. The RWRoute
+[14{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 111--111
+[]|\T1/lmr/m/n/12 RapidStream
  []
 
 
-Overfull \hbox (0.67517pt too wide) in paragraph at lines 87--88
-\T1/lmr/m/n/12 [17] pro-grammable rout-ing en-gine within Rapid-Wright fur-ther
- en-ables inter-partition
+Underfull \hbox (badness 10000) in paragraph at lines 111--111
+\T1/lmr/m/n/12 [AS-P-LOS
  []
 
 
-Overfull \hbox (17.946pt too wide) in paragraph at lines 87--88
-\T1/lmr/m/n/12 route com-ple-tion within the as-sem-bled de-sign con-text, re-s
-pect-ing the already-committed
+Underfull \hbox (badness 2478) in paragraph at lines 111--111
+[]|\T1/lmr/m/n/12 ZyPR [IEEE
  []
 
 
@@ -968,11 +955,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[15{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}]
-Overfull \hbox (385.96552pt too wide) in paragraph at lines 103--112
- [][] 
- []
-
+[15]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -991,10 +974,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [17]
-Overfull \hbox (21.26097pt too wide) in paragraph at lines 144--144
-[]\T1/lmr/bx/n/14.4 RapidStream 2.0: HBM-Based Boards and SLR-Crossing
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1004,10 +983,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [18]
-Overfull \hbox (3.47336pt too wide) in paragraph at lines 156--156
-[]\T1/lmr/bx/n/14.4 Relevance and Lim-i-ta-tions with Re-spect to the Present
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1026,6 +1001,30 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [20]
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]|\T1/lmr/m/n/12 Fixed grid, con-fig-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]|\T1/lmr/m/n/12 Automatic par-ti-tion-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]|\T1/lmr/m/n/12 Yes (per adap-tive
+ []
+
+
+Underfull \hbox (badness 4291) in paragraph at lines 248--248
+[]|\T1/lmr/m/n/12 Per-operator + per-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]|\T1/lmr/m/n/12 N/A (fixed wire
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1044,10 +1043,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [22]
-Overfull \hbox (241.14034pt too wide) in paragraph at lines 237--249
- [][] 
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1066,10 +1061,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [24]
-Overfull \hbox (15.33784pt too wide) in paragraph at lines 286--286
-[]\T1/lmr/bx/n/14.4 ZyCAP: The High-Throughput PCAP/-I-CAP Con-troller 
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1079,11 +1070,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [25]
-Overfull \hbox (10.35413pt too wide) in paragraph at lines 302--302
-[]\T1/lmr/bx/n/14.4 ZyPR Toolflow: Op-ti-mi-sa-tion Lev-els and Build Pipeline 
-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1093,6 +1079,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [26]
+Overfull \hbox (9.7746pt too wide) in paragraph at lines 353--353
+[]\T1/lmr/bx/n/14.4 DML: Dy-namic Par-tial Re-con-fig-u-ra-tion with Scal-able 
+Task Schedul-
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1111,6 +1102,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [28]
+Overfull \hbox (1.07808pt too wide) in paragraph at lines 391--391
+[]\T1/lmr/bx/n/14.4 ACNNE: Adap-tive Con-vo-lu-tion En-gine for CNN Ac-cel-er-a
+-tion with
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1129,6 +1125,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [30]
+Overfull \hbox (3.26715pt too wide) in paragraph at lines 413--414
+[]\T1/lmr/bx/n/12 On ap-pli-ca-tion val-i-da-tion: \T1/lmr/m/n/12 AC-NNE con-fi
+rms that DPR-based hard-ware time-multiplexing achieves
+ []
+
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1138,38 +1140,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [31]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[32]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[33])
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[34]
 \openout2 = `Chapter3_Background.aux'.
 
  (./Chapter3_Background.tex
 Chapter 3.
-[35
+[32
 
 
 
@@ -1183,11 +1158,114 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[36]
-Overfull \hbox (1.74585pt too wide) in paragraph at lines 31--32
-\T1/lmr/m/n/12 scribed in �3.1.1 ^^V con-strains the min-i-mum and per-mis-si-b
-le sizes of the \T1/lmtt/m/n/12 cfu_compute
+[33]
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]|\T1/lmr/m/n/12 Direction (pro-ces-sor
  []
+
+
+Overfull \hbox (25.98766pt too wide) in paragraph at lines 66--66
+[]|\T1/lmtt/m/n/12 cmd_payload_function_id| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]|\T1/lmr/m/n/12 Selects the spe-cific
+ []
+
+
+Underfull \hbox (badness 1983) in paragraph at lines 66--66
+\T1/lmr/m/n/12 op-er-a-tion within the
+ []
+
+
+Overfull \hbox (7.46265pt too wide) in paragraph at lines 66--66
+[]|\T1/lmtt/m/n/12 cmd_payload_inputs_0| 
+ []
+
+
+Underfull \hbox (badness 2884) in paragraph at lines 66--66
+[]|\T1/lmr/m/n/12 First 32-bit operand
+ []
+
+
+Underfull \hbox (badness 2894) in paragraph at lines 66--66
+\T1/lmr/m/n/12 (rs1 value from the
+ []
+
+
+Overfull \hbox (7.46265pt too wide) in paragraph at lines 66--66
+[]|\T1/lmtt/m/n/12 cmd_payload_inputs_1| 
+ []
+
+
+Underfull \hbox (badness 2894) in paragraph at lines 66--66
+\T1/lmr/m/n/12 (rs2 value from the
+ []
+
+
+Underfull \hbox (badness 4060) in paragraph at lines 66--66
+\T1/lmr/m/n/12 when a re-sponse is
+ []
+
+
+Overfull \hbox (13.63765pt too wide) in paragraph at lines 66--66
+[]|\T1/lmtt/m/n/12 rsp_payload_outputs_0| 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[34]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[35]
+Underfull \hbox (badness 7012) in paragraph at lines 99--99
+[]|\T1/lmr/m/n/12 Chip en-able (ac-tive
+ []
+
+
+Underfull \hbox (badness 2376) in paragraph at lines 99--99
+\T1/lmr/m/n/12 low on 7-series, de-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--99
+[]|\T1/lmr/m/n/12 Configuration data
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--99
+[]|\T1/lmr/m/n/12 Configuration read-
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[36]
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+112.
+ (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 117.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1198,10 +1276,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [37]
-Overfull \hbox (297.86316pt too wide) in paragraph at lines 53--67
- [][] 
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1212,6 +1286,68 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [38]
 
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.208  +-- system_wrapper     — 
+                                  Reconfiguration controller (static partition)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "94.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.208  +-- system_wrapper     — 
+                                  Reconfiguration controller (static partition)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.214  +-- digilent_arty      — 
+                                  VexRiscv LiteX SoC (static partition)
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "94.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.214  +-- digilent_arty      — 
+                                  VexRiscv LiteX SoC (static partition)
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
 (fancyhdr)                \setlength{\headheight}{13.59999pt}.
@@ -1220,14 +1356,102 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [39]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-112.
- (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 117.
 
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219       +-- decouple input → 
+                                   cfu.v → DFX Decoupler → cfu_compute (RP)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "92.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219       +-- decouple input → 
+                                   cfu.v → DFX Decoupler → cfu_compute (RP)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219       +-- decouple input → cfu.v → 
+                                             DFX Decoupler → cfu_compute (RP)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "92.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219       +-- decouple input → cfu.v → 
+                                             DFX Decoupler → cfu_compute (RP)
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219 ...le input → cfu.v → DFX Decoupler → 
+                                                  cfu_compute (RP)
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "92.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219 ...le input → cfu.v → DFX Decoupler → 
+                                                  cfu_compute (RP)
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 232.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1246,10 +1470,95 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [41]
-Overfull \hbox (3.57103pt too wide) in paragraph at lines 204--205
-\T1/lmr/m/n/12 The com-plete DFX-enabled sys-tem is as-sem-bled in a top-level 
-Ver-ilog mod-ule (\T1/lmtt/m/n/12 top.v\T1/lmr/m/n/12 )
- []
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.317                  |  +-- STARTUPE2 → 
+                                            EOS                         |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "92.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.317                  |  +-- STARTUPE2 → 
+                                            EOS                         |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.324 ...         |       |   +-- static side ↔ 
+                                                  VexRiscv port   |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "94.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.324 ...         |       |   +-- static side ↔ 
+                                                  VexRiscv port   |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.325 ...             |       |   +-- RP side ↔ 
+                                                  cfu_compute          |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "94.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.325 ...             |       |   +-- RP side ↔ 
+                                                  cfu_compute          |
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1259,178 +1568,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[42]
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.208  +-- system_wrapper     — 
-                                  Reconfiguration controller (static partition)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "94.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.208  +-- system_wrapper     — 
-                                  Reconfiguration controller (static partition)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.214  +-- digilent_arty      — 
-                                  VexRiscv LiteX SoC (static partition)
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "94.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.214  +-- digilent_arty      — 
-                                  VexRiscv LiteX SoC (static partition)
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219       +-- decouple input → 
-                                   cfu.v → DFX Decoupler → cfu_compute (RP)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "92.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219       +-- decouple input → 
-                                   cfu.v → DFX Decoupler → cfu_compute (RP)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219       +-- decouple input → cfu.v → 
-                                             DFX Decoupler → cfu_compute (RP)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "92.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219       +-- decouple input → cfu.v → 
-                                             DFX Decoupler → cfu_compute (RP)
-
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219 ...le input → cfu.v → DFX Decoupler → 
-                                                  cfu_compute (RP)
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "92.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.219 ...le input → cfu.v → DFX Decoupler → 
-                                                  cfu_compute (RP)
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-Overfull \hbox (9.4227pt too wide) in paragraph at lines 231--232
-[]\T1/lmr/bx/n/12 VexRiscv Ex-e-cute stage \T1/lmr/m/n/12 dis-patches a CUS-TOM
-0 in-struc-tion. The \T1/lmtt/m/n/12 cmd_valid
- []
-
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 232.
-
-Overfull \hbox (49.419pt too wide) in paragraph at lines 233--234
-\T1/lmr/m/n/12 ac-tive RM), as-serts \T1/lmtt/m/n/12 rsp_valid\T1/lmr/m/n/12 , 
-and places the 32-bit re-sult on \T1/lmtt/m/n/12 rsp_payload_outputs_0\T1/lmr/m
-/n/12 . 
- []
-
+[42])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1440,134 +1578,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [43]
-Overfull \hbox (67.1181pt too wide) in paragraph at lines 234--235
-\T1/lmr/m/n/12 out-put port, and thence to the VexRiscv pipeline's \T1/lmtt/m/n
-/12 rsp_valid \T1/lmr/m/n/12 and \T1/lmtt/m/n/12 rsp_payload_outputs_0
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[44]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[45]
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.317                  |  +-- STARTUPE2 → 
-                                            EOS                         |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "92.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.317                  |  +-- STARTUPE2 → 
-                                            EOS                         |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.324 ...         |       |   +-- static side ↔ 
-                                                  VexRiscv port   |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "94.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.324 ...         |       |   +-- static side ↔ 
-                                                  VexRiscv port   |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@\lst@EC�).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.325 ...             |       |   +-- RP side ↔ 
-                                                  cfu_compute          |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-! LaTeX Error: Invalid UTF-8 byte "94.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.325 ...             |       |   +-- RP side ↔ 
-                                                  cfu_compute          |
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[46]
 \openout2 = `Chapter4_Design_Implementation.aux'.
 
  (./Chapter4_Design_Implementation.tex
 Chapter 4.
-[47
+[44
 
 
 
@@ -1584,9 +1599,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[48]
-Overfull \hbox (115.65147pt too wide) in paragraph at lines 45--59
- [][] 
+[45]
+Underfull \hbox (badness 3058) in paragraph at lines 58--58
+[]|\T1/lmr/m/n/12 Runtime mem-ory for LiteX
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+[]|\T1/lmtt/m/n/12 qspi_flash_io[3:0]\T1/lmr/m/n/12 , \T1/lmtt/m/n/12 clk\T1/lm
+r/m/n/12 ,
  []
 
 
@@ -1597,43 +1618,40 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
+[46]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[47]
+Overfull \hbox (3.65778pt too wide) in paragraph at lines 114--115
+[]\T1/lmr/bx/n/12 Step 3 ^^V ICAP write com-mence-ment. \T1/lmr/m/n/12 The \T1/
+lmtt/m/n/12 system_wrapper \T1/lmr/m/n/12 FSM tran-si-tions to the \T1/lmtt/m/n
+/12 ICAP_WRITE
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[48]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
 [49]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[50]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[51]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[52]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[53]
 
 ! LaTeX Error: Unicode character ✅ (U+2705)
                not set up for use with LaTeX.
@@ -1655,7 +1673,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[54] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+[50]
+Overfull \hbox (3.91092pt too wide) in paragraph at lines 166--167
+\T1/lmtt/m/n/12 recon_counter\T1/lmr/m/n/12 , and the ini-tial \T1/lmtt/m/n/12 
+cfu_compute \T1/lmr/m/n/12 RM (\T1/lmtt/m/n/12 example.v\T1/lmr/m/n/12 ) is fir
+st pro-grammed onto the XC7A35T
+ []
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang2.sty
@@ -1669,18 +1694,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[55]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[56]
-Overfull \hbox (149.77734pt too wide) in paragraph at lines 228--241
- [][] 
+[51]
+Underfull \hbox (badness 6792) in paragraph at lines 211--211
+[]|\T1/lmr/m/n/12 Only \T1/lmtt/m/n/12 counter[31:0] \T1/lmr/m/n/12 mon-i-
  []
 
 
@@ -1691,7 +1707,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[57]
+[52]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1700,7 +1716,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[58]
+[53]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[54]
 
 ! LaTeX Error: Unicode character − (U+2212)
                not set up for use with LaTeX.
@@ -1723,16 +1748,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[59]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[60]
+[55]
 
 ! LaTeX Error: Unicode character ✅ (U+2705)
                not set up for use with LaTeX.
@@ -1754,7 +1770,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[61]
+[56]
 
 ! LaTeX Error: Unicode character ✅ (U+2705)
                not set up for use with LaTeX.
@@ -1768,23 +1784,12 @@ l.312 ... Partial Reconfiguration (Validated ✅)}
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
-
-Overfull \hbox (10.36398pt too wide) in paragraph at lines 314--315
-\T1/lmr/m/n/12 PCAP-based re-con-fig-u-ra-tion was val-i-dated by ex-e-cut-ing 
-a com-plete, software-triggered
- []
-
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Overfull \hbox (62.93222pt too wide) in paragraph at lines 326--327
-[]\T1/lmr/m/n/12 Successful ap-pli-ca-tion of the DTO is con-firmed by the pres
--ence of the \T1/lmtt/m/n/12 /sys/class/fpga_region/
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1793,14 +1798,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[62] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+[57] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Overfull \hbox (6.60695pt too wide) in paragraph at lines 357--358
-\T1/lmr/m/n/12 cepts this write and in-vokes the Zynq-specific back-end (\T1/lm
-tt/m/n/12 drivers/fpga/zynq-fpga.c\T1/lmr/m/n/12 ).
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1809,7 +1809,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[63]
+[58]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1818,7 +1818,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[64]
+[59]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1827,11 +1827,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[65]
-Overfull \hbox (48.2368pt too wide) in paragraph at lines 415--425
- [][] 
- []
-
+[60]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1840,24 +1836,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[66]
-Overfull \hbox (3.3962pt too wide) in paragraph at lines 438--439
-[]\T1/lmr/bx/n/12 Modified CFU Play-ground Python host: \T1/lmr/m/n/12 Adapt-in
-g the CFU Play-ground's
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[67]
-Overfull \hbox (20.22636pt too wide) in paragraph at lines 456--457
-[]\T1/lmr/m/n/12 This as-sign-ment was val-i-dated with a sim-ple loop-back tes
-t: \T1/lmtt/m/n/12 UART1_TX_0 \T1/lmr/m/n/12 and \T1/lmtt/m/n/12 UART1_RX_0
+[61]
+Overfull \hbox (1.79425pt too wide) in paragraph at lines 446--447
+\T1/lmr/m/n/12 the PS EMIO in-ter-face to the PL fab-ric, ex-pos-ing UART1 TX a
+nd RX as PL-level sig-nals (\T1/lmtt/m/n/12 UART1_TX_0
  []
 
 
@@ -2048,7 +2030,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[68]
+[62]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2057,7 +2039,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[69{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/d
+[63{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/d
 vips/lm/lm-mathsy.enc}]
 
 ! LaTeX Error: Unicode character Ω (U+03A9)
@@ -2095,7 +2077,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[70]
+[64]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2104,9 +2086,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[71]
-Overfull \hbox (265.6157pt too wide) in paragraph at lines 547--556
- [][] 
+[65]
+Underfull \hbox (badness 2035) in paragraph at lines 555--555
+[]|\T1/lmr/m/n/12 JTAG (Chan-nel A) + Sec-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 555--555
+[]|\T1/lmr/m/n/12 PYNQ-Z2 PMOD JA \TS1/lmr/m/n/12 ^^Y
  []
 
 
@@ -2117,7 +2104,70 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
+[66]
+Overfull \hbox (11.90062pt too wide) in paragraph at lines 610--610
+[]\T1/lmr/bx/n/17.28 Partial Bit-stream Stor-age ^^V Cur-rent State and Roadmap
+ 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[67]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[68])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[69]
+\openout2 = `Chapter5_Software_Firmware.aux'.
+
+ (./Chapter5_Software_Firmware.tex
+Chapter 5.
+[70
+
+
+
+
+]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[71]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
 [72]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <17.28> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 126.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2135,7 +2185,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[74])
+[74]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2145,16 +2195,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [75]
-\openout2 = `Chapter5_Software_Firmware.aux'.
 
- (./Chapter5_Software_Firmware.tex
-Chapter 5.
-[76
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
 
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-
-
-]
+[76]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2173,19 +2222,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [78]
-Overfull \hbox (6.61636pt too wide) in paragraph at lines 120--121
-\T1/lmr/m/n/12 fetch-ing), and the \T1/lmtt/m/n/12 pr_switch \T1/lmr/m/n/12 in-
-put that trig-gers re-con-fig-u-ra-tion. The \T1/lmtt/m/n/12 digilent_arty
- []
-
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 126.
-
-Overfull \hbox (0.32672pt too wide) in paragraph at lines 126--126
-[]\T1/lmr/bx/n/17.28 CFU Play-ground ^^V De-cou-pler Bridge (\T1/lmtt/b/n/17.28
- cfu.v\T1/lmr/bx/n/17.28 ) 
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2194,7 +2230,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[79]
+[79] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2222,18 +2263,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [82]
-Overfull \hbox (34.22792pt too wide) in paragraph at lines 305--306
-\T1/lmr/m/n/12 Three Ver-ilog par-ti-tions and one multi-file Sys-temVer-ilog p
-ar-ti-tion oc-cupy the \T1/lmtt/m/n/12 partitions/
- []
-
-
-Overfull \hbox (5.23944pt too wide) in paragraph at lines 305--306
-\T1/lmr/m/n/12 ports (\T1/lmtt/m/n/12 cmd_valid\T1/lmr/m/n/12 , \T1/lmtt/m/n/12
- cmd_ready\T1/lmr/m/n/12 , \T1/lmtt/m/n/12 cmd_payload_function_id\T1/lmr/m/n/1
-2 , \T1/lmtt/m/n/12 cmd_payload_inputs_0\T1/lmr/m/n/12 ,
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2243,6 +2272,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [83]
+Overfull \hbox (7.27899pt too wide) in paragraph at lines 664--665
+[]\T1/lmr/bx/n/12 Compile-time se-lec-tion \T1/lmr/m/n/12 be-tween hard-ware an
+d soft-ware ex-e-cu-tion is con-trolled by the \T1/lmtt/m/n/12 CFU_FORCE_SW
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2252,11 +2286,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [84]
-Overfull \hbox (63.45349pt too wide) in paragraph at lines 386--387
-[]\T1/lmr/bx/n/12 Output mul-ti-plex-ing: \T1/lmr/m/n/12 The function-select lo
-gic at Stage 2 uses \T1/lmtt/m/n/12 cmd_payload_function_id[1]
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2267,9 +2296,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [85] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-)
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 )
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2298,12 +2324,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [88]
-Overfull \hbox (9.23367pt too wide) in paragraph at lines 570--571
-\T1/lmr/m/n/12 run-time through the \T1/lmtt/m/n/12 layer_one_en \T1/lmr/m/n/12
- flag, de-rived from \T1/lmtt/m/n/12 cmd_payload_function_id[4]\T1/lmr/m/n/12 .
-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2313,19 +2333,35 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [89]
+Underfull \hbox (badness 10000) in paragraph at lines 943--943
+[]|\T1/lmr/m/n/12 Generate LiteX
+ []
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
 
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+Underfull \hbox (badness 10000) in paragraph at lines 943--943
+\T1/lmr/m/n/12 SoC (\T1/lmtt/m/n/12 python -m
+ []
 
-[90]
-Overfull \hbox (3.54263pt too wide) in paragraph at lines 657--658
-[]\T1/lmr/bx/n/12 Software-emulation macros \T1/lmr/m/n/12 call the C func-tion
- \T1/lmtt/m/n/12 Cfu() \T1/lmr/m/n/12 de-fined in \T1/lmtt/m/n/12 software_cfu.
-c\T1/lmr/m/n/12 : 
+
+Overfull \hbox (51.23355pt too wide) in paragraph at lines 943--943
+\T1/lmtt/m/n/12 litex_boards.targets.digilent_arty
+ []
+
+
+Underfull \hbox (badness 1655) in paragraph at lines 943--943
+[]|\T1/lmtt/m/n/12 digilent_arty.v\T1/lmr/m/n/12 , \T1/lmtt/m/n/12 arty.xdc\T1/
+lmr/m/n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 943--943
+[]|\T1/lmr/m/n/12 Create Vi-vado DFX
+ []
+
+
+Underfull \hbox (badness 2707) in paragraph at lines 943--943
+\T1/lmr/m/n/12 project, add \T1/lmtt/m/n/12 top.v\T1/lmr/m/n/12 , \T1/lmtt/m/n/
+12 cfu.v\T1/lmr/m/n/12 ,
  []
 
 
@@ -2336,7 +2372,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[91]
+[90])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2345,9 +2381,37 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[92] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-)
+[91]
+\openout2 = `Chapter6_Results_Analysis.aux'.
+
+ (./Chapter6_Results_Analysis.tex
+Chapter 6.
+[92
+
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+[]|\T1/lmtt/m/n/12 shift_left \T1/lmr/m/n/12 +
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+\T1/lmtt/m/n/12 count_down \T1/lmr/m/n/12 (im-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+[]|\T1/lmtt/m/n/12 shift_right \T1/lmr/m/n/12 +
+ []
+
+
+Overfull \hbox (0.116pt too wide) in paragraph at lines 66--67
+\T1/lmr/m/n/12 de-sign en-com-passes the VexRiscv soft-core pro-ces-sor em-bed-
+ded within a LiteX SoC (\T1/lmtt/m/n/12 digilent_arty\T1/lmr/m/n/12 ),
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2375,127 +2439,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [95]
-Overfull \hbox (36.62468pt too wide) in paragraph at lines 849--850
-[]\T1/lmr/m/n/12 The static par-ti-tion con-tains a 35-bit free-running counter
- whose up-per bits (\T1/lmtt/m/n/12 count[34:23]\T1/lmr/m/n/12 )
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[96]
-Overfull \hbox (233.12628pt too wide) in paragraph at lines 930--944
- [][] 
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[97]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[98]
-Overfull \hbox (48.66266pt too wide) in paragraph at lines 991--992
-\T1/lmr/m/n/12 points, and multi-gigabyte im-ple-men-ta-tion runs ^^V re-side u
-n-der \T1/lmtt/m/n/12 build/ \T1/lmr/m/n/12 and \T1/lmtt/m/n/12 dfx_playground/
-
- []
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[99]
-\openout2 = `Chapter6_Results_Analysis.aux'.
-
- (./Chapter6_Results_Analysis.tex
-Chapter 6.
-[100
-
-
-
-
-]
-Overfull \hbox (11.34502pt too wide) in paragraph at lines 19--20
-[]\T1/lmr/bx/n/12 Table 6.1 ^^V DFX Tu-to-rial Re-source Util-i-sa-tion (xc7a10
-0tcsg324-1, Routed) 
- []
-
-
-Overfull \hbox (78.47627pt too wide) in paragraph at lines 50--58
- [][] 
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[101]
-Overfull \hbox (18.54195pt too wide) in paragraph at lines 66--67
-\T1/lmr/m/n/12 con-troller for on-board flash, a DFX con-troller IP block (\T1/
-lmtt/m/n/12 system_dfx_controller_0_0\T1/lmr/m/n/12 ),
- []
-
-
-Overfull \hbox (11.71698pt too wide) in paragraph at lines 72--73
-\T1/lmr/bx/n/12 Table 6.3 ^^V CFU Play-ground Sys-tem Re-source Util-i-sa-tion 
-(xc7a35ticsg324-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[102]
-Overfull \hbox (5.5765pt too wide) in paragraph at lines 114--115
-\T1/lmr/bx/n/12 Table 6.4 ^^V CFU Play-ground Sys-tem Power Sum-mary (100 MHz, 
-Routed) 
- []
-
-
-Overfull \hbox (2.10117pt too wide) in paragraph at lines 134--135
-[]\T1/lmr/m/n/12 The by-hierarchy break-down re-veals that the ILA-related in-f
-ras-truc-ture (\T1/lmtt/m/n/12 system_ila
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[103]
 
 ! LaTeX Error: Unicode character − (U+2212)
                not set up for use with LaTeX.
@@ -2523,6 +2466,17 @@ l.146 ...s and a total negative slack (TNS) of −
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.163 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 ! LaTeX Error: Unicode character − (U+2212)
                not set up for use with LaTeX.
@@ -2531,8 +2485,32 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.157 WNS — Setup & −
-                         3.622 ns \\
+l.163 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.163 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.163 \end{tabularx}
+                    
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
@@ -2544,8 +2522,21 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.158 TNS — Total Setup Violation & −
-                                         572.084 ns \\
+l.163 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.163 \end{tabularx}
+                    
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
@@ -2571,7 +2562,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[104]
+[96]
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.197 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 ! LaTeX Error: Unicode character ≈ (U+2248)
                not set up for use with LaTeX.
@@ -2580,8 +2582,32 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.194 Arty A7-35T & 164,534 bytes (≈
-                                       160.7 KB) \\
+l.197 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.197 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.197 \end{tabularx}
+                    
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
@@ -2593,20 +2619,24 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.195 PYNQ-Z2 & 203,308 bytes (≈
-                                   198.5 KB) \\
+l.197 \end{tabularx}
+                    
 You may provide a definition with
 \DeclareUnicodeCharacter 
 
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
 
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.197 \end{tabularx}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
-[105]
 
 ! LaTeX Error: Unicode character ≈ (U+2248)
                not set up for use with LaTeX.
@@ -2654,12 +2684,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[106]
-Overfull \hbox (1.1662pt too wide) in paragraph at lines 269--270
-\T1/lmtt/m/n/12 cfu_compute \T1/lmr/m/n/12 mod-ule was loaded with the \T1/lmtt
-/m/n/12 donut \T1/lmr/m/n/12 Re-con-fig-urable Mod-ule, which
- []
-
+[97]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2668,7 +2693,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[107]
+[98]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2677,7 +2702,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[108]
+[99]
 
 ! LaTeX Error: Unicode character ≤ (U+2264)
                not set up for use with LaTeX.
@@ -2701,34 +2726,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[109]
+[100]
 \openout2 = `Chapter7_Conclusion_FutureWork.aux'.
 
  (./Chapter7_Conclusion_FutureWork.tex
 Chapter 7.
-[110
+[101
 
 
 
 
 ]
-Overfull \hbox (42.11552pt too wide) in paragraph at lines 15--16
-\T1/lmr/m/n/12 The AMD UG947 DFX tu-to-rial was suc-cess-fully im-ple-mented on
- the Artix-7 xc7a100tcsg324-
- []
-
-
-Overfull \hbox (44.79683pt too wide) in paragraph at lines 15--16
-\T1/lmr/m/n/12 in-ter-change-able con-fig-u-ra-tion pairs ^^V \T1/lmtt/m/n/12 s
-hift_left/count_down \T1/lmr/m/n/12 and \T1/lmtt/m/n/12 shift_right/count_up
- []
-
-
-Overfull \hbox (2.5426pt too wide) in paragraph at lines 19--20
-\T1/lmr/m/n/12 The pri-mary con-tri-bu-tion of this project is the im-ple-men-t
-a-tion and func-tional demon-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2737,7 +2745,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[111]
+[102]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2746,7 +2754,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[112]
+[103]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2755,12 +2763,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[113])
-Overfull \hbox (5.15257pt too wide) in paragraph at lines 71--126
-\T1/lmr/m/n/12 with man-ual bit-stream de-liv-ery ^^V and the tar-get state ^^V
- fully au-tonomous, firmware-
- []
-
+[104])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -2769,14 +2772,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[114] (./main.aux (./Chapter1_Preamble.aux) (./Chapter2_LiteratureReview.aux)
+[105] (./main.aux (./Chapter1_Preamble.aux) (./Chapter2_LiteratureReview.aux)
 (./Chapter3_Background.aux) (./Chapter4_Design_Implementation.aux)
 (./Chapter5_Software_Firmware.aux) (./Chapter6_Results_Analysis.aux)
 (./Chapter7_Conclusion_FutureWork.aux))
 ! Undefined control sequence.
 \HyPL@SetPageLabels ...eless \else \Hy@PutCatalog 
                                                   {/PageLabels<</Nums[\HyPL@...
-l.128 \end{document}
+l.130 \end{document}
                     
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2792,10 +2795,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 74EB09132AB745BAD3592CBC88D02B90;37943.
  ) 
 Here is how much of TeX's memory you used:
- 16863 strings out of 474222
- 257724 string characters out of 5748732
- 2544975 words of memory out of 5000000
- 37611 multiletter control sequences out of 15000+600000
+ 16935 strings out of 474222
+ 259103 string characters out of 5748732
+ 2634975 words of memory out of 5000000
+ 37685 multiletter control sequences out of 15000+600000
  618356 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  91i,13n,93p,1704b,2094s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2806,10 +2809,10 @@ lic/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/l
 m/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/tex
 mf/fonts/type1/public/lm/lmtti10.pfb>
-Output written on main.pdf (115 pages, 668164 bytes).
+Output written on main.pdf (106 pages, 657402 bytes).
 PDF statistics:
- 2522 PDF objects out of 2984 (max. 8388607)
- 2356 compressed objects within 24 object streams
- 1207 named destinations out of 1440 (max. 500000)
+ 2473 PDF objects out of 2487 (max. 8388607)
+ 2316 compressed objects within 24 object streams
+ 1198 named destinations out of 1200 (max. 500000)
  1185 words of extra memory for PDF output out of 10000 (max. 10000000)
 

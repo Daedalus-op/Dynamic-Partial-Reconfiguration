@@ -302,11 +302,11 @@ endmodule
 
 \section{CFU Playground — Reconfigurable Modules}
 
-Three Verilog partitions and one multi-file SystemVerilog partition occupy the \texttt{partitions/} directory. Each partition defines a module named \texttt{cfu\_compute} (for the three Verilog files) or \texttt{Cfu} (for the KWS accelerator), conforming to the port interface expected by the \texttt{comp} instance in \texttt{cfu.v}. Every RM must expose the same top-level handshake ports (\texttt{cmd\_valid}, \texttt{cmd\_ready}, \texttt{cmd\_payload\_function\_id}, \texttt{cmd\_payload\_inputs\_0}, \texttt{cmd\_payload\_inputs\_1}, \texttt{rsp\_valid}, \texttt{rsp\_ready}, \texttt{rsp\_payload\_outputs\_0}, \texttt{clk}, \texttt{reset}) so that the Vivado DFX tool can verify port-signature equivalence during the child implementation run.
+Three Verilog partitions and one multi-file SystemVerilog partition occupy the \texttt{partitions/} directory. Each partition defines a module named \texttt{cfu\_compute} (for the three Verilog files) or \texttt{Cfu} (for the KWS accelerator), conforming to the port interface expected by the \texttt{comp} instance in \texttt{cfu.v}. Every RM must expose the same top-level handshake ports (\texttt{cmd\_valid}, \texttt{cmd\_ready}, \path{cmd_payload_function_id}, \path{cmd_payload_inputs_0}, \path{cmd_payload_inputs_1}, \texttt{rsp\_valid}, \texttt{rsp\_ready}, \texttt{rsp\_payload\_outputs\_0}, \texttt{clk}, \texttt{reset}) so that the Vivado DFX tool can verify port-signature equivalence during the child implementation run.
 
 \subsection{\texttt{example.v} — Multi-Function Combinational Accelerator}
 
-This RM implements three independent bit-manipulation operations selected by the \texttt{cmd\_payload\_function\_id} field:
+This RM implements three independent bit-manipulation operations selected by the \path{cmd_payload_function_id} field:
 
 \begin{lstlisting}[style=mystyle, language=Verilog]
 module cfu_compute (
@@ -383,7 +383,7 @@ This operation reverses the byte ordering of \texttt{inputs\_0} — the least-si
 
 The \texttt{generate}/\texttt{for} construct maps each bit position to its mirror image across the 32-bit word. Bit 0 of the output receives bit 31 of the input, bit 1 receives bit 30, and so on. This produces a bitwise palindrome of the input operand.
 
-\textbf{Output multiplexing:} The function-select logic at Stage 2 uses \texttt{cmd\_payload\_function\_id[1]} and \texttt{[0]} to choose between the three operations. Notably, the comment in the source acknowledges that the 3-bit \texttt{funct3} subfield is only partially decoded — bit 1 set selects bit reversal regardless of bit 0, bit 0 set (with bit 1 clear) selects byte swap, and neither set selects byte sum.
+\textbf{Output multiplexing:} The function-select logic at Stage 2 uses \path{cmd_payload_function_id[1]} and \texttt{[0]} to choose between the three operations. Notably, the comment in the source acknowledges that the 3-bit \texttt{funct3} subfield is only partially decoded — bit 1 set selects bit reversal regardless of bit 0, bit 0 set (with bit 1 clear) selects byte swap, and neither set selects byte sum.
 
 \subsection{\texttt{donut.v} — Signed Integer Multiply with Shift}
 
@@ -509,7 +509,7 @@ module cfu_compute (
 endmodule
 \end{lstlisting}
 
-The accumulator register \texttt{rsp\_payload\_outputs\_0} is declared as \texttt{output reg} — a departure from the combinational output style of \texttt{example.v} and \texttt{donut.v}. This is because the accumulation semantics require the register to retain its value across multiple CFU invocations. The \texttt{cmd\_payload\_function\_id[9:3]} check provides a reset pathway: when any of the upper 7 bits of the function ID are non-zero, the accumulator is cleared to zero rather than accumulating further, allowing the firmware to reset the accumulator for a new dot-product sequence without issuing a full module reset.
+The accumulator register \texttt{rsp\_payload\_outputs\_0} is declared as \texttt{output reg} — a departure from the combinational output style of \texttt{example.v} and \texttt{donut.v}. This is because the accumulation semantics require the register to retain its value across multiple CFU invocations. The \path{cmd_payload_function_id[9:3]} check provides a reset pathway: when any of the upper 7 bits of the function ID are non-zero, the accumulator is cleared to zero rather than accumulating further, allowing the firmware to reset the accumulator for a new dot-product sequence without issuing a full module reset.
 
 The back-pressure handshake (\texttt{cmd\_ready = \textasciitilde{}rsp\_valid}) prevents the processor from issuing a new command while a previous result is waiting to be consumed. This single-cycle-response, accumulating architecture is representative of the pattern used in quantised inference accelerators where many multiply-accumulate operations are streamed sequentially before a single readout.
 
@@ -567,7 +567,7 @@ module mac (
   logic signed [8:0] InputOffest = layer_one_en ? -9'sd83 : 9'sd128;
 \end{lstlisting}
 
-The \texttt{InputOffest} (note: the original source preserves this spelling) is configurable at runtime through the \texttt{layer\_one\_en} flag, derived from \texttt{cmd\_payload\_function\_id[4]}. For the first convolutional layer, an offset of -83 is used (reflecting the quantisation zero-point of the input tensor); for subsequent layers, +128 is used. The \texttt{simd\_en} flag (bit 3) controls whether all four byte lanes are summed or only the first lane is used, providing both scalar and SIMD operating modes in a single module.
+The \texttt{InputOffest} (note: the original source preserves this spelling) is configurable at runtime through the \texttt{layer\_one\_en} flag, derived from \path{cmd_payload_function_id[4]}. For the first convolutional layer, an offset of -83 is used (reflecting the quantisation zero-point of the input tensor); for subsequent layers, +128 is used. The \texttt{simd\_en} flag (bit 3) controls whether all four byte lanes are summed or only the first lane is used, providing both scalar and SIMD operating modes in a single module.
 
 \textbf{\texttt{rdh.sv} — Rounding Doubling High 32 Bits:} This module takes a 64-bit value represented as \texttt{\{top, bottom\}}, doubles it, rounds, and outputs only the upper 32 bits:
 
@@ -742,7 +742,7 @@ struct Menu MENU = {
 };
 \end{lstlisting}
 
-Each menu item maps a keyboard character to a test function. For example, \texttt{do\_donut\_exercise\_cfu\_op0} performs an exhaustive sweep over a grid of signed 32-bit inputs and compares the hardware CFU output against the expected software result:
+Each menu item maps a keyboard character to a test function. For example, \path{do_donut_exercise_cfu_op0} performs an exhaustive sweep over a grid of signed 32-bit inputs and compares the hardware CFU output against the expected software result:
 
 \begin{lstlisting}[style=mystyle, language=C++]
 void do_donut_exercise_cfu_op0(void) {
@@ -927,7 +927,7 @@ The complete build pipeline, from source checkout to on-board validation, follow
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Step & Action & Key Output \\
 \midrule
@@ -940,7 +940,7 @@ Step & Action & Key Output \\
 7 & Generate full bitstream + partial bitstreams & \texttt{.bit} files \\
 8 & Programme device via JTAG, flash firmware, run test menu & PASS/FAIL validation \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 Steps 2 through 7 are orchestrated through the Vivado GUI or batch-mode TCL commands. The CFU Playground firmware is compiled separately using the RISC-V GCC toolchain (\texttt{rv32i} / \texttt{ilp32}), producing a flat binary that is programmed into QSPI flash at offset \texttt{0x00080000}.

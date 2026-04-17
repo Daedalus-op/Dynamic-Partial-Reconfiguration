@@ -42,7 +42,7 @@ The static partition's I/O allocation on the Arty A7-35T is governed by the boar
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Interface & Signals & Function \\
 \midrule
@@ -55,7 +55,7 @@ User LEDs & \texttt{led[3:0]} & Status indication \\
 JTAG & Implicit (Digilent USB-JTAG) & Hardware Manager + ILA \\
 PMOD JA & \texttt{ja[7:0]} & UART bridge (Phase 3, §4.5) \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \vspace{0.4em}\hrule\vspace{0.4em}
@@ -198,7 +198,7 @@ The Integrated Logic Analyser (ILA) core instantiated within \texttt{recon\_coun
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X}
 \toprule
 ILA Parameter & Value & Rationale \\
 \midrule
@@ -208,7 +208,7 @@ Sample depth & 16,384 samples & Captures \textasciitilde{}163 µs at 100 MHz \\
 Trigger position & 1/16 of buffer & Minimal pre-trigger, maximise post \\
 Trigger condition & \texttt{counter[0] == 1} & Fires on first increment from zero \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The trigger fires on the first rising clock edge at which the \texttt{recon\_counter} FSM transitions from \texttt{IDLE} to \texttt{RECON} — that is, the first cycle at which the counter increments from zero to one, coinciding with the falling edge of EOS. The 16,384-sample depth provides a 163.84 µs observation window at 100 MHz, which comfortably encompasses the maximum anticipated reconfiguration duration given the partial bitstream sizes for the \texttt{cfu\_compute} Pblock.
@@ -225,7 +225,7 @@ The \texttt{system\_wrapper} FSM was designed and implemented with the following
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X}
 \toprule
 FSM State & Active Signals & Exit Condition \\
 \midrule
@@ -237,7 +237,7 @@ FSM State & Active Signals & Exit Condition \\
 \texttt{WAIT\_EOS\_HIGH} & \texttt{decouple=1}, \texttt{CSIB=1}, \texttt{RDWRB=1} & \texttt{eos == 1} from STARTUPE2 \\
 \texttt{DECOUPLE\_RELEASE} & \texttt{decouple=0} & 1-cycle hold elapsed; → \texttt{IDLE} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 In the \texttt{ICAP\_WRITE} state, a sequential address counter indexes into the BRAM ROM holding the partial bitstream word sequence. The ROM is implemented as a synchronous read, single-port BRAM with a 32-bit data width and a depth equal to the partial bitstream word count. The BRAM address counter increments by one on every rising clock edge while the FSM remains in \texttt{ICAP\_WRITE}, and the data output of the BRAM (one cycle after address change, due to the synchronous read latency) is forwarded directly to the ICAP's \texttt{I[31:0]} input port. The word count for \texttt{example.v}'s partial bitstream is 89,472 words (349 KB / 4 bytes per word), requiring a BRAM of depth 131,072 (the next power-of-two above 89,472, using 5 RAMB36E1 tiles of 36 Kb each for the data array to be confirmed by Vivado Resource Report).
@@ -280,7 +280,7 @@ The Vivado DFX flow for the PYNQ-Z2 differs from the Arty A7-35T flow in several
 
 \textbf{Processing System block design.} The Zynq PS must be instantiated as a Vivado IP block design component (\texttt{processing\_system7\_0}) and configured with the PYNQ-Z2's board-specific PS I/O settings: DDR3L-400 for the 16-bit 512 MB DRAM interface, UART1 on MIO pins 48/49 for the console, ENET0 on MIO 16–27 for Ethernet, SD0 on MIO 40–47 for the microSD, and the USB0 OTG controller for UART/JTAG via the FT4232H bridge. The PS block design is exported as an XDC constraint file that locks all dedicated PS I/O pins, which the DFX implementation flow must preserve unmodified between the parent run and all child runs.
 
-\textbf{FCLK-based clock provisioning.} On the PYNQ-Z2, the PL's primary clock source is the \texttt{FCLK\_CLK0} output of the PS block. The PS's on-chip PLL is configured (via the \texttt{PCW\_FPGA0\_PERIPHERAL\_FREQMHZ} parameter in the PS block design) to generate 100 MHz on \texttt{FCLK\_CLK0}. This clock is routed from the PS block's output port through the block design's clock routing to the PL clock tree, and all DFX timing constraints are defined against this 100 MHz domain. Unlike the Arty's external crystal-to-MMCM path, the Zynq's PS PLL has a specified SSMC jitter specification that is guaranteed within the timing constraints of the DFX Decoupler IP, so no additional jitter margin adjustments are required.
+\textbf{FCLK-based clock provisioning.} On the PYNQ-Z2, the PL's primary clock source is the \texttt{FCLK\_CLK0} output of the PS block. The PS's on-chip PLL is configured (via the \path{PCW_FPGA0_PERIPHERAL_FREQMHZ} parameter in the PS block design) to generate 100 MHz on \texttt{FCLK\_CLK0}. This clock is routed from the PS block's output port through the block design's clock routing to the PL clock tree, and all DFX timing constraints are defined against this 100 MHz domain. Unlike the Arty's external crystal-to-MMCM path, the Zynq's PS PLL has a specified SSMC jitter specification that is guaranteed within the timing constraints of the DFX Decoupler IP, so no additional jitter margin adjustments are required.
 
 \textbf{PL-to-PS AXI connection for Decoupler control.} On the Arty A7-35T, the \texttt{dfx\_decoupler\_0} AXI-Lite control register is accessed from the Hardware Manager console via direct AXI transactions. On the PYNQ-Z2, the same AXI-Lite port is connected to the PS through a Zynq AXI General Purpose (GP0) master port, making the Decoupler's control register directly accessible from PS software via memory-mapped I/O at a user-assigned base address. This connection enables the Python-based DPR management script (described in §4.5.2.3) to assert and release the \texttt{decouple} signal programmatically without requiring any TCL console intervention.
 
@@ -412,7 +412,7 @@ The PYNQ-Z2 provides a single physical USB Type-A connector to the host workstat
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 FT4232H Channel & Interface & Windows Virtual COM \\
 \midrule
@@ -421,7 +421,7 @@ Channel B (BDBUS) & UART TX/RX & \texttt{COMy} (Serial Console) \\
 Channel C (CDBUS) & SPI Debug & Not enumerated by default \\
 Channel D (DDBUS) & Reserved & Not enumerated by default \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 Under normal single-board operation, Channels A and B appear to the host operating system as two independent virtual COM ports within the same USB composite device. The Vivado Hardware Manager attaches to Channel A for JTAG, while a serial terminal or the CFU Playground Python host opens Channel B for UART. This coexistence works because the FT4232H's four channels present as independent USB endpoint pairs within a USB 2.0 composite device, and the Windows WinUSB driver processes them through separate kernel device handles.
@@ -544,7 +544,7 @@ The final hardware test bench used for all results reported in Chapter 6 consist
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Connection & Interface & Host COM Port \\
 \midrule
@@ -552,7 +552,7 @@ PYNQ-Z2 FT4232H → Host USB & JTAG (Channel A) + Secondary UART (Channel B) & \
 PYNQ-Z2 PMOD JA → CH340G → Host USB & UART (CFU Playground) & \texttt{COMz} (CFU Python host) \\
 Arty A7-35T FT2232H → Host USB & JTAG (Channel A) + UART (Channel B) & \texttt{COMa} / \texttt{COMb} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 With this configuration, the following simultaneous operations are possible without conflict: (a) the Vivado Hardware Manager maintains an active ILA RT capture on both boards; (b) the CFU Playground Python host communicates with the PYNQ-Z2 firmware via the CH340G UART; and (c) partial bitstreams are delivered to either board via JTAG or PCAP as required by the test procedure.
@@ -579,7 +579,7 @@ The implementation of the tutorial design on the Arty A7-100T yielded the follow
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{llll}
+\begin{tabularx}{\textwidth}{X X X X}
 \toprule
 Resource & Used & Available (XC7A100T) & Utilisation \\
 \midrule
@@ -589,7 +589,7 @@ Block RAMs (36K) & 1 & 135 & \textless{}1\% \\
 DSP48E1 & 0 & 240 & 0\% \\
 Pblock area (slices) & 21 & — & — \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 Timing summary from the post-implementation timing report:
