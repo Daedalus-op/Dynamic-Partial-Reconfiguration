@@ -176,11 +176,15 @@ The STARTUPE2 primitive provides access to a set of special-purpose device-level
 
 The `recon_counter.v` module connects STARTUPE2's `EOS` output to the CE (count enable) input of a 32-bit free-running counter clocked at 100 MHz. The counter is reset by the assertion of the `pr_switch` signal and held by the deassertion of EOS; the final count value therefore represents the total reconfiguration interval — from the host-side JTAG bitstream delivery beginning to PL start-up completion — in 10 ns units.  An ILA core samples the counter output, enabling post-hoc extraction of the latency value.
 
+<!-- TODO: Insert Diagram: from AMD Docs, Startup Primitive-->
+
 ### 3.4 System Architecture Overview
 
 The top-level `top.v` integrates two subsystems. The first, `digilent_arty`, instantiates the CFU Playground LiteX SoC — VexRiscv, LiteX memory interconnect, UART bridge, QSPI flash controller — and exposes the `cfu_wrapper` interface at the SoC boundary. The second, `system_wrapper`, contains the ICAP controller, the DFX Decoupler, the `recon_counter`, and the port assignments to on-board peripherals (LEDs, push-buttons for `pr_switch`, JTAG).
 
 The reconfigurable partition `cfu_compute` is instantiated within `system_wrapper`; it receives the decoupled CFU interface and implements one of several RM variants. In normal (non-reconfiguring) operation, `decouple` is low and the RM's output flows directly to the VexRiscv CFU response port. When reconfiguration is triggered, `decouple` is raised by the ICAP controller's state machine, the ICAP write sequence is initiated (currently by JTAG host delivery), EOS falls and then rises upon completion, and the controller lowers `decouple` to activate the new RM. The ILA captures the EOS edge and counter value on every reconfiguration event.
+
+<!-- TODO: Insert Diagram: overall project design hierarchy -->
 
 ---
 
@@ -208,6 +212,20 @@ The PRR is bounded by a Pblock spanning CLB columns X0Y0–X3Y24 (resource regio
 All four RMs share the same top-level port list required by the CFU Playground handshake; resource differences are entirely internal to the RM.
 
 ### 4.4 Reconfiguration Flow
+
+<!-- TODO: Redo: Explain about 3 different reconfiguration flows -->
+
+#### JTAG Based reconfiguration
+
+![JTAG Based reconfiguration architecture](./assets/JTAG_reconfig_arch.png)
+
+#### PCAP Based reconfiguration
+
+![PCAP Based reconfiguration architecture](./assets/PCAP_reconfig_arch.png)
+
+#### ICAP Based reconfiguration
+
+![ICAP Based reconfiguration architecture](./assets/ICAP_reconfig_arch.png)
 
 The nominal reconfiguration sequence is as follows:
 
@@ -366,6 +384,8 @@ A comprehensive literature review of RapidStream, HPR, and ZyPR contextualises t
 4. **PCAP vs. ICAP Throughput Benchmarking:** A controlled comparison of PCAP (PS-driven, DMA-backed, Zynq-7020) against ICAP (PL-driven, SPI-fetch, Arty A7) under identical partial bitstream sizes would produce empirical data directly informing the ZyCAP vs. pure-FPGA-controller design trade-off.
 
 5. **Graph-Based CFU Scheduling:** At the firmware level, a runtime manager capable of profiling CFU call frequencies and predictively reconfiguring the PRR ahead of high-demand phases — analogous to DML's task-graph scheduler — would convert the current manually triggered reconfiguration into a self-directed adaptive compute system.
+
+<!-- TODO: Add: Appendix for all the codes. Should replace chapter 5 -->
 
 ---
 
