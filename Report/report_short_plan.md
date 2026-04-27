@@ -42,6 +42,8 @@ Dynamic Partial Reconfiguration (DPR) addresses this limitation by partitioning 
 
 The intersection of DPR with RISC-V soft-core processors is an emerging and underexplored research direction. RISC-V's open ISA permits the attachment of Custom Function Units (CFUs) that extend the base instruction set with domain-specific operations, and CFU Playground provides a standardised, hardware-software co-design framework for this purpose. Combining CFU Playground's software and RTL infrastructure with AMD's DFX toolflow creates the possibility of swapping an accelerator CFU at runtime — effectively hot-patching the RISC-V instruction set without processor reset — a capability that this project pursues.
 
+![Partial Configuration](./assets/Partial_Reconfiguration.png)
+
 ### 1.2 Problem Statement and Objectives
 
 Despite sustained academic interest in DPR, the effort required to implement, debug, and validate a working reconfiguration system remains high. Vendor DFX toolflows impose strict floorplanning constraints, require version-matched software stacks, and produce opaque error messages when constraints are violated. State-of-the-art toolflows such as RapidStream, HPR, and ZyPR partially automate the compilation burden but introduce their own dependency chains and, in some cases, licensing barriers. No published work integrates CFU Playground with a DFX-managed reconfigurable partition, leaving the handshake between the CFU interface and DFX Decoupler IP unexplored.
@@ -164,6 +166,8 @@ VexRiscv implements the RV32I base integer ISA with optional M (multiply/divide)
 
 The CFU handshake signals in the standard interface are: `cmd_valid`, `cmd_ready`, `cmd_payload_function_id[9:0]`, `cmd_payload_inputs_0[31:0]`, `cmd_payload_inputs_1[31:0]`, `rsp_valid`, `rsp_ready`, `rsp_payload_outputs_0[31:0]`. The DFX Decoupler is inserted between the static VexRiscv CFU output port and the RP's internal CFU receive port, with the decoupler configured to hold `cmd_valid` low and `rsp_valid` low when decoupled, preventing the processor from initiating or completing a custom instruction during reconfiguration.
 
+![CFU Interface](./assets/CFU_Architecture.png)
+
 ### 3.3 The ICAP and STARTUPE2 Primitives
 
 The ICAP2 primitive instantiated in the static region of the Arty A7-100T design (`system_wrapper`) provides the in-fabric configuration write path. It is connected to a state-machine-based ICAP controller that sequences the configuration port handshake: assert IP-specific sync word, set `CE` and `WRITE` low (active-low enable in 7-series polarity convention), present data on the 32-bit `I` bus in the bit-reversed byte order required by the configuration engine, and monitor `BUSY` to throttle the write rate during frame boundary transitions.
@@ -181,6 +185,8 @@ The reconfigurable partition `cfu_compute` is instantiated within `system_wrappe
 ---
 
 ## Chapter 4: Design and Implementation
+
+![DFX-CFU-Playground](./assets/CFUxDFx.png)
 
 ### 4.1 Design Goals
 

@@ -156,9 +156,10 @@ CONTENT_PLACEHOLDER
 """
 
 
-def build_standalone_tex(md_text: str, version_label: str) -> str:
+def build_standalone_tex(md_text: str, version_label: str,
+                         md_base_dir: Path | None = None) -> str:
     """Convert markdown to a standalone LaTeX document."""
-    body = convert_md(md_text)
+    body = convert_md(md_text, md_base_dir=md_base_dir)
     tex = STANDALONE_TEX.replace("TITLE_PLACEHOLDER", version_label)
     tex = tex.replace("CONTENT_PLACEHOLDER", body)
     return tex
@@ -180,7 +181,7 @@ def main():
 
         print(f"Converting {md_name} ...", end="  ")
         md_text = md_path.read_text(encoding="utf-8")
-        tex = build_standalone_tex(md_text, label)
+        tex = build_standalone_tex(md_text, label, md_base_dir=md_path.parent)
 
         tex_path = md_path.with_suffix(".tex")
         tex_path.write_text(tex, encoding="utf-8")
