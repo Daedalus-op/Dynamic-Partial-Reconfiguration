@@ -1,22 +1,15 @@
 # Report Draft: Runtime Reconfiguration of a RISC-V Co-Processor using CFU Playground
 
-**Project:** Capstone — Dynamic Partial Reconfiguration (DPR) on Arty A7-100T / PYNQ-Z2  
-**Framework:** AMD DFX · CFU Playground (VexRiscv) · ICAP Primitive  
-**Template:** G18_BB.pdf chapter structure  
-**Plagiarism constraint:** ≤ 15% — all content paraphrased, passive/third-person academic prose.
-
----
-
 ## Front Matter
 
 ### Title Page
 - **Title:** *Runtime Reconfiguration of a RISC-V Co-Processor using CFU Playground and Dynamic Function eXchange*
-- **Team:** [Team member names], Academic Year 2025–26
+- **Team:** Arun Murrugappan I, Pranav Varkey, Shrikrishna Pandit, Academic Year 2025–26
 - **Guide:** [Guide name], [Institution]
 
 ### Abstract (~200 words)
 
-Field-Programmable Gate Arrays are increasingly deployed in compute-intensive edge and data-centre workloads, where the ability to alter accelerator functionality at runtime without a full device reset offers significant latency and energy benefits. This report documents the design, implementation, and evaluation of a Dynamic Partial Reconfiguration (DPR) system targeting the AMD Arty A7-100T FPGA. The system integrates CFU Playground, Google's open-source framework for binding custom function units (CFUs) to a VexRiscv RISC-V soft-core processor, with AMD's Dynamic Function eXchange (DFX) toolflow. A DFX Decoupler IP isolates the reconfigurable partition during bitstream loading, while an ICAP-based controller and a STARTUPE2-connected reconfiguration counter enable in-fabric bitstream delivery and latency measurement. Successful runtime swap of the `cfu_compute` module was demonstrated via JTAG-driven reconfiguration on both the Arty A7-100T and the PYNQ-Z2 (Zynq-7020). State-of-the-art compilation and orchestration toolflows — RapidStream, Hierarchical PR (HPR), and ZyPR/ZyCAP — are reviewed and contextualised against the project implementation. All resource-utilisation and reconfiguration-latency measurements reported herein correspond to the manually triggered bitstream-loading flow; autonomous DDR-backed reconfiguration constitutes the primary remaining future step.
+Field-Programmable Gate Arrays are increasingly deployed in compute-intensive edge and data-centre workloads, where the ability to alter accelerator functionality at runtime without a full device reset offers significant latency and energy benefits. This report documents the design, implementation, and evaluation of a Dynamic Partial Reconfiguration (DPR) system targeting the AMD Arty A7-100T FPGA. The system integrates CFU Playground, Google's open-source framework for binding custom function units (CFUs) to a VexRiscv RISC-V soft-core processor, with AMD's Dynamic Function eXchange (DFX) toolflow. A DFX Decoupler IP isolates the reconfigurable partition during bitstream loading, while an ICAP-based controller and a STARTUPE2-connected reconfiguration counter enable in-fabric bitstream delivery and latency measurement. Successful runtime swap of the `cfu_compute` module was demonstrated via JTAG-driven reconfiguration on both the Arty A7-100T and the PYNQ-Z2 (Zynq-7020). State-of-the-art compilation and orchestration toolflows — RapidStream, Hierarchical PR (HPR), and ZyPR/ZyCAP — are also reviewed . All resource-utilisation and reconfiguration-latency measurements reported herein correspond to the manually triggered bitstream-loading flow; autonomous DDR-backed reconfiguration constitutes the primary remaining future step.
 
 **Keywords:** Dynamic Partial Reconfiguration, CFU Playground, VexRiscv, ICAP, DFX Decoupler, FPGA, RapidStream, HPR, ZyPR.
 
@@ -46,6 +39,8 @@ The intersection of DPR with RISC-V soft-core processors is an emerging and unde
 
 ### 1.2 Problem Statement and Objectives
 
+<!-- TODO: Revise: 1st line, it's not that hard with DFx tech -->
+
 Despite sustained academic interest in DPR, the effort required to implement, debug, and validate a working reconfiguration system remains high. Vendor DFX toolflows impose strict floorplanning constraints, require version-matched software stacks, and produce opaque error messages when constraints are violated. State-of-the-art toolflows such as RapidStream, HPR, and ZyPR partially automate the compilation burden but introduce their own dependency chains and, in some cases, licensing barriers. No published work integrates CFU Playground with a DFX-managed reconfigurable partition, leaving the handshake between the CFU interface and DFX Decoupler IP unexplored.
 
 The objectives of this project are as follows:
@@ -62,6 +57,8 @@ The objectives of this project are as follows:
 
 ### 2.1 Foundational Survey — DPR Architectures, Methods, and Applications
 
+<!-- TODO: Read through -->
+
 Dynamic Partial Reconfiguration as a practised engineering discipline is well-established in the academic literature, with two particularly comprehensive surveys — Vipin and Fahmy (ACM Computing Surveys, 2018) and an associated IEEE access survey — providing a taxonomy of architectural approaches, toolchain lineages, and application domains that spans three decades of FPGA product generations.
 
 Early FPGA devices offered limited support for partial configuration. The Xilinx XC6200 family (1996) was the first to expose column-level reconfiguability through a dedicated on-chip bus, but its architectural constraints restricted the technique to niche applications. The Virtex-II generation introduced a regular, frame-based configuration memory architecture: the entire device state is encoded as a sequence of fixed-width frames (36 bytes on 7-series), each associated with a specific column-resource type (CLB, BRAM, DSP, IOB), and the ICAP primitive allows software or fabric logic to write arbitrary subsets of these frames without disturbing the remainder. This frame-based model is the foundation on which all modern partial reconfiguration flows — including those reviewed in §§2.3–2.5 — are built.
@@ -74,11 +71,15 @@ Academic toolchains preceding the vendor DFX flow — GoAhead, OpenPR, and CoPR 
 
 ### 2.2 Compile-Time Problem and Parallel Compilation Motivation
 
+<!-- TODO: Read through -->
+
 The dominant bottleneck in FPGA design iteration is compilation time. For medium-complexity designs (500K–1M LUT equivalent), a full Vivado implementation run — synthesis, placement, routing, and bitstream generation — routinely requires four to eight hours on a desktop workstation. This is structurally a consequence of the global placement and routing problem: the vendor tool must simultaneously assign every logic primitive to a physical site and route every signal through the programmable interconnect, a problem whose complexity grows super-linearly with design size. Furthermore, the standard tool invocation is single-threaded for the most time-consuming routing stage, leaving multi-core processors largely idle.
 
 Three distinct research directions have emerged to attack this problem. The first, represented by RapidStream, decomposes the design into spatially independent pipeline stages that can be placed and routed in parallel. The second, represented by HPR, narrows the problem domain to the subset of designs amenable to operator-level reconfiguration and exploits DPR-readiness as a compilation shortcut: each operator is compiled into its own small PR page independently, and the complete design is assembled at runtime rather than at compile time. The third, represented by ZyPR's O1 optimisation level, applies a similar PR-page model on the Zynq platform, where the PS-FPGA integration introduces additional compile-time constraints that are avoided by keeping the RP footprint small. All three approaches leverage RapidWright — AMD's Java-based FPGA CAD infrastructure — as the stitching and constraint-injection layer beneath Vivado's Tcl interface.
 
 ### 2.3 RapidStream: Parallel Dataflow FPGA Compilation
+
+<!-- TODO: Read through -->
 
 RapidStream (ASPLOS 2022, Da et al.) addresses compile-time scalability for large, regular dataflow designs — the class of circuits generated by HLS from pipeline-parallel C++ programs — by reformulating placement and routing as a two-level problem. At the coarse level, the design is partitioned into a set of spatially contiguous *floorplan islands*, each representing a tightly bounded region of the device fabric. At the fine level, each island is compiled independently by a separate invocation of Vivado, with compilation threads running in parallel. Inter-island connections are handled by a layer of pipeline registers whose latency is automatically absorbed by the pipeline-latency-insensitive (PLI) programming model that the HLS front-end enforces.
 
@@ -91,6 +92,8 @@ RapidStream 2.0 (FPGA 2023) extended the framework to HBM-equipped boards (Alveo
 > **Implementation Note:** Hands-on evaluation of RapidStream was initiated but subsequently abandoned. The RapidStream team has transitioned the tool toward a commercial product, and all public API keys and cloud-execution endpoints have been revoked. Neither the v1 Alveo U250 scripts nor the v2 HBM scripts could be executed against a locally available device. Coverage in this report is therefore limited to a literature-based analysis of the published methodology and results.
 
 ### 2.4 Hierarchical Partial Reconfiguration (HPR)
+
+<!-- TODO: Read through -->
 
 Hierarchical Partial Reconfiguration (FCCM 2022, Cheng et al.) takes a fundamentally different approach from RapidStream: rather than accelerating the compilation of a fixed design, HPR constructs a device-wide reconfiguration substrate into which independently compiled operator modules can be plugged and unplugged at runtime, eliminating the need to recompile the system-level design when the operator set changes.
 
@@ -140,11 +143,13 @@ The Linux FPGA Manager subsystem, present in the mainline kernel since v4.1, exp
 
 **DML — Scalable Task Scheduling for Multi-Application DPR:** The Dynamic Module Loader (DML) introduces a task-graph scheduling model for FPGA systems hosting multiple concurrently executing DPR applications. A priority-aware scheduler arbitrates access to shared reconfigurable regions, maintaining a dependency graph of pending operator instantiation requests and issuing ICAP loads in an order that minimises operator wait time. The model is relevant to this project in the context of future multi-CFU scheduling, where multiple reconfigurable partitions might host different co-processor accelerators simultaneously.
 
+<!-- TODO: Read AMPER-X Paper for comparison numbers -->
+
 **AMPER-X — Adaptive Mixed-Precision RISC-V via Partial Reconfiguration:** AMPER-X augments a RISC-V core with a DPR-backed floating-point unit that can be reconfigured between half-, single-, and double-precision implementations at runtime, trading resource utilisation for numerical precision based on application phase. The conceptual alignment with this project is direct — both attach a reconfigurable compute block to a RISC-V pipeline — and AMPER-X's reported reconfiguration latencies (3–12 ms for 7-series devices) provide a benchmark against which this project's ICAP-based measurements are contextualised.
 
 **RV-CAP — RISC-V-Based Partial Reconfiguration Controller:** RV-CAP replaces the conventional soft-IP PR controller with a minimal RISC-V processor core executing a firmware loop that streams bitstream data to the ICAP interface. The approach reduces the hardware footprint of the reconfiguration subsystem to approximately 800 LUTs and eliminates the AXI-Lite register overhead of dedicated IP controllers. RV-CAP is the architectural predecessor most closely related to the ICAP controller developed in this project; the primary difference is that this project's controller is implemented as a dedicated RTL state machine rather than a programmed RISC-V core, prioritising deterministic timing.
 
-**DORA — Low-Latency Dynamic Overlay for Reconfiguration Acceleration:** DORA targets the overhead introduced by the DFX Decoupler isolation phase — the interval between asserting the decouple signal and confirming that all in-flight AXI transactions through the decoupler have completed. DORA introduces a lightweight handshaking protocol between the decoupler and the reconfiguration controller that compresses this interval from a fixed worst-case timeout to a signal-based acknowledgement, reducing total reconfiguration latency by 15–30% for small RPs. The `recon_counter.v` module in this project monitors the STARTUPE2 EOS signal as a complementary latency indicator, capturing the interval between ICAP write completion and PL logic activation.
+**DORA — Low-Latency Dynamic Overlay for Reconfiguration Acceleration:** DORA targets the overhead introduced by the DFX Decoupler isolation phase — the interval between asserting the decouple signal and confirming that all in-flight AXI transactions through the decoupler have completed. DORA introduces a lightweight handshaking protocol between the decoupler and the reconfiguration controller that compresses this interval from a fixed worst-case timeout to a signal-based acknowledgement, reducing total reconfiguration latency by 15–30% for small RPs.
 
 **ACNNE — CNN Acceleration with Dynamic Neural Architecture via DPR:** ACNNE demonstrates DPR as an architectural vehicle for inference-time neural architecture search: different convolutional layer configurations (filter counts, kernel sizes) are compiled into separate partial bitstreams and swapped at inference time to match the complexity of the input sample. Although the application domain differs from RISC-V co-processor reconfiguration, ACNNE's results establish that DPR bitstream loading can be made compatible with real-time inference pipelines (10–50 ms sample latency) when bitstream sizes are kept below approximately 1 MB — a constraint this project's `cfu_compute` partition is designed to satisfy.
 
@@ -176,7 +181,7 @@ The STARTUPE2 primitive provides access to a set of special-purpose device-level
 
 The `recon_counter.v` module connects STARTUPE2's `EOS` output to the CE (count enable) input of a 32-bit free-running counter clocked at 100 MHz. The counter is reset by the assertion of the `pr_switch` signal and held by the deassertion of EOS; the final count value therefore represents the total reconfiguration interval — from the host-side JTAG bitstream delivery beginning to PL start-up completion — in 10 ns units.  An ILA core samples the counter output, enabling post-hoc extraction of the latency value.
 
-<!-- TODO: Insert Diagram: from AMD Docs, Startup Primitive-->
+<!-- TODO: Insert Diagram: from AMD Docs, Startup Primitive -->
 
 ### 3.4 System Architecture Overview
 
@@ -311,7 +316,7 @@ This chapter documents the RTL and scripting artefacts constituting the project 
 
 **`cfu_compute/example.v`** — Trivial RM (add pass-through). Returns `inputs_0 + inputs_1` on every valid command cycle with zero latency; used as the minimal-resource sanity-check RM.
 
-**`cfu_compute/donut.v`** — Fixed-point donut arithmetic unit. Implements the elementwise MAC computation required by the donut ML layer; consumes 48 LUTs and 32 FFs within the PRR Pblock.
+[**`cfu_compute/donut.v`**](2026-04-28_**`cfu_compute-donut.v`**.md) — Fixed-point donut arithmetic unit. Implements the elementwise MAC computation required by the donut ML layer; consumes 48 LUTs and 32 FFs within the PRR Pblock.
 
 ### 5.2 TCL Scripts
 
