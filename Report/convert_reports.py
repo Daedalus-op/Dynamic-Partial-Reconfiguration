@@ -10,12 +10,60 @@ Output: report_short_plan.tex, report_short_plan_v2.tex
         Then compile each with:  pdflatex <file>.tex
 """
 
+import re
 import sys
 from pathlib import Path
 
 # Import the converter from the existing script
 sys.path.insert(0, str(Path(__file__).parent))
-from convert_to_latex import convert_md, MAIN_TEX
+import convert_to_latex
+from convert_to_latex import convert_md, MAIN_TEX, fmt_inline
+
+
+# ============================================================
+# SHIFTED HEADING CONVERTER  (ignore #, ## → \chapter, etc.)
+# ============================================================
+
+def heading_to_latex_shifted(line: str) -> str:
+    """Like heading_to_latex but treats ## as the chapter level.
+
+    Heading level 1 (#) is silently ignored.
+    Heading level 2 (##) maps to \\chapter.
+    Heading level 3 (###) maps to \\section.
+    Heading level 4 (####) maps to \\subsection.
+    Heading level 5 (#####) maps to \\subsubsection.
+    """
+    m = re.match(r"^(#{1,6})\s+(.*)", line)
+    if not m:
+        return ""
+    level = len(m.group(1))
+    raw = m.group(2).strip()
+
+    # Skip heading level 1 entirely
+    if level == 1:
+        return ""
+
+    # Strip "Chapter X:" prefix from ## headings
+    raw = re.sub(r"^Chapter\s+\d+[:\s]+", "", raw)
+
+    # Strip "Front Matter", "References" etc. — keep as-is (they become chapters)
+
+    # Strip leading "X.Y.Z " numbering from all headings
+    raw = re.sub(r"^\d+(\.\d+)*\.?\s+", "", raw)
+
+    title = fmt_inline(raw)
+
+    # Shifted mapping: level 2 → \chapter, 3 → \section, etc.
+    cmds = {2: r"\chapter",
+            3: r"\section",
+            4: r"\subsection",
+            5: r"\subsubsection",
+            6: r"\paragraph"}
+    cmd = cmds.get(level, r"\paragraph")
+    suffix = "{" + title + "}"
+    if level == 6:
+        suffix += "~\\\\"      # paragraph needs separation
+    return cmd + suffix
 
 # ============================================================
 # STANDALONE LATEX TEMPLATE (self-contained, no \include)
@@ -158,8 +206,19 @@ CONTENT_PLACEHOLDER
 
 def build_standalone_tex(md_text: str, version_label: str,
                          md_base_dir: Path | None = None) -> str:
-    """Convert markdown to a standalone LaTeX document."""
-    body = convert_md(md_text, md_base_dir=md_base_dir)
+    """Convert markdown to a standalone LaTeX document.
+
+    Temporarily patches heading_to_latex so that # is ignored and
+    ## becomes \\chapter (shifted hierarchy for single-file reports).
+    """
+    # Monkey-patch the heading converter for the duration of this call
+    original = convert_to_latex.heading_to_latex
+    convert_to_latex.heading_to_latex = heading_to_latex_shifted
+    try:
+        body = convert_md(md_text, md_base_dir=md_base_dir)
+    finally:
+        convert_to_latex.heading_to_latex = original
+
     tex = STANDALONE_TEX.replace("TITLE_PLACEHOLDER", version_label)
     tex = tex.replace("CONTENT_PLACEHOLDER", body)
     return tex
@@ -169,8 +228,8 @@ def main():
     here = Path(__file__).parent
 
     reports = [
-        ("report_short_plan.md",    "Version 1 (Detailed)"),
-        ("report_short_plan_v2.md", "Version 2 (Concise)"),
+        ("report_short_plan.md",    "Centre for Heterogeneous and Intelligent Processing Systems"),
+        # ("report_short_plan_v2.md", "Version 2 (Concise)"),
     ]
 
     for md_name, label in reports:
@@ -189,7 +248,7 @@ def main():
 
     print("\nDone. Compile each with:")
     print("  pdflatex report_short_plan.tex")
-    print("  pdflatex report_short_plan_v2.tex")
+    # print("  pdflatex report_short_plan_v2.tex")
     print("(Run twice for TOC/page refs)")
 
 
