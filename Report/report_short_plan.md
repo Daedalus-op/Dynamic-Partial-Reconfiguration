@@ -107,8 +107,7 @@ Unlike RapidStream, which produces a static floorplan that cannot be changed at 
 
 ### 2.5 ZyPR: End-to-End Build and Runtime Manager for Zynq
 
-<!-- TODO: Insert Diagram -->
-
+![ZyPR Architecture Example](./assets/ZyPR_arch.png)
 
 ZyPR addresses a complementary problem domain: rather than reducing compile time for large HLS designs, it provides a complete, *end-to-end* toolchain for PR-based operator scheduling on Zynq SoC platforms, where the ARM Cortex-A9 / Cortex-A53 Processing System (PS) can act as a general-purpose runtime manager, orchestrating partial bitstream loading and operator instantiation without an external host.
 
