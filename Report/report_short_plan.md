@@ -1,13 +1,13 @@
 # Capstone Report: Runtime Reconfiguration of a RISC-V Co-Processor using CFU Playground
 
-## Front Matter
-
-### Title Page
+## Title Page
 - **Title:** *Runtime Reconfiguration of a RISC-V Co-Processor using CFU Playground and Dynamic Function eXchange*
 - **Team:** Arun Murrugappan I, Pranav Varkey, Shrikrishna Pandit, Academic Year 2025–26
 - **Guide:** Vinay Reddy, Centre for Heterogeneous and Intelligent Processing Systems
 
-### Abstract
+---
+
+## Abstract
 
 Field-Programmable Gate Arrays are increasingly deployed in compute-intensive edge and data-centre workloads, where the ability to alter accelerator functionality at runtime without a full device reset offers significant latency and energy benefits. This report documents the design, implementation, and evaluation of a Dynamic Partial Reconfiguration (DPR) system targeting the AMD Arty A7-100T FPGA. The system integrates CFU Playground, Google's open-source framework for binding custom function units (CFUs) to a VexRiscv RISC-V soft-core processor, with AMD's Dynamic Function eXchange (DFX) toolflow. A DFX Decoupler IP isolates the reconfigurable partition during bitstream loading, while an ICAP-based controller and a STARTUPE2-connected reconfiguration counter enable in-fabric bitstream delivery and latency measurement. Successful runtime swap of the `cfu_compute` module was demonstrated via JTAG-driven reconfiguration on both the Arty A7-100T and the PYNQ-Z2 (Zynq-7020). State-of-the-art compilation and orchestration toolflows — RapidStream, Hierarchical PR (HPR), and ZyPR/ZyCAP — are also reviewed . All resource-utilisation and reconfiguration-latency measurements reported herein correspond to the manually triggered bitstream-loading flow; autonomous DDR-backed reconfiguration constitutes the primary remaining future step.
 
@@ -15,7 +15,7 @@ Field-Programmable Gate Arrays are increasingly deployed in compute-intensive ed
 
 ---
 
-### Acknowledgements
+## Acknowledgements
 
 The authors acknowledge the support of Vinay Reddy and **Centre for Heterogeneous and Intelligent Processing Systems** for providing laboratory access and funding. The open-source CFU Playground framework, maintained by Google Research, provided the foundational RISC-V SoC environment. This work benefited from AMD/Xilinx's DFX documentation (UG909, UG947) and the open literature on hierarchical partial reconfiguration.
 
