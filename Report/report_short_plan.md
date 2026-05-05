@@ -17,7 +17,11 @@ Field-Programmable Gate Arrays are increasingly deployed in compute-intensive ed
 
 ## Acknowledgements
 
-The authors acknowledge the support of Vinay Reddy and **Centre for Heterogeneous and Intelligent Processing Systems** for providing laboratory access and funding. The open-source CFU Playground framework, maintained by Google Research, provided the foundational RISC-V SoC environment. This work benefited from AMD/Xilinx's DFX documentation (UG909, UG947) and the open literature on hierarchical partial reconfiguration.
+We express our sincere gratitude to Prof. Jawahar D, Chancellor, PES University, Dr. J. Surya Prasad, Vice Chancellor - PES University, and Prof. Nagarjuna Sadineni, Pro Vice Chancellor - PES University, for providing us with various opportunities and their constant encouragement and support.
+We would like to express our immense gratitude to our guide, Vinay Reddy, Professor, Centre for Heterogeneous and Intelligent Processing Systems, PES University, for his continuous guidance, assistance, and encouragement throughout the development of this UE22EC321C - Capstone Project.
+We also extend our sincere thanks to the Centre for Heterogeneous and Intelligent Processing Systems for their providing laboratory access. The open-source CFU Playground framework, maintained by Google Research, provided the foundational RISC-V SoC environment. This work benefited from AMD/Xilinx's DFX documentation (UG909, UG947) and the open literature on hierarchical partial reconfiguration.
+We would also like to extend our gratitude to Dr. Ajey SNR, Chairperson, Department of Electronics and Communication Engineering, PES University Electronic City Campus, for all the knowledge and support we have received from the department.
+Finally, this project could not have been completed without the continual support and encouragement we have received from our family and friends. We are grateful to them as well.
 
 ---
 
