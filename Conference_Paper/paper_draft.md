@@ -7,7 +7,7 @@ Centre for Heterogeneous and Intelligent Processing Systems, PES University, Ban
 
 ## Abstract
 
-We present the first reported integration of AMD's Dynamic Function eXchange (DFX) toolflow with Google's CFU Playground framework, enabling runtime swap of the hardware accelerator attached to a VexRiscv RISC-V soft-core processor without halting the pipeline or issuing a full-device reset. The Custom Function Unit (CFU) — the hardware block servicing RISC-V `custom-0` instructions — is implemented as a DFX Reconfigurable Partition isolated by a DFX Decoupler IP. A cycle-accurate latency measurement subsystem, built around the STARTUPE2 End-of-Startup (EOS) signal and a 100 MHz free-running counter, provides host-independent reconfiguration timing. We validate the architecture on two 7-series platforms: the Digilent Arty A7-100T (Artix-7, pure-PL) and the PYNQ-Z2 (Zynq-7020, PS-assisted). JTAG-driven reconfiguration yields 63.2 ms on the Arty and 62.8 ms on the PYNQ-Z2; switching to the Zynq PCAP path reduces latency to 1.1 ms — a 57× improvement reflecting the bandwidth gap between external USB-JTAG and on-chip PS-to-PL configuration access. Across all validated reconfiguration events, the DFX Decoupler maintained complete pipeline isolation with zero stalls, zero exceptions, and deterministic safe-default output for mismatched function dispatches. The static partition occupies approximately 19.6% of LUTs and 7.8% of flip-flops, leaving substantial headroom for multi-partition extensions.
+This paper presents an integration of AMD's Dynamic Function eXchange (DFX) toolflow with Google's CFU Playground framework, enabling runtime swap of the hardware accelerator attached to a VexRiscv RISC-V soft-core processor without halting the pipeline or issuing a full-device reset. The Custom Function Unit (CFU) — the hardware block servicing RISC-V `custom-0` instructions — is implemented as a DFX Reconfigurable Partition isolated by a DFX Decoupler IP. A cycle-accurate latency measurement subsystem, built around the STARTUPE2 End-of-Startup (EOS) signal and a 100 MHz free-running counter, provides host-independent reconfiguration timing. The architecture is validated on two 7-series platforms: the Digilent Arty A7-100T (Artix-7, pure-PL) and the PYNQ-Z2 (Zynq-7020, PS-assisted). JTAG-driven reconfiguration yields 63.2 ms on the Arty and 62.8 ms on the PYNQ-Z2; switching to the Zynq PCAP path reduces latency to 1.1 ms — a 57× improvement reflecting the bandwidth gap between external USB-JTAG and on-chip PS-to-PL configuration access. Across all validated reconfiguration events, the DFX Decoupler maintained complete pipeline isolation with zero stalls, zero exceptions, and deterministic safe-default output for mismatched function dispatches. The static partition occupies approximately 19.6% of LUTs and 7.8% of flip-flops, leaving substantial headroom for multi-partition extensions.
 
 **Keywords:** Dynamic Partial Reconfiguration, Custom Function Unit, RISC-V, VexRiscv, LiteX, DFX Decoupler, ICAP, PCAP, 7-series FPGA
 
@@ -21,9 +21,9 @@ General-purpose processors offer programmability at the cost of throughput and e
 
 Separately, RISC-V's modular ISA permits hardware extensions through the `CUSTOM0`–`CUSTOM3` opcode spaces. The CFU Playground framework [2], developed by Google Research, provides a standardised handshake interface — the Custom Function Unit (CFU) — for attaching domain-specific accelerators to a VexRiscv soft-core pipeline on FPGA. The framework has been used primarily for fixed accelerator evaluation, where a single CFU implementation is bound at synthesis time.
 
-Combining these two capabilities yields a natural proposition: if the CFU is itself placed within a Reconfigurable Partition, the processor's attached accelerator can be swapped at runtime — effectively hot-patching the RISC-V instruction set without a device reset. This paper demonstrates that proposition and quantifies the associated cost.
+Combining these two capabilities suggests a compelling approach: if the CFU is itself placed within a Reconfigurable Partition, the processor's attached accelerator can be swapped at runtime — effectively hot-patching the RISC-V instruction set without a device reset. This work demonstrates that approach and quantifies the associated overhead.
 
-Prior work has addressed related problems. RV-CAP [3] demonstrated ICAP-controlled partial reconfiguration orchestrated from a VexRiscv core, establishing that a soft-core processor can manage its own reconfiguration without a hard ARM core. AMPER-X [4] used DFX on a Zynq platform to swap arithmetic precision in accelerators attached to a RISC-V pipeline, reporting up to 34% energy reduction. Neither targets the CFU Playground interface specifically, and neither provides hardware-measured reconfiguration latency using on-chip timing primitives.
+Prior work has addressed related problems. RV-CAP [3] demonstrated ICAP-controlled partial reconfiguration orchestrated from a VexRiscv core, establishing that a soft-core processor can manage its own reconfiguration without a hard ARM core. AMPER-X [4] used DFX on a Zynq platform to swap arithmetic precision in accelerators attached to a RISC-V pipeline, reporting up to 34% energy reduction. Neither targets the CFU Playground interface specifically and neither provides hardware-measured reconfiguration latency using on-chip timing primitives.
 
 The contributions of this work are:
 
@@ -40,7 +40,7 @@ The contributions of this work are:
 
 The DFX toolflow structures designs around a parent/child implementation hierarchy: the parent run produces a locked static design checkpoint (DCP), and each child run independently places and routes one Reconfigurable Module (RM) within a fixed Pblock boundary [1]. All RMs for a given RP must expose an identical port list, ensuring static routing invariance at the partition boundary.
 
-Configuration memory on 7-series devices is organised as 101-word frames addressed by the Frame Address Register (FAR). A partial bitstream contains only the frames associated with the target Pblock, prefaced by a synchronisation word (`0xAA995566`) and concluded with CRC and DESYNC commands. The ICAP primitive accepts 32-bit words at up to 100 MHz, yielding a theoretical peak throughput of 400 MB/s [9]. The DFX Decoupler IP (PG227) clamps all signals crossing the RP boundary to safe defaults when asserted, preventing undefined propagation during reconfiguration [1].
+Configuration memory on 7-series devices is organized as 101-word frames addressed by the Frame Address Register (FAR). A partial bitstream contains only the frames associated with the target Pblock, prefaced by a synchronization word (`0xAA995566`) and concluded with CRC and DESYNC commands. The ICAP primitive accepts 32-bit words at up to 100 MHz, yielding a theoretical peak throughput of 400 MB/s [9]. The DFX Decoupler IP (PG227) clamps all signals crossing the RP boundary to safe defaults when asserted, preventing undefined propagation during reconfiguration [1].
 
 ### B. CFU Playground and VexRiscv
 
@@ -60,7 +60,7 @@ Unlike these works, our contribution explicitly targets the CFU Playground frame
 
 The system comprises three cooperating subsystems (Fig. 1):
 
-1. **Static Partition**: The VexRiscv RV32I core (LiteX-generated), DDR3 memory controller, UART peripheral, DFX Decoupler, ICAP controller (`system_wrapper`), reconfiguration counter (`recon_counter`), and ILA debug core. Clocked at 100 MHz from an on-board MMCM.
+1. **Static Partition**: The VexRiscv RV32I core (LiteX-generated), DDR3 memory controller, UART peripheral, DFX Decoupler, ICAP controller (`system_wrapper`), reconfiguration counter (`recon_counter`), and ILA debug core. The entire static partition is clocked at 100 MHz from an on-board MMCM.
 
 2. **Reconfigurable Partition (`cfu_compute`)**: A single Pblock hosting one CFU implementation at a time, bounded by `CONTAIN_ROUTING` constraints ensuring all partial bitstream frames fall within the Pblock footprint.
 
@@ -126,10 +126,6 @@ JTAG-based reconfiguration was implemented first: Vivado Hardware Manager's part
 
 The PYNQ-Z2 port replaces the Arty's crystal clock with the Zynq PS PLL-generated FCLK_CLK0 at 100 MHz. Partial bitstreams are format-converted to raw binary via `bootgen` and loaded through the Linux FPGA Manager sysfs interface (`/sys/class/fpga_manager/fpga0/firmware`), which drives the Zynq DEVCFG peripheral for PCAP transfer. JTAG reconfiguration was validated first, confirming DFX Decoupler and Pblock constraints on the Zynq PL grid, before exercising the PCAP path.
 
-### C. DFX Tutorial Validation
-
-The AMD UG947 tutorial design (counter/shift-register RM pair) was implemented as a DFX sanity check prior to CFU Playground integration. Successful RM swap confirmed the project environment was correctly configured for DFX compilation (WNS = 2.022 ns, 10 Slice LUTs used).
-
 ---
 
 ## V. Experimental Results
@@ -153,10 +149,10 @@ The static region overhead is dominated by the LiteX SoC interconnect and the Ve
 
 | Platform | Interface | Bitstream Size | Latency | Throughput |
 |---|---|---|---|---|
-| Arty A7-35T | JTAG | 164,534 B (160.7 KB) | **63.2 ms** | 2.603 MB/s |
+| Arty A7-100T | JTAG | 164,534 B (160.7 KB) | **63.2 ms** | 2.603 MB/s |
 | PYNQ-Z2 | JTAG | 203,308 B (198.5 KB) | **62.8 ms** | 3.235 MB/s |
 | PYNQ-Z2 | PCAP | 203,308 B (198.5 KB) | **1.1 ms** | 183.2 MB/s |
-| Arty A7-35T | ICAP | — | — | — |
+| Arty A7-100T | ICAP | — | — | — |
 | PYNQ-Z2 | ICAP | — | — | — |
 
 †Projected theoretical peak for 7-series ICAP at 100 MHz; not yet empirically validated.
@@ -203,9 +199,9 @@ A 63 ms JTAG reconfiguration window suits coarse-grained task schedulers where t
 
 The current implementation delivers partial bitstreams externally (JTAG host or PCAP via Linux). Two stages remain for full autonomy:
 
-1. **Autonomous SPI Flash Fetch (near-term)**: The ICAP controller FSM will be extended to read partial bitstreams from on-board QSPI flash at ~50 MB/s, eliminating host-side JTAG dependency and enabling standalone reconfiguration triggered by `pr_switch`. Estimated reconfiguration latency: ~10 ms for a 500 KB partial bitstream.
+1. **Autonomous SPI Flash Fetch **: The ICAP controller FSM will be extended to read partial bitstreams from on-board QSPI flash at ~50 MB/s, eliminating host-side JTAG dependency and enabling standalone reconfiguration triggered by `pr_switch`. Estimated reconfiguration latency: ~10 ms for a 500 KB partial bitstream.
 
-2. **DDR-Backed Bitstream Storage (longer-term)**: Partial bitstreams stored in the Arty A7's DDR3 (or Zynq DRAM on PYNQ-Z2) will be accessible to the ICAP controller via an AXI DMA path, enabling read throughputs of ≥400 MB/s and sub-millisecond reconfiguration latency for bitstreams ≤500 KB — approaching ZyCAP's reported performance.
+2. **DDR-Backed Bitstream Storage **: Partial bitstreams stored in the Arty A7's DDR3 (or Zynq DRAM on PYNQ-Z2) will be accessible to the ICAP controller via an AXI DMA path, enabling read throughputs of ≥400 MB/s and sub-millisecond reconfiguration latency for bitstreams ≤500 KB — approaching ZyCAP's reported performance.
 
 ### C. Multi-Slot CFU Extension
 
