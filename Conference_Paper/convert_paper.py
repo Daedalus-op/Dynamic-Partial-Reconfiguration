@@ -132,6 +132,9 @@ def parse_front_matter(md_text: str):
         # Title
         **Author 1, Author 2, ...**
         Affiliation line
+
+        **Mentor Name**
+        Title, Affiliation line
         ---
         ## Abstract
         ... abstract text ...
@@ -142,6 +145,7 @@ def parse_front_matter(md_text: str):
     -------
     info : dict with keys:
         'title', 'authors' (list of str), 'affiliation',
+        'mentor' (dict with 'name', 'title_prefix', 'affiliation' or None),
         'abstract', 'keywords' (list of str)
     body_start_line : int
         Line index where the main body begins (first ## after Abstract).
@@ -153,6 +157,7 @@ def parse_front_matter(md_text: str):
         "title": "",
         "authors": [],
         "affiliation": "",
+        "mentor": None,
         "abstract": "",
         "keywords": [],
     }
@@ -199,16 +204,63 @@ def parse_front_matter(md_text: str):
             break
         info["affiliation"] = stripped
         i += 1
-        # Skip to the next --- or heading
-        while i < n:
-            stripped2 = lines[i].strip()
-            if stripped2 in ("---", "***", "___"):
+        break
+
+    # --- Mentor / second author: look for another **Name** block ---
+    while i < n:
+        stripped = lines[i].strip()
+        if not stripped:
+            i += 1
+            continue
+        # If we've reached the --- separator or a heading, stop looking
+        if stripped in ("---", "***", "___"):
+            i += 1
+            break
+        if stripped.startswith("#"):
+            break
+        m = re.match(r"^\*\*(.+)\*\*$", stripped)
+        if m:
+            mentor_name = m.group(1).strip()
+            mentor_title = ""
+            mentor_affiliation = ""
+            i += 1
+            # Next non-empty line is the mentor's title/affiliation
+            while i < n:
+                stripped2 = lines[i].strip()
+                if not stripped2:
+                    i += 1
+                    continue
+                if stripped2 in ("---", "***", "___"):
+                    i += 1
+                    break
+                if stripped2.startswith("#"):
+                    break
+                # Parse "Title, Dept, University, City, Country"
+                # The first part before the first comma may be the title
+                parts = [p.strip() for p in stripped2.split(",")]
+                if len(parts) >= 2:
+                    mentor_title = parts[0]
+                    mentor_affiliation = ", ".join(parts[1:])
+                else:
+                    mentor_affiliation = stripped2
                 i += 1
                 break
-            if stripped2.startswith("## "):
-                break
-            i += 1
-        break
+            info["mentor"] = {
+                "name": mentor_name,
+                "title_prefix": mentor_title,
+                "affiliation": mentor_affiliation,
+            }
+            # Skip to next --- or heading
+            while i < n:
+                stripped3 = lines[i].strip()
+                if stripped3 in ("---", "***", "___"):
+                    i += 1
+                    break
+                if stripped3.startswith("## "):
+                    break
+                i += 1
+            break
+        i += 1
 
     # --- Abstract section: ## Abstract ---
     while i < n:
@@ -420,6 +472,7 @@ REFERENCES_BLOCK
 # ============================================================
 
 def build_author_block(authors: list[str], affiliation: str,
+                       mentor: dict | None = None,
                        equal_contribution: bool = True) -> str:
     """Build an IEEEtran author block from author names and shared affiliation.
 
@@ -429,6 +482,10 @@ def build_author_block(authors: list[str], affiliation: str,
         List of author names.
     affiliation : str
         Comma-separated affiliation string (dept, university, city, country).
+    mentor : dict or None
+        Optional mentor/second-author dict with keys:
+        'name', 'title_prefix' (e.g. 'Assistant Professor'),
+        'affiliation' (e.g. 'Centre for ..., PES University, ...').
     equal_contribution : bool
         If True, all authors are marked as equal contributors with a
         shared footnote (standard IEEE practice for co-first authorship).
@@ -442,11 +499,11 @@ def build_author_block(authors: list[str], affiliation: str,
     blocks = []
     for idx, author in enumerate(authors):
         author_escaped = esc(author)
-        # First author carries the \thanks{} footnote text;
-        # subsequent authors reference the same footnote mark.
+        # First author carries the \thanks{} footnote text for *;
+        # subsequent student authors reference the same * mark.
         if equal_contribution:
             if idx == 0:
-                mark = r"\thanks{These authors contributed equally to this work.}"
+                mark = r"\thanks{$^{*}$These authors contributed equally to this work.}"
             else:
                 mark = r"\textsuperscript{*}"
         else:
@@ -458,6 +515,27 @@ def build_author_block(authors: list[str], affiliation: str,
             for part in aff_parts:
                 aff_lines.append(f"\\textit{{{esc(part.strip())}}}")
             name_line += "\\IEEEauthorblockA{" + " \\\\\n".join(aff_lines) + "}"
+        blocks.append(name_line)
+
+    # --- Mentor / second author block (distinguished with †) ---
+    if mentor:
+        mentor_escaped = esc(mentor["name"])
+        # † mark on the mentor name, with a \thanks footnote for the role
+        mentor_mark = r"\thanks{$^{\dagger}$Project Guide.}"
+        name_line = f"\\IEEEauthorblockN{{{mentor_escaped}\\textsuperscript{{\\dag}}{mentor_mark}}}\n"
+        # Build affiliation with title prefix
+        mentor_aff_parts = []
+        if mentor.get("title_prefix"):
+            mentor_aff_parts.append(f"\\textit{{{esc(mentor['title_prefix'])}}}")
+        if mentor.get("affiliation"):
+            for part in mentor["affiliation"].split(","):
+                mentor_aff_parts.append(f"\\textit{{{esc(part.strip())}}}")
+        elif aff_parts:
+            # Fall back to shared affiliation if mentor has none
+            for part in aff_parts:
+                mentor_aff_parts.append(f"\\textit{{{esc(part.strip())}}}")
+        if mentor_aff_parts:
+            name_line += "\\IEEEauthorblockA{" + " \\\\\n".join(mentor_aff_parts) + "}"
         blocks.append(name_line)
 
     return "\\author{" + "\n\\and\n".join(blocks) + "\n}"
@@ -505,7 +583,8 @@ def build_ieee_tex(md_text: str, md_base_dir: Path | None = None) -> str:
     title_tex = "\\title{" + esc(info["title"]) + "}"
 
     # --- Build author block ---
-    author_tex = build_author_block(info["authors"], info["affiliation"])
+    author_tex = build_author_block(info["authors"], info["affiliation"],
+                                     mentor=info.get("mentor"))
 
     # --- Build abstract ---
     abstract_tex = fmt_inline(info["abstract"]) if info["abstract"] else ""
