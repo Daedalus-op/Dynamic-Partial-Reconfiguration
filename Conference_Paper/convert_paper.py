@@ -73,14 +73,21 @@ def heading_to_latex_ieee(line: str) -> str:
 
 
 # ============================================================
-# IEEE TABLE CONVERTER  (fits within \columnwidth)
+# IEEE TABLE CONVERTER  (supports captioning, wrap_text, full_width)
 # ============================================================
 
-def convert_table_ieee(table_lines: list) -> str:
-    """Convert markdown table to IEEE-friendly LaTeX that fits in a column.
+def convert_table_ieee(table_lines: list, caption: str | None = None,
+                       style: str | None = None) -> str:
+    """Convert markdown table to IEEE-friendly LaTeX.
 
-    Wraps the tabular in \\resizebox{\\columnwidth}{!}{...} so wide tables
-    are scaled down to fit the narrow IEEE two-column layout.
+    Parameters
+    ----------
+    table_lines : list of str
+        Raw markdown lines of the table.
+    caption : str or None
+        Table caption extracted from preceding Label comment.
+    style : str or None
+        Table layout style: 'wrap_text', 'full_width_table', 'full_table_width', or None.
     """
     rows = []
     for raw in table_lines:
@@ -96,15 +103,50 @@ def convert_table_ieee(table_lines: list) -> str:
         return ""
 
     ncols = max(len(r) for r in rows)
+    is_full_width = style in ("full_width_table", "full_table_width")
+    is_wrap = style == "wrap_text"
+
+    env = "table*" if is_full_width else "table"
 
     lines = [
-        r"\begin{table}[htbp]",
-        r"\centering",
-        r"\footnotesize",
-        r"\resizebox{\columnwidth}{!}{",
-        r"\begin{tabular}{" + "l" * ncols + "}",
-        r"\toprule",
+        f"\\begin{{{env}}}[htbp]",
     ]
+
+    if caption:
+        lines.append(r"\caption{" + fmt_inline(caption) + "}")
+
+    lines.append(r"\begin{center}")
+    lines.append(r"\footnotesize")
+
+    if is_wrap:
+        # Determine column width targets based on maximum cell character length
+        col_specs = []
+        has_x = False
+        max_col_lens = []
+
+        for c in range(ncols):
+            c_len = max(len(row[c]) for row in rows)
+            max_col_lens.append(c_len)
+            if c_len > 15:
+                col_specs.append(r">{\raggedright\arraybackslash}X")
+                has_x = True
+            else:
+                col_specs.append("l")
+
+        # Guarantee at least one X column for tabularx correctness
+        if not has_x and ncols > 0:
+            longest_col = max_col_lens.index(max(max_col_lens))
+            col_specs[longest_col] = r">{\raggedright\arraybackslash}X"
+
+        col_str = " ".join(col_specs)
+        lines.append(r"\begin{tabularx}{\columnwidth}{" + col_str + "}")
+        lines.append(r"\toprule")
+    else:
+        width_cmd = r"\textwidth" if is_full_width else r"\columnwidth"
+        lines.append(f"\\resizebox{{{width_cmd}}}{{!}}{{")
+        lines.append(r"\begin{tabular}{" + "l" * ncols + "}")
+        lines.append(r"\toprule")
+
     for ri, row in enumerate(rows):
         while len(row) < ncols:
             row.append("")
@@ -112,12 +154,22 @@ def convert_table_ieee(table_lines: list) -> str:
         lines.append(" & ".join(cells_latex) + r" \\")
         if ri == 0:
             lines.append(r"\midrule")
-    lines += [
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"}",
-        r"\end{table}",
-    ]
+
+    if is_wrap:
+        lines += [
+            r"\bottomrule",
+            r"\end{tabularx}",
+            r"\end{center}",
+            f"\\end{{{env}}}",
+        ]
+    else:
+        lines += [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"}",
+            r"\end{center}",
+            f"\\end{{{env}}}",
+        ]
     return "\n".join(lines)
 
 
@@ -379,6 +431,7 @@ IEEE_TEX_TEMPLATE = r"""\documentclass[conference]{IEEEtran}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{longtable}
+\usepackage{tabularx}
 
 %% ---- Code listings ----
 \usepackage{listings}
@@ -503,7 +556,7 @@ def build_author_block(authors: list[str], affiliation: str,
         # subsequent student authors reference the same * mark.
         if equal_contribution:
             if idx == 0:
-                mark = r"\thanks{$^{*}$These authors contributed equally to this work.}"
+                mark = r"\textsuperscript{*}\thanks{$^{*}$These authors contributed equally to this work.}"
             else:
                 mark = r"\textsuperscript{*}"
         else:
@@ -542,6 +595,236 @@ def build_author_block(authors: list[str], affiliation: str,
 
 
 # ============================================================
+# IEEE-AWARE MARKDOWN BODY CONVERTER
+# ============================================================
+
+def convert_md_ieee(md_text: str, md_base_dir: Path | None = None) -> str:
+    """Convert markdown body to IEEE LaTeX, interpreting HTML layout comments."""
+    lines = md_text.splitlines()
+    out = []
+    i = 0
+    n = len(lines)
+    in_item = False
+    in_enum = False
+    para_buf = []
+
+    next_table_label = None
+    next_table_style = None
+    next_image_size = None
+
+    def flush_para():
+        nonlocal para_buf
+        if para_buf:
+            joined = " ".join(l.strip() for l in para_buf if l.strip())
+            if joined:
+                out.append(fmt_inline(joined))
+                out.append("")
+        para_buf = []
+
+    def close_lists():
+        nonlocal in_item, in_enum
+        if in_item:
+            out.append(r"\end{itemize}")
+            in_item = False
+        if in_enum:
+            out.append(r"\end{enumerate}")
+            in_enum = False
+
+    while i < n:
+        raw = lines[i]
+        stripped = raw.strip()
+
+        # ---- Fenced code block ```...``` ----
+        fence_m = re.match(r"^```(\w*)", stripped)
+        if fence_m:
+            flush_para()
+            close_lists()
+            lang = fence_m.group(1)
+            code_lines = []
+            i += 1
+            while i < n:
+                if lines[i].strip() == "```":
+                    break
+                code_lines.append(lines[i])
+                i += 1
+            i += 1
+            out.append(convert_to_latex.convert_code_block(lang, code_lines))
+            out.append("")
+            continue
+
+        # ---- Horizontal rule (omitted in IEEE conference body text) ----
+        if stripped in ("---", "***", "___"):
+            flush_para()
+            close_lists()
+            i += 1
+            continue
+
+        # ---- Blank line ----
+        if stripped == "":
+            flush_para()
+            j = i + 1
+            while j < n and lines[j].strip() == "":
+                j += 1
+            next_stripped = lines[j].strip() if j < n else ""
+            next_is_bullet = bool(re.match(r"^[*\-]\s+", next_stripped))
+            next_is_numbered = bool(re.match(r"^\d+\.\s+", next_stripped))
+            if not ((in_item and next_is_bullet) or
+                    (in_enum and next_is_numbered)):
+                close_lists()
+            i += 1
+            continue
+
+        # ---- HTML / Markdown layout comments ----
+        comment_m = re.match(r"^<!--(.*?)-->$", stripped)
+        if comment_m:
+            flush_para()
+            close_lists()
+            comment_text = comment_m.group(1).strip()
+
+            if "image:" in comment_text.lower():
+                size_m = re.search(r"size:\s*(\d+)%", comment_text, re.IGNORECASE)
+                if size_m:
+                    next_image_size = int(size_m.group(1))
+            else:
+                # Extract Label
+                label_m = re.search(r"Label:\s*([^,]+)", comment_text, re.IGNORECASE)
+                if label_m:
+                    lbl = label_m.group(1).strip()
+                    if lbl.endswith("-->"):
+                        lbl = lbl[:-3].strip()
+                    next_table_label = lbl
+
+                # Extract Style
+                style_m = re.search(r"Style:\s*([^\s,>]+)", comment_text, re.IGNORECASE)
+                if style_m:
+                    st = style_m.group(1).strip().lower()
+                    if st.endswith("-->"):
+                        st = st[:-3].strip()
+                    next_table_style = st
+            i += 1
+            continue
+
+        # ---- Markdown table ----
+        if stripped.startswith("|"):
+            flush_para()
+            close_lists()
+            tbl_lines = []
+            while i < n and lines[i].strip().startswith("|"):
+                tbl_lines.append(lines[i])
+                i += 1
+            out.append(convert_table_ieee(
+                tbl_lines,
+                caption=next_table_label,
+                style=next_table_style
+            ))
+            out.append("")
+            next_table_label = None
+            next_table_style = None
+            continue
+
+        # ---- Heading ----
+        if stripped.startswith("#"):
+            flush_para()
+            close_lists()
+            latex_h = heading_to_latex_ieee(stripped)
+            if latex_h:
+                out.append(latex_h)
+                out.append("")
+            i += 1
+            continue
+
+        # ---- Blockquote ----
+        if stripped.startswith(">"):
+            flush_para()
+            close_lists()
+            bq = []
+            while i < n and lines[i].strip().startswith(">"):
+                bq.append(lines[i].strip().lstrip(">").strip())
+                i += 1
+            out.append(convert_to_latex.convert_blockquote(bq))
+            out.append("")
+            continue
+
+        # ---- Markdown image ![alt](path) ----
+        img_m = re.match(r"^!\[([^\]]*)\]\(([^\)]+)\)$", stripped)
+        if img_m:
+            flush_para()
+            close_lists()
+            alt_text = img_m.group(1)
+            img_path = img_m.group(2)
+
+            p = Path(img_path)
+            if not p.is_absolute() and md_base_dir is not None:
+                p = (md_base_dir / p).resolve()
+            img_abs = str(p)
+
+            caption_tex = fmt_inline(alt_text) if alt_text else ""
+
+            if next_image_size is not None:
+                width_fraction = next_image_size / 100.0
+                width_str = f"{width_fraction:g}\\columnwidth"
+            else:
+                width_str = r"\columnwidth"
+
+            lines_img = [
+                r"\begin{figure}[htbp]",
+                f"\\centerline{{\\includegraphics[width={width_str}]{{{img_abs}}}}}",
+            ]
+            if caption_tex:
+                lines_img.append(r"\caption{" + caption_tex + r"}")
+            lines_img.append(r"\end{figure}")
+
+            out.append("\n".join(lines_img))
+            out.append("")
+            next_image_size = None
+            i += 1
+            continue
+
+        # ---- Figure placeholder *[Figure X.X: caption]* ----
+        fig_m = re.match(r"^\*\[Figure\s+[\d.X]+[:\s]+(.*?)\]\*$", stripped)
+        if fig_m:
+            flush_para()
+            close_lists()
+            out.append(convert_to_latex.make_figure(fig_m.group(1)))
+            out.append("")
+            i += 1
+            continue
+
+        # ---- Bullet list item ----
+        if re.match(r"^[*\-]\s+", stripped):
+            flush_para()
+            if not in_item:
+                close_lists()
+                out.append(r"\begin{itemize}")
+                in_item = True
+            content = re.sub(r"^[*\-]\s+", "", stripped)
+            out.append(r"  \item " + fmt_inline(content))
+            i += 1
+            continue
+
+        # ---- Numbered list item ----
+        if re.match(r"^\d+\.\s+", stripped):
+            flush_para()
+            if not in_enum:
+                close_lists()
+                out.append(r"\begin{enumerate}")
+                in_enum = True
+            content = re.sub(r"^\d+\.\s+", "", stripped)
+            out.append(r"  \item " + fmt_inline(content))
+            i += 1
+            continue
+
+        # ---- Normal text (accumulate into paragraph) ----
+        close_lists()
+        para_buf.append(raw)
+        i += 1
+
+    flush_para()
+    close_lists()
+    return "\n".join(out)
+
+
+# ============================================================
 # MAIN BUILD FUNCTION
 # ============================================================
 
@@ -556,25 +839,8 @@ def build_ieee_tex(md_text: str, md_base_dir: Path | None = None) -> str:
     body_md = "\n".join(body_lines)
     body_md, ref_entries = parse_references(body_md)
 
-    # --- Monkey-patch converters for IEEE style ---
-    orig_heading = convert_to_latex.heading_to_latex
-    orig_table = convert_to_latex.convert_table
-    convert_to_latex.heading_to_latex = heading_to_latex_ieee
-    convert_to_latex.convert_table = convert_table_ieee
-    try:
-        body_tex = convert_md(body_md, md_base_dir=md_base_dir)
-    finally:
-        convert_to_latex.heading_to_latex = orig_heading
-        convert_to_latex.convert_table = orig_table
-
-    # --- Remove horizontal rules (not used in IEEE format) ---
-    body_tex = re.sub(r"\\vspace\{0\.4em\}\\hrule\\vspace\{0\.4em\}\n?", "", body_tex)
-
-    # --- Fix image widths for IEEE two-column format ---
-    body_tex = body_tex.replace(
-        r"\includegraphics[width=0.85\textwidth]",
-        r"\includegraphics[width=\columnwidth]"
-    )
+    # --- Convert body to LaTeX using native IEEE-aware converter ---
+    body_tex = convert_md_ieee(body_md, md_base_dir=md_base_dir)
 
     # --- Convert citations [N] → \cite{bN} ---
     body_tex = inline_citations(body_tex)

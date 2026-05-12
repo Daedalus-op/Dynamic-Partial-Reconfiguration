@@ -30,7 +30,7 @@ Prior work has addressed related problems. RV-CAP [3] demonstrated ICAP-controll
 
 The contributions of this work are:
 
-1. An architecture that integrates AMD's DFX toolflow with Google's CFU Playground framework, enabling runtime accelerator swap without processor reset — the first such integration reported in the literature.
+1. An architecture that integrates AMD's DFX toolflow with Google's CFU Playground framework, enabling runtime accelerator swap without processor reset.
 2. A comparative analysis of three reconfiguration paths (JTAG, PCAP, ICAP) in terms of hardware overhead, host dependency, and observed latency.
 3. Cross-platform validation on both a pure-PL device (Artix-7) and a PS-assisted device (Zynq-7020), demonstrating that the architecture is portable across 7-series variants.
 4. Experimental confirmation that the DFX Decoupler provides deterministic isolation during reconfiguration, with zero pipeline stalls across all tested events.
@@ -59,6 +59,8 @@ Unlike these works, our architecture targets the CFU Playground framework's stan
 
 ## III. System Architecture
 
+![System block diagram — DFX-integrated CFU Playground architecture showing the static partition, DFX Decoupler boundary, and reconfigurable cfu_compute partition.](../Report/assets/CFUxDFx.png)
+
 ### A. Overview
 
 The architecture is built around three cooperating subsystems (Fig. 1):
@@ -69,11 +71,9 @@ The architecture is built around three cooperating subsystems (Fig. 1):
 
 3. **DFX Toolflow Infrastructure**: Vivado's parent/child implementation run hierarchy, which independently synthesises and places each RM within the locked static DCP.
 
-![Fig. 1: System block diagram — DFX-integrated CFU Playground architecture showing the static partition, DFX Decoupler boundary, and reconfigurable cfu_compute partition.](../Report/assets/CFUxDFx.png)
-
 ### B. CFU Interface and DFX Decoupler Placement
 
-![Fig. 2: CFU Playground interface architecture — the standardised handshake between VexRiscv and the Custom Function Unit.](../Report/assets/CFU_Architecture.png)
+![CFU Playground interface architecture — the standardised handshake between VexRiscv and the Custom Function Unit.](../Report/assets/CFU_Architecture.png)
 
 The `cfu.v` wrapper bridges the VexRiscv's CFU port to the RP and contains the DFX Decoupler instance. The Decoupler is placed in the static partition rather than inside the RP. This is a deliberate design choice: if the Decoupler were inside the RP, it would be destroyed during reconfiguration and could not provide isolation when it is needed most. By keeping it in the static region, the Decoupler remains functional even when the RP's configuration memory is in an undefined state.
 
@@ -83,10 +83,11 @@ During reconfiguration, the Decoupler holds `cmd_valid` and `rsp_valid` low on t
 
 Four RMs have been developed for the `cfu_compute` partition. All share an identical port interface, as required by DFX:
 
+<!-- Label: Reconfigurable function units , Style: wrap_text-->
 | RM | Operations | Compute Latency | Total Latency (with boundary registers) |
 |---|---|---|---|
 | `example.v` | Byte-sum, byte-swap, bit-reverse (`function_id` 0–2) | Combinational | 3 cycles |
-| `donut.v` | Signed fixed-point multiply, multiply-shift-right | 1 cycle (pipelined) | 3 cycles |
+| `donut.v` | Signed fixed-point multiply, multiply-shift-right | Combinational | 3 cycles |
 
 **Pblock boundary pipelining.** Signals crossing the Pblock boundary must travel through the DFX Decoupler and across the physical gap between the static and reconfigurable regions. At 100 MHz (10 ns clock period), the combined propagation delay through the Decoupler and across the boundary exceeded the available timing margin, causing setup violations. To resolve this, a register stage was added at both the input and output of the CFU inside the Pblock. The input register captures the incoming command signals (`cmd_valid`, `function_id`, `inputs_0`, `inputs_1`) one cycle after they arrive from the static side. The output register captures the CFU's computed result one cycle before it is sent back. Together, these two registers add two cycles of latency to every CFU instruction. For a CFU that would otherwise be combinational (like `example.v`), the total response time becomes three cycles: one for the input register, one for the combinational compute, and one for the output register. The VexRiscv pipeline stalls for these additional cycles, waiting for `rsp_valid` to assert. This is a necessary cost of placing the CFU across a DFX partition boundary — without the registers, the design does not close timing at the target frequency.
 
@@ -119,7 +120,8 @@ The architecture supports three distinct reconfiguration paths, each offering a 
 
 ### A. JTAG-Based Reconfiguration
 
-![Fig. 3: JTAG-based reconfiguration architecture — the host PC streams partial bitstream data to the FPGA through the USB-JTAG bridge.](../Report/assets/JTAG_reconfig_arch.png)
+<!--Image: size: 70% -->
+![JTAG-based reconfiguration architecture — the host PC streams partial bitstream data to the FPGA through the USB-JTAG bridge.](../Report/assets/JTAG_reconfig_arch.png)
 
 JTAG is the simplest reconfiguration path. The host PC connects to the FPGA through the on-board USB-JTAG bridge and uses Vivado Hardware Manager to stream the partial bitstream. The FPGA's internal JTAG TAP controller receives the data and writes it directly into the configuration memory for the target Pblock. No additional RTL is required on the FPGA side — the TAP controller handles the configuration write internally.
 
@@ -129,7 +131,8 @@ JTAG is the simplest reconfiguration path. The host PC connects to the FPGA thro
 
 ### B. PCAP-Based Reconfiguration
 
-![Fig. 4: PCAP-based reconfiguration architecture — the Zynq PS writes partial bitstream data to the PL configuration engine through the on-chip PCAP port.](../Report/assets/PCAP_reconfig_arch.png)
+<!--Image: size: 70% -->
+![PCAP-based reconfiguration architecture — the Zynq PS writes partial bitstream data to the PL configuration engine through the on-chip PCAP port.](../Report/assets/PCAP_reconfig_arch.png)
 
 PCAP (Processor Configuration Access Port) is available only on Zynq devices, where an ARM Processing System (PS) sits alongside the Programmable Logic (PL). On the PYNQ-Z2, the PS runs Linux with the PYNQ Python framework. The partial bitstream is stored on the PS-side filesystem (SD card), and reconfiguration is triggered by writing to the Linux FPGA Manager sysfs interface (`/sys/class/fpga_manager/fpga0/firmware`). The kernel driver reads the bitstream and writes it to the PCAP port, which feeds directly into the PL's configuration engine.
 
@@ -137,6 +140,7 @@ PCAP (Processor Configuration Access Port) is available only on Zynq devices, wh
 
 **Limitation:** PCAP is not available on pure-PL devices like the Arty A7. Additionally, the Linux FPGA Manager driver introduces significant software overhead. While the hardware reconfiguration itself completes in approximately 1.1 ms, the end-to-end time measured from the PYNQ Python API is 68.55 ms — an overhead of 67.44 ms caused by the PYNQ driver stack, FPGA Manager sysfs path, kernel-space bitstream validation, and PS-to-PL bridge setup.
 
+<!-- Label: PCAP-based reconfiguration time metrics , Style: wrap_text-->
 | Metric | Value |
 |--------|-------|
 | Avg. hardware reconfiguration time (ILA) | 1.109 ms |
@@ -147,7 +151,8 @@ This result is significant: the PCAP hardware path is fast enough for sub-millis
 
 ### C. ICAP-Based Reconfiguration (Autonomous Path)
 
-![Fig. 5: ICAP-based reconfiguration architecture — the target autonomous path where bitstream storage, retrieval, and delivery occur entirely within the FPGA fabric.](../Report/assets/ICAP_reconfig_arch.png)
+<!--Image: size: 60% -->
+![ICAP-based reconfiguration architecture — the target autonomous path where bitstream storage, retrieval, and delivery occur entirely within the FPGA fabric.](../Report/assets/ICAP_reconfig_arch.png)
 
 ICAP (Internal Configuration Access Port) is the fully autonomous reconfiguration path. In this architecture, all bitstream storage, retrieval, and delivery happen within the FPGA fabric — no host PC and no hard processor are required at runtime. The static region includes a DFx Controller FSM, a Memory Controller, and a connection to external memory (SPI flash or DDR). When reconfiguration is triggered, the DFx Controller reads bitstream data from memory and writes it word-by-word to the ICAP primitive.
 
@@ -163,6 +168,7 @@ In exchange, ICAP is the only path that enables true standalone operation: the F
 
 ### D. Path Comparison
 
+<!--Label: Comparison of reconfiguration paths , Style: full_width_table-->
 | Property | JTAG | PCAP | ICAP |
 |----------|------|------|------|
 | Host required? | Yes (PC + USB) | Yes (Zynq PS + Linux) | No (autonomous) |
@@ -202,6 +208,7 @@ The AMD UG947 tutorial design (a counter/shift-register RM pair on a minimal Pbl
 
 **Table I: Implementation Results (Arty A7-100T, XC7A100T, `donut.v` RM active)**
 
+<!--Label: Implementation Results -->
 | Resource | Static | PRR (donut.v) | Total | Available | Utilisation |
 |---|---|---|---|---|---|
 | LUTs | ~12,400 | 48 | ~12,448 | 63,400 | ~19.6% |
@@ -215,9 +222,10 @@ The static region overhead is dominated by the LiteX SoC interconnect and the Ve
 
 **Table II: Observed Reconfiguration Latency**
 
+<!--Label: Observed Reconfiguration Latency -->
 | Platform | Interface | Bitstream Size | Latency |
 |---|---|---|---|
-| Arty A7-35T | JTAG | 164,534 B (160.7 KB) | **63.2 ms** |
+| Arty A7-100T | JTAG | 164,534 B (160.7 KB) | **63.2 ms** |
 | PYNQ-Z2 | JTAG | 203,308 B (198.5 KB) | **62.8 ms** |
 | PYNQ-Z2 | PCAP | 203,308 B (198.5 KB) | **1.1 ms** |
 
