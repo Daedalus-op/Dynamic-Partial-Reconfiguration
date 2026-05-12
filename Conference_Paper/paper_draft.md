@@ -3,6 +3,9 @@
 **Arun Murrugappan I, Pranav Varkey, Shrikrishna Pandit**
 Centre for Heterogeneous and Intelligent Processing Systems, PES University, Bangalore, India
 
+**Vinay Reddy**
+Assistant Professor, Centre for Heterogeneous and Intelligent Processing Systems, PES University, Bangalore, India
+
 ---
 
 ## Abstract
