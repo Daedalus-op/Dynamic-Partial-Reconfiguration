@@ -152,7 +152,7 @@ These timing results reveal a critical performance divergence: while the physica
 <!--Image: size: 60% -->
 ![ICAP-based reconfiguration architecture — the target autonomous path where bitstream storage, retrieval, and delivery occur entirely within the FPGA fabric.](../Report/assets/ICAP_reconfig_arch.png)
 
-The Internal Configuration Access Port (ICAP) provides a fully autonomous, self-hosted reconfiguration mechanism. Implementing this datapath ensures that bitstream storage, retrieval, and programming occur entirely within the boundaries of the FPGA fabric, completely eliminating runtime dependencies on external host computers or hard processor cores. Within the static partition, a dedicated DFX Controller finite state machine (FSM) was designed coupled to a memory read interface accessing external storage (such as non-volatile SPI flash or volatile DDR memory). Upon receiving a hardware reconfiguration trigger, the DFX Controller streams partial bitstream data directly from memory into the ICAP primitive word by word.
+The Internal Configuration Access Port (ICAP) provides a fully autonomous, self-hosted reconfiguration mechanism. Implementing this datapath ensures that bitstream storage, retrieval, and programming occur entirely within the boundaries of the FPGA fabric, completely eliminating runtime dependencies on external host computers or hard processor cores. Within the static partition, a dedicated DFX Controller [14] finite state machine (FSM) was designed coupled to a memory read interface accessing external storage (such as non-volatile SPI flash or volatile DDR memory). Upon receiving a hardware reconfiguration trigger, the DFX Controller streams partial bitstream data directly from memory into the ICAP primitive word by word.
 
 **Hardware overhead:** Autonomy requires significant programmable logic resources. To support independent ICAP operation, the static partition must implement:
 - A customized ICAP controller FSM responsible for parsing synchronization headers, streaming payload frames, and issuing CRC and desynchronization commands.
@@ -304,6 +304,8 @@ This paper proposed and validated an architecture that enables runtime-reconfigu
 [12] S. A. Fahmy and K. B. Iyer, "Dynamic and partial reconfiguration of FPGAs," in *Handbook of Computer Architecture*, Springer Nature Singapore, 2024, pp. 507–530, doi: 10.1007/978-981-97-9314-3_51.
 
 [13] M. Sabih, A. Karim, J. Wittmann, F. Hannig, and J. Teich, "Hardware/software co-design of RISC-V extensions for accelerating sparse DNNs on FPGAs," in *Proc. Int. Conf. Field Programmable Technology (ICFPT)*, 2024.
+
+[14] AMD/Xilinx, "Dynamic Function eXchange Controller v1.0" PG374, 2020
 
 ---
 
