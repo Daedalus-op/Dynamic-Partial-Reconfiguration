@@ -301,6 +301,12 @@ We have proposed and validated an architecture for runtime-reconfigurable RISC-V
 
 [10] A. Ferreira *et al.*, "DORA: Low-latency dynamic overlay for reconfiguration acceleration," in *Proc. FPT*, 2024.
 
+[11] Y. Yamada, N. Berjab, T. Yoneda, and K. Kise, "A remote partial-reconfigurable SoC with a RISC-V soft processor targeting low-end FPGAs," in *Proc. IEEE 16th Int. Symp. Embedded Multicore/Many-core Systems-on-Chip (MCSoC)*, 2023.
+
+[12] S. A. Fahmy and K. B. Iyer, "Dynamic and partial reconfiguration of FPGAs," in *Handbook of Computer Architecture*, Springer Nature Singapore, 2024, pp. 507–530, doi: 10.1007/978-981-97-9314-3_51.
+
+[13] M. Sabih, A. Karim, J. Wittmann, F. Hannig, and J. Teich, "Hardware/software co-design of RISC-V extensions for accelerating sparse DNNs on FPGAs," in *Proc. Int. Conf. Field Programmable Technology (ICFPT)*, 2024.
+
 ---
 
 *End of draft — version 0.3, May 2026*
