@@ -1,0 +1,54 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"1.17201",
+   "Default View_TopLeft":"555,386",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.7.1 2023-07-26 3bc4126617 VDI=43 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port DDR -pg 1 -lvl 4 -x 1170 -y 1000 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -lvl 4 -x 1170 -y 1030 -defaultsOSRD
+preplace port port-id_decouple_status -pg 1 -lvl 0 -x -10 -y 230 -defaultsOSRD
+preplace port port-id_clk125 -pg 1 -lvl 4 -x 1170 -y 1100 -defaultsOSRD
+preplace port port-id_to_reconfig -pg 1 -lvl 0 -x -10 -y 780 -defaultsOSRD
+preplace portBus decouple -pg 1 -lvl 4 -x 1170 -y 250 -defaultsOSRD
+preplace portBus configure_to -pg 1 -lvl 0 -x -10 -y 160 -defaultsOSRD
+preplace portBus perf_count -pg 1 -lvl 0 -x -10 -y 260 -defaultsOSRD
+preplace portBus perf_rst -pg 1 -lvl 4 -x 1170 -y 710 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 3 -x 950 -y 1060 -defaultsOSRD
+preplace inst axi_gpio_decouple -pg 1 -lvl 3 -x 950 -y 240 -defaultsOSRD
+preplace inst axi_gpio_to_reconfig -pg 1 -lvl 3 -x 950 -y 860 -defaultsOSRD
+preplace inst axi_gpio_decouple_status -pg 1 -lvl 3 -x 950 -y 400 -defaultsOSRD
+preplace inst axi_gpio_config_to -pg 1 -lvl 3 -x 950 -y 80 -defaultsOSRD
+preplace inst ps7_0_axi_periph -pg 1 -lvl 2 -x 550 -y 490 -defaultsOSRD
+preplace inst rst_ps7_0_100M -pg 1 -lvl 1 -x 200 -y 880 -defaultsOSRD
+preplace inst axi_gpio_perf_counter -pg 1 -lvl 3 -x 950 -y 540 -defaultsOSRD
+preplace inst axi_gpio_perf_rst -pg 1 -lvl 3 -x 950 -y 700 -defaultsOSRD
+preplace netloc axi_gpio_decouple_gpio_io_o 1 3 1 NJ 250
+preplace netloc configure_to_1 1 0 4 NJ 160 NJ 160 NJ 160 1140
+preplace netloc decouple_status_1 1 0 4 NJ 230 NJ 230 740J 320 1140
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 4 20 630 380 260 730 1180 1150
+preplace netloc processing_system7_0_FCLK_CLK1 1 3 1 NJ 1100
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 4 20 1190 NJ 1190 NJ 1190 1140
+preplace netloc rst_ps7_0_100M_peripheral_aresetn 1 1 2 390 270 750
+preplace netloc to_reconfig_1 1 0 4 NJ 780 NJ 780 NJ 780 1140
+preplace netloc perf_count_1 1 0 4 10J 710 NJ 710 760J 620 1140
+preplace netloc axi_gpio_0_gpio_io_o 1 3 1 NJ 710
+preplace netloc processing_system7_0_DDR 1 3 1 NJ 1000
+preplace netloc processing_system7_0_FIXED_IO 1 3 1 1150J 1020n
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 3 400 940 NJ 940 1140
+preplace netloc ps7_0_axi_periph_M00_AXI 1 2 1 700 60n
+preplace netloc ps7_0_axi_periph_M01_AXI 1 2 1 710 220n
+preplace netloc ps7_0_axi_periph_M02_AXI 1 2 1 740 380n
+preplace netloc ps7_0_axi_periph_M03_AXI 1 2 1 710 500n
+preplace netloc ps7_0_axi_periph_M04_AXI 1 2 1 N 520
+preplace netloc ps7_0_axi_periph_M05_AXI 1 2 1 700 540n
+levelinfo -pg 1 -10 200 550 950 1170
+pagesize -pg 1 -db -bbox -sgen -180 0 1310 1200
+"
+}
+{
+   "da_axi4_cnt":"5",
+   "da_board_cnt":"4",
+   "da_clkrst_cnt":"17",
+   "da_ps7_cnt":"1"
+}

@@ -1,0 +1,22 @@
+Command: pr_verify -full_check -initial /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/Top_routed.dcp -additional /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/Top_routed.dcp -file child_0_impl_1_pr_verify.log
+Wed Nov 26 14:49:30 2025
+
+INFO: [Constraints 18-1020] PR Verify Summary:
+DCP1: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/Top_routed.dcp
+  Number of reconfigurable modules compared = 1
+  Number of partition pins compared         = 11
+  Number of static tiles compared           = 510
+  Number of static sites compared           = 1947
+  Number of static cells compared           = 10667
+  Number of static routed nodes compared    = 136822
+  Number of static routed pips compared     = 126919
+
+DCP2: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/Top_routed.dcp
+  Number of reconfigurable modules compared = 1
+  Number of partition pins compared         = 11
+  Number of static tiles compared           = 510
+  Number of static sites compared           = 1947
+  Number of static cells compared           = 10667
+  Number of static routed nodes compared    = 136822
+  Number of static routed pips compared     = 126919
+INFO: [Vivado 12-3253] PR_VERIFY: check points /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/Top_routed.dcp and /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/Top_routed.dcp are compatible

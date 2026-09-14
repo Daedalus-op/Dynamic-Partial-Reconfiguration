@@ -1,0 +1,499 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Tue Nov  4 23:10:48 2025
+# Process ID: 9334
+# Current directory: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2
+# Command line: vivado pynq_z2.xpr
+# Log file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/vivado.log
+# Journal file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4299.987 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :22968 MB
+#-----------------------------------------------------------
+start_gui
+open_project pynq_z2.xpr
+update_compile_order -fileset sources_1
+close_project
+open_project /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.xpr
+update_compile_order -fileset sources_1
+open_run impl_1
+reset_run system_tul_pynq_z2_0_0_synth_1
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+close_design
+open_run impl_1
+synth_design -rtl -rtl_skip_mlo -name rtl_1
+current_design impl_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+report_timing -from [get_cells system_i/axi_gpio_decouple] -to [get_nets {system_i/axi_gpio_decouple_gpio_io_o}] -delay_type min_max -max_paths 10 -sort_by group -input_pins -routable_nets -name {[get_nets {system_i/axi_gpio_decouple_gpio_io_o}]}
+report_timing -from [get_cells system_i/axi_gpio_decouple] -to [get_nets {system_i/axi_gpio_decouple_gpio_io_o}] -delay_type min_max -max_paths 10 -sort_by group -input_pins -routable_nets -name {[get_nets {system_i/axi_gpio_decouple_gpio_io_o}]}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+set_property -dict [list \
+  CONFIG.ALL_PARAMS {INTF {cfu_inputs {ID 0 MODE slave SIGNALS {cmd_valid {} cmd_payload_function_id {} cmd_payload_inputs_0 {WIDTH 10} cmd_payload_inputs_1 {WIDTH 32} rsp_ready {WIDTH 32} reset {} clk {}} REGISTER 0 CDC_STAGES 2} cfu_output {ID 1 SIGNALS {cmd_ready {} rsp_valid {} rsp_payload_outputs_0 {WIDTH 32} cfu_id {WIDTH 3}}}}} \
+  CONFIG.GUI_SELECT_CDC_STAGES {2} \
+] [get_ips cfu_decoupler]
+generate_target all [get_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci]
+catch { config_ip_cache -export [get_ips -all cfu_decoupler] }
+export_ip_user_files -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -no_script -sync -force -quiet
+reset_run cfu_decoupler_synth_1
+launch_runs cfu_decoupler_synth_1 -jobs 12
+wait_on_run cfu_decoupler_synth_1
+export_simulation -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -directory /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/sim_scripts -ip_user_files_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files -ipstatic_source_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/modelsim} {questa=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/questa} {xcelium=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/xcelium} {vcs=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/vcs} {riviera=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+reset_run system_tul_pynq_z2_0_0_synth_1
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_EN_CLK0_PORT {1} \
+  CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {100} \
+] [get_bd_cells processing_system7_0]
+endgroup
+validate_bd_design
+set_property -dict [list \
+  CONFIG.ALL_PARAMS {INTF {cfu_inputs {ID 0 MODE slave SIGNALS {cmd_valid {} cmd_payload_function_id {} cmd_payload_inputs_0 {WIDTH 10} cmd_payload_inputs_1 {WIDTH 32} rsp_ready {WIDTH 32} reset {} clk {}} REGISTER 0 CDC_STAGES 4} cfu_output {ID 1 SIGNALS {cmd_ready {} rsp_valid {} rsp_payload_outputs_0 {WIDTH 32} cfu_id {WIDTH 3}} CDC_STAGES 4}}} \
+  CONFIG.GUI_SELECT_CDC_STAGES {4} \
+  CONFIG.GUI_SELECT_INTERFACE {1} \
+] [get_ips cfu_decoupler]
+generate_target all [get_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci]
+catch { config_ip_cache -export [get_ips -all cfu_decoupler] }
+export_ip_user_files -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -no_script -sync -force -quiet
+reset_run cfu_decoupler_synth_1
+launch_runs cfu_decoupler_synth_1 -jobs 12
+wait_on_run cfu_decoupler_synth_1
+export_simulation -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -directory /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/sim_scripts -ip_user_files_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files -ipstatic_source_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/modelsim} {questa=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/questa} {xcelium=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/xcelium} {vcs=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/vcs} {riviera=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+reset_run system_processing_system7_0_0_synth_1
+reset_run system_tul_pynq_z2_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+set_property -dict [list \
+  CONFIG.ALL_PARAMS {INTF {cfu_inputs {ID 0 MODE slave SIGNALS {cmd_valid {} cmd_payload_function_id {} cmd_payload_inputs_0 {WIDTH 10} cmd_payload_inputs_1 {WIDTH 32} rsp_ready {WIDTH 32} reset {} clk {}} REGISTER 0 CDC_STAGES 6} cfu_output {ID 1 SIGNALS {cmd_ready {} rsp_valid {} rsp_payload_outputs_0 {WIDTH 32} cfu_id {WIDTH 3}} CDC_STAGES 6}}} \
+  CONFIG.GUI_SELECT_CDC_STAGES {6} \
+  CONFIG.GUI_SELECT_INTERFACE {1} \
+] [get_ips cfu_decoupler]
+generate_target all [get_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci]
+catch { config_ip_cache -export [get_ips -all cfu_decoupler] }
+export_ip_user_files -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -no_script -sync -force -quiet
+reset_run cfu_decoupler_synth_1
+launch_runs cfu_decoupler_synth_1 -jobs 12
+wait_on_run cfu_decoupler_synth_1
+export_simulation -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci] -directory /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/sim_scripts -ip_user_files_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files -ipstatic_source_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/modelsim} {questa=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/questa} {xcelium=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/xcelium} {vcs=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/vcs} {riviera=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+reset_run system_tul_pynq_z2_0_0_synth_1
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {125} [get_bd_cells processing_system7_0]
+endgroup
+startgroup
+endgroup
+delete_bd_objs [get_bd_nets processing_system7_0_FCLK_CLK0]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_config_to/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_decouple/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_decouple_status/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_to_reconfig/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins ps7_0_axi_periph/ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
+endgroup
+validate_bd_design
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+reset_run system_tul_pynq_z2_0_0_synth_1
+launch_runs system_tul_pynq_z2_0_0_synth_1
+wait_on_run system_tul_pynq_z2_0_0_synth_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {100} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {150} [get_bd_cells processing_system7_0]
+endgroup
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {125} [get_bd_cells processing_system7_0]
+endgroup
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {100} \
+  CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1} \
+] [get_bd_cells processing_system7_0]
+endgroup
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {150} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {125} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+delete_bd_objs [get_bd_nets reset_rtl_1] [get_bd_nets sys_clock_1] [get_bd_cells clk_wiz]
+delete_bd_objs [get_bd_ports sys_clock]
+delete_bd_objs [get_bd_ports reset_rtl]
+validate_bd_design
+save_bd_design
+reset_run impl_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+validate_bd_design -force
+generate_target all [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+launch_runs system_auto_pc_0_synth_1
+wait_on_run system_auto_pc_0_synth_1
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+regenerate_bd_layout
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+reset_run impl_1 -prev_step 
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+reset_run impl_1 -prev_step 
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+reset_run impl_1 -prev_step 
+add_files -norecurse {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/new/tul_pynq_z2_mem.init /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/new/tul_pynq_z2_rom.init /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/new/tul_pynq_z2_sram.init}
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+reset_run impl_1 -prev_step 
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+reset_run synth_1
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+reset_run impl_1 -prev_step 
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+open_hw_manager
+connect_hw_server -allow_non_jtag
+open_hw_target
+current_hw_device [get_hw_devices xc7a35t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a35t_0] 0]
+close_hw_target {localhost:3121/xilinx_tcf/Digilent/210319AFEF60A}
+open_hw_target {localhost:3121/xilinx_tcf/Xilinx/1234-tulA}
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/system_wrapper.bit} [get_hw_devices xc7z020_1]
+current_hw_device [get_hw_devices xc7z020_1]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7z020_1] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_1]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_1]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/system_wrapper.bit} [get_hw_devices xc7z020_1]
+program_hw_devices [get_hw_devices xc7z020_1]
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/system_wrapper.bit} [get_hw_devices xc7z020_0]
+program_hw_devices [get_hw_devices xc7z020_0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/system_wrapper.bit} [get_hw_devices xc7z020_0]
+program_hw_devices [get_hw_devices xc7z020_0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]
+close_hw_manager
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+set_property PR_FLOW 1 [current_project] 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_tul_pynq_z2_0_0]
+generate_target all [get_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+catch { config_ip_cache -export [get_ips -all system_auto_pc_0] }
+export_ip_user_files -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+launch_runs system_tul_pynq_z2_0_0_synth_1 -jobs 12
+wait_on_run system_tul_pynq_z2_0_0_synth_1
+export_simulation -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -directory /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/sim_scripts -ip_user_files_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files -ipstatic_source_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/modelsim} {questa=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/questa} {xcelium=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/xcelium} {vcs=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/vcs} {riviera=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+wait_on_run system_tul_pynq_z2_0_0_synth_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+create_bd_port -dir O -type data decouple
+delete_bd_objs [get_bd_nets usb_uart_rx_1]
+create_bd_port -dir I clk125
+delete_bd_objs [get_bd_nets processing_system7_0_FCLK_CLK1]
+delete_bd_objs [get_bd_ports usb_uart_rx]
+create_bd_port -dir I -type data decouple_status
+create_bd_port -dir I -from 2 -to 0 -type data configure_to
+create_bd_port -dir I -type data to_reconfig
+set_property location {1512 221} [get_bd_ports decouple]
+startgroup
+connect_bd_net [get_bd_ports decouple] [get_bd_pins axi_gpio_decouple/gpio_io_o]
+endgroup
+set_property location {3 853 507} [get_bd_cells axi_gpio_to_reconfig]
+set_property location {94 155} [get_bd_ports to_reconfig]
+delete_bd_objs [get_bd_ports to_reconfig]
+create_bd_port -dir O -type data to_reconfig
+set_property location {1496 310} [get_bd_ports to_reconfig]
+connect_bd_net [get_bd_ports to_reconfig] [get_bd_pins tul_pynq_z2_0/to_reconfig]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_user_led3] [get_bd_ports user_led3]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_user_led2] [get_bd_ports user_led2]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_user_led1] [get_bd_ports user_led1]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_user_led0] [get_bd_ports user_led0]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_usb_uart_tx] [get_bd_ports usb_uart_tx]
+delete_bd_objs [get_bd_ports clk125]
+create_bd_port -dir I clk125
+delete_bd_objs [get_bd_ports clk125]
+create_bd_port -dir O -type data clk125
+delete_bd_objs [get_bd_ports clk125]
+create_bd_port -dir O -type clk clk125
+set_property location {1467 740} [get_bd_ports clk125]
+connect_bd_net [get_bd_ports clk125] [get_bd_pins processing_system7_0/FCLK_CLK1]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_to_reconfig]
+connect_bd_net [get_bd_pins tul_pynq_z2_0/to_reconfig] [get_bd_pins axi_gpio_to_reconfig/gpio_io_i]
+undo
+undo
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_configure_to]
+connect_bd_net [get_bd_ports configure_to] [get_bd_pins axi_gpio_config_to/gpio_io_i]
+set_property location {1 310 103} [get_bd_cells axi_gpio_config_to]
+undo
+delete_bd_objs [get_bd_nets axi_gpio_decouple_gpio_io_o]
+connect_bd_net [get_bd_ports decouple] [get_bd_pins axi_gpio_decouple/gpio_io_o]
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_decouple_status]
+undo
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_to_reconfig]
+undo
+delete_bd_objs [get_bd_ports to_reconfig]
+create_bd_port -dir I -type data to_reconfig
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_to_reconfig]
+connect_bd_net [get_bd_ports to_reconfig] [get_bd_pins axi_gpio_to_reconfig/gpio_io_i]
+set_property location {-77 291} [get_bd_ports to_reconfig]
+undo
+delete_bd_objs [get_bd_nets tul_pynq_z2_0_decouple_status]
+connect_bd_net [get_bd_ports decouple_status] [get_bd_pins axi_gpio_decouple_status/gpio_io_i]
+delete_bd_objs [get_bd_cells tul_pynq_z2_0]
+update_compile_order -fileset sources_1
+set_property location {-94 -30} [get_bd_ports configure_to]
+set_property location {-79 -104} [get_bd_ports to_reconfig]
+set_property location {-39 -71} [get_bd_ports decouple_status]
+set_property location {-72 43} [get_bd_ports configure_to]
+set_property location {-62 0} [get_bd_ports configure_to]
+set_property location {-77 -35} [get_bd_ports decouple_status]
+set_property location {-59 -66} [get_bd_ports to_reconfig]
+save_bd_design
+export_ip_user_files -of_objects  [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v] -no_script -reset -force -quiet
+remove_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v
+file delete -force /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v
+update_compile_order -fileset sources_1
+set_property source_mgmt_mode DisplayOnly [current_project]
+make_wrapper -files [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -top
+add_files -norecurse /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+generate_target all [get_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+catch { config_ip_cache -export [get_ips -all system_auto_pc_0] }
+export_ip_user_files -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+export_simulation -of_objects [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -directory /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/sim_scripts -ip_user_files_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files -ipstatic_source_dir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/modelsim} {questa=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/questa} {xcelium=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/xcelium} {vcs=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/vcs} {riviera=/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+close [ open /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/Top.v w ]
+add_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/Top.v
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top Top [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode DisplayOnly [current_project]
+create_partition_def -name cfu_compute -module cfu_compute
+create_reconfig_module -name example -partition_def [get_partition_defs cfu_compute ]  -define_from cfu_compute
+create_pr_configuration -name config_1 -partitions [list cfu_system/Cfu/cfu_inst:example ]
+set_property PR_CONFIGURATION config_1 [get_runs impl_1]
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+open_run synth_1 -name synth_1 -pr_config [current_pr_configuration]
+startgroup
+create_pblock pblock_cfu_inst
+resize_pblock pblock_cfu_inst -add {SLICE_X34Y51:SLICE_X39Y100 DSP48_X2Y22:DSP48_X2Y39}
+add_cells_to_pblock pblock_cfu_inst [get_cells [list cfu_system/Cfu/cfu_inst]] -clear_locs
+endgroup
+set_property RESET_AFTER_RECONFIG 1 [get_pblocks pblock_cfu_inst]
+set_property SNAPPING_MODE OFF [get_pblocks pblock_cfu_inst]
+set_property SNAPPING_MODE ON [get_pblocks pblock_cfu_inst]
+resize_pblock pblock_cfu_inst -add {SLICE_X34Y51:SLICE_X39Y99 DSP48_X2Y22:DSP48_X2Y39} -remove {SLICE_X34Y51:SLICE_X39Y100 DSP48_X2Y22:DSP48_X2Y39} -locs keep_all
+resize_pblock pblock_cfu_inst -add {SLICE_X34Y50:SLICE_X39Y99 DSP48_X2Y20:DSP48_X2Y39} -remove {SLICE_X34Y51:SLICE_X39Y99 DSP48_X2Y22:DSP48_X2Y39} -locs keep_all
+file mkdir /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/constrs_1/new
+close [ open /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/constrs_1/new/pblock.xdc w ]
+add_files -fileset constrs_1 /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/constrs_1/new/pblock.xdc
+set_property target_constrs_file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/constrs_1/new/pblock.xdc [current_fileset -constrset]
+save_constraints -force
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+reset_run impl_1 -prev_step 
+report_ip_status -name ip_status 
+current_design impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {100} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {120} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {100} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+launch_runs impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+set_property name Donut [get_reconfig_modules example]
+create_reconfig_module -name Shift_Mul -partition_def [get_partition_defs cfu_compute ]  -top cfu_compute
+import_files -norecurse /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/cfu2.v  -of_objects [get_reconfig_modules Shift_Mul]
+create_pr_configuration -name config_2 -partitions [list cfu_system/Cfu/cfu_inst:Shift_Mul ]
+create_run child_0_impl_1 -parent_run impl_1 -flow {Vivado Implementation 2024} -pr_config config_2
+reset_run Donut_synth_1
+reset_run impl_1
+launch_runs impl_1 child_0_impl_1 -jobs 12
+wait_on_run impl_1
+wait_on_run child_0_impl_1
+close_design
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+reset_run Donut_synth_1
+reset_run Shift_Mul_synth_1
+reset_run impl_1
+launch_runs impl_1 child_0_impl_1 -jobs 12
+wait_on_run impl_1
+wait_on_run child_0_impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+reset_run Donut_synth_1
+reset_run Shift_Mul_synth_1
+reset_run synth_1
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+launch_runs impl_1 child_0_impl_1 -jobs 12
+wait_on_run impl_1
+wait_on_run child_0_impl_1
+check_timing -verbose -name timing_1
+launch_runs impl_1 child_0_impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+wait_on_run child_0_impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {125} [get_bd_cells processing_system7_0]
+endgroup
+save_bd_design
+reset_run synth_1
+reset_run system_processing_system7_0_0_synth_1
+launch_runs impl_1 child_0_impl_1 -to_step write_bitstream -jobs 12
+wait_on_run impl_1
+wait_on_run child_0_impl_1
+open_hw_manager
+connect_hw_server -allow_non_jtag
+open_hw_target
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/Top.bit} [get_hw_devices xc7z020_0]
+current_hw_device [get_hw_devices xc7z020_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7z020_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/Top.bit} [get_hw_devices xc7z020_0]
+program_hw_devices [get_hw_devices xc7z020_0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/impl_1/cfu_system_Cfu_cfu_inst_Donut_partial.bit} [get_hw_devices xc7z020_0]
+program_hw_devices [get_hw_devices xc7z020_0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z020_0]
+set_property PROGRAM.FILE {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/cfu_system_Cfu_cfu_inst_Shift_Mul_partial.bit} [get_hw_devices xc7z020_0]
+program_hw_devices [get_hw_devices xc7z020_0]
+refresh_hw_device [lindex [get_hw_devices xc7z020_0] 0]

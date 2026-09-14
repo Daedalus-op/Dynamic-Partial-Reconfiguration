@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<Runs Version="1" Minor="0">
+	<Run Id="cfu_decoupler_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/cfu_decoupler_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_processing_system7_0_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_processing_system7_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_axi_gpio_0_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_axi_gpio_0_1_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_0_1_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_axi_gpio_to_reconfig_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_to_reconfig_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado" IsOrderedIPRun="true">
+		<Parent Id="system_axi_gpio_0_1_synth_1"/>
+	</Run>
+	<Run Id="system_axi_gpio_decouple_status_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_xbar_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_xbar_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_rst_ps7_0_100M_0_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_rst_ps7_0_100M_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="Donut_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/Donut_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="Shift_Mul_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/Shift_Mul_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_axi_gpio_0_2_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_0_2_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="ila_synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/ila_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="synth_1" LaunchDir="/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado">
+		<Parent Id="cfu_decoupler_synth_1"/>
+		<Parent Id="system_processing_system7_0_0_synth_1"/>
+		<Parent Id="system_axi_gpio_0_0_synth_1"/>
+		<Parent Id="system_axi_gpio_0_1_synth_1"/>
+		<Parent Id="system_axi_gpio_to_reconfig_0_synth_1"/>
+		<Parent Id="system_axi_gpio_decouple_status_0_synth_1"/>
+		<Parent Id="system_xbar_0_synth_1"/>
+		<Parent Id="system_rst_ps7_0_100M_0_synth_1"/>
+		<Parent Id="Donut_synth_1"/>
+		<Parent Id="Shift_Mul_synth_1"/>
+		<Parent Id="system_axi_gpio_0_2_synth_1"/>
+		<Parent Id="ila_synth_1"/>
+	</Run>
+	<Parameters>
+		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
+		<Parameter Name="runs.enableClusterConf" Val="true" Type="bool"/>
+		<Parameter Name="general.ignorePathLengthChecks" Val="true" Type="bool"/>
+		<Parameter Name="general.shortenLongPath" Val="true" Type="bool"/>
+	</Parameters>
+	<ProductInfo Name="vivado"/>
+</Runs>
+

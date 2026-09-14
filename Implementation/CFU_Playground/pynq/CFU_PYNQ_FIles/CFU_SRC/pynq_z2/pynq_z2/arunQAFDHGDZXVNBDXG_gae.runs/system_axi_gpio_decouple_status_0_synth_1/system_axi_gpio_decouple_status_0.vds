@@ -1,0 +1,40 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Wed Nov 26 14:43:12 2025
+# Process ID: 343016
+# Current directory: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1
+# Command line: vivado -log system_axi_gpio_decouple_status_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_axi_gpio_decouple_status_0.tcl
+# Log file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0.vds
+# Journal file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4000.021 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :16306 MB
+#-----------------------------------------------------------
+source system_axi_gpio_decouple_status_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 1402.961 ; gain = 0.027 ; free physical = 158 ; free virtual = 12056
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository '/home/work/Xilinx/Vivado/2024.2/data/ip'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository '/home/primary/vivado-library/ip'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/jsp/Storage/Vivado/2024.1/data/ip'.
+INFO: [IP_Flow 19-6924] IPCACHE: Running cache check for IP inst: system_axi_gpio_decouple_status_0
+INFO: [IP_Flow 19-6922] IPCACHE: Exporting cached entry 7499aeb5dac43d1a to dir: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/ip/2024.1/7/4/7499aeb5dac43d1a/system_axi_gpio_decouple_status_0_stub.vhdl to /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0_stub.vhdl.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/ip/2024.1/7/4/7499aeb5dac43d1a/system_axi_gpio_decouple_status_0_stub.v to /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0_stub.v.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/ip/2024.1/7/4/7499aeb5dac43d1a/system_axi_gpio_decouple_status_0.dcp to /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0.dcp.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/ip/2024.1/7/4/7499aeb5dac43d1a/system_axi_gpio_decouple_status_0_sim_netlist.vhdl to /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0_sim_netlist.vhdl.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.cache/ip/2024.1/7/4/7499aeb5dac43d1a/system_axi_gpio_decouple_status_0_sim_netlist.v to /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/system_axi_gpio_decouple_status_0_synth_1/system_axi_gpio_decouple_status_0_sim_netlist.v.
+INFO: [IP_Flow 19-4838] Using cached IP synthesis design for IP system_axi_gpio_decouple_status_0, cache-ID = 7499aeb5dac43d1a.
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 26 14:43:32 2025...

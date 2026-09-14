@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Wed Nov 26 14:48:21 2025
+# Process ID: 428182
+# Current directory: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1
+# Command line: vivado -log Top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source Top.tcl -notrace
+# Log file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/Top.vdi
+# Journal file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.runs/child_0_impl_1/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4299.736 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :17695 MB
+#-----------------------------------------------------------
+source Top.tcl -notrace

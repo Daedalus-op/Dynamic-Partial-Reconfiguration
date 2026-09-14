@@ -1,0 +1,16 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
+| Date         : Tue Nov  4 14:22:23 2025
+| Host         : jsp-H370M-D3H running 64-bit Ubuntu 24.04.3 LTS
+| Command      : upgrade_ip
+| Device       : xc7z020clg400-1
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'cfu_decoupler'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of cfu_decoupler (xilinx.com:ip:dfx_decoupler:1.0) from (Rev. 11) to (Rev. 9)
+

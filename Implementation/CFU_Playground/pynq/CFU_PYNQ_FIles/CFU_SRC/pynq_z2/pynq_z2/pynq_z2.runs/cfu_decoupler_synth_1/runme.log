@@ -1,0 +1,222 @@
+
+*** Running vivado
+    with args -log cfu_decoupler.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source cfu_decoupler.tcl
+
+
+****** Vivado v2024.2 (64-bit)
+  **** SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+  **** IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+  **** SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+  **** Start of session at: Mon Nov  3 21:09:32 2025
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source cfu_decoupler.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1356.086 ; gain = 0.027 ; free physical = 121 ; free virtual = 1358
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository '/work/Xilinx/Vivado/2024.2/data/ip'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/primary/vivado-library/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/work/Vivado/2024.2/data/ip'.
+INFO: [IP_Flow 19-6924] IPCACHE: Running cache check for IP inst: cfu_decoupler
+Command: synth_design -top cfu_decoupler -part xc7z020clg400-1 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 75036
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 2001.543 ; gain = 417.828 ; free physical = 120 ; free virtual = 624
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'cfu_decoupler' [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/synth/cfu_decoupler.vhd:85]
+	Parameter C_XDEVICEFAMILY bound to: zynq - type: string 
+INFO: [Synth 8-3491] module 'dfx_decoupler_cfu_decoupler' declared at '/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/dfx_decoupler_cfu_decoupler.vhd:68' bound to instance 'U0' of component 'dfx_decoupler_cfu_decoupler' [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/synth/cfu_decoupler.vhd:126]
+INFO: [Synth 8-256] done synthesizing module 'cfu_decoupler' (0#1) [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/synth/cfu_decoupler.vhd:85]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2081.480 ; gain = 497.766 ; free physical = 126 ; free virtual = 533
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2099.293 ; gain = 515.578 ; free physical = 124 ; free virtual = 533
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2099.293 ; gain = 515.578 ; free physical = 124 ; free virtual = 533
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2099.293 ; gain = 0.000 ; free physical = 118 ; free virtual = 539
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/cfu_decoupler_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.gen/sources_1/ip/cfu_decoupler/cfu_decoupler_ooc.xdc] for cell 'U0'
+Parsing XDC File [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.runs/cfu_decoupler_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.runs/cfu_decoupler_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2192.074 ; gain = 0.000 ; free physical = 141 ; free virtual = 548
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 2192.074 ; gain = 0.000 ; free physical = 133 ; free virtual = 545
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2192.074 ; gain = 608.359 ; free physical = 159 ; free virtual = 576
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2200.078 ; gain = 616.363 ; free physical = 159 ; free virtual = 578
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for U0. (constraint file  /home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.runs/cfu_decoupler_synth_1/dont_touch.xdc, line 9).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2200.078 ; gain = 616.363 ; free physical = 159 ; free virtual = 579
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2200.078 ; gain = 616.363 ; free physical = 139 ; free virtual = 568
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 3     
+	   2 Input   10 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 2200.078 ; gain = 616.363 ; free physical = 127 ; free virtual = 566
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2266.078 ; gain = 682.363 ; free physical = 112 ; free virtual = 480
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2266.078 ; gain = 682.363 ; free physical = 112 ; free virtual = 481
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2275.094 ; gain = 691.379 ; free physical = 134 ; free virtual = 501
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:31 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 111 ; free virtual = 286
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:31 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 101 ; free virtual = 279
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:31 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 110 ; free virtual = 279
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:31 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 113 ; free virtual = 280
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:32 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 117 ; free virtual = 279
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:32 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 113 ; free virtual = 274
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----+------+
+|      |Cell |Count |
++------+-----+------+
+|1     |LUT2 |   115|
++------+-----+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:32 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.906 ; gain = 861.191 ; free physical = 116 ; free virtual = 277
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:29 ; elapsed = 00:00:30 . Memory (MB): peak = 2444.906 ; gain = 768.410 ; free physical = 108 ; free virtual = 280
+Synthesis Optimization Complete : Time (s): cpu = 00:00:32 ; elapsed = 00:00:33 . Memory (MB): peak = 2444.914 ; gain = 861.191 ; free physical = 102 ; free virtual = 281
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2444.914 ; gain = 0.000 ; free physical = 127 ; free virtual = 356
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2500.934 ; gain = 0.000 ; free physical = 105 ; free virtual = 451
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 764cdf78
+INFO: [Common 17-83] Releasing license: Synthesis
+20 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:42 ; elapsed = 00:00:41 . Memory (MB): peak = 2500.934 ; gain = 1131.973 ; free physical = 117 ; free virtual = 432
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1515.483; main = 1425.433; forked = 228.868
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3275.512; main = 2500.938; forked = 919.414
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2524.945 ; gain = 0.000 ; free physical = 112 ; free virtual = 427
+INFO: [Common 17-1381] The checkpoint '/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.runs/cfu_decoupler_synth_1/cfu_decoupler.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP cfu_decoupler, cache-ID = 2698b71888699889
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2524.945 ; gain = 0.000 ; free physical = 138 ; free virtual = 460
+INFO: [Common 17-1381] The checkpoint '/home/arix8/Desktop/CFU_SRC/pynq_z2/pynq_z2/pynq_z2.runs/cfu_decoupler_synth_1/cfu_decoupler.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file cfu_decoupler_utilization_synth.rpt -pb cfu_decoupler_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  3 21:10:29 2025...

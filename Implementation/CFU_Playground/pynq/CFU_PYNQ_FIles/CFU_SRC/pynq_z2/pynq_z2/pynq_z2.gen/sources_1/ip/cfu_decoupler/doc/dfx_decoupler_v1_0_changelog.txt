@@ -1,0 +1,166 @@
+2024.2:
+ * Version 1.0 (Rev. 11)
+ * General: Internal metadata change.
+ * Revision change in one or more subcores
+
+2024.1.2:
+ * Version 1.0 (Rev. 10)
+ * No changes
+
+2024.1.1:
+ * Version 1.0 (Rev. 10)
+ * Revision change in one or more subcores
+
+2024.1:
+ * Version 1.0 (Rev. 9)
+ * General: Change to stop write_bd_tcl changing internal tool CRC
+ * General: IP packaging adjustments to address warnings from IP Packager integrity check
+ * Revision change in one or more subcores
+
+2023.2.2:
+ * Version 1.0 (Rev. 8)
+ * No changes
+
+2023.2.1:
+ * Version 1.0 (Rev. 8)
+ * Revision change in one or more subcores
+
+2023.2:
+ * Version 1.0 (Rev. 7)
+ * General: Rebrand to AMD copyright information
+ * General: Removed the encryption from the demonstration testbench
+ * Revision change in one or more subcores
+
+2023.1.2:
+ * Version 1.0 (Rev. 6)
+ * No changes
+
+2023.1.1:
+ * Version 1.0 (Rev. 6)
+ * No changes
+
+2023.1:
+ * Version 1.0 (Rev. 6)
+ * General: Fixed a bug in Versal where a critical warning was issued by mistake
+ * General: Changed BUFGCE and BUFGCTRL instantiations to hase SIM_DEVICE set
+ * Revision change in one or more subcores
+
+2022.2.2:
+ * Version 1.0 (Rev. 5)
+ * No changes
+
+2022.2.1:
+ * Version 1.0 (Rev. 5)
+ * No changes
+
+2022.2:
+ * Version 1.0 (Rev. 5)
+ * General: Updated GUI to include control for ALWAY_HAVE_AXI_CLK user parameter
+ * Revision change in one or more subcores
+
+2022.1.2:
+ * Version 1.0 (Rev. 4)
+ * No changes
+
+2022.1.1:
+ * Version 1.0 (Rev. 4)
+ * No changes
+
+2022.1:
+ * Version 1.0 (Rev. 4)
+ * General: Added the ability to add registers to interfaces. Note that this is an expert level feature that will be documented in 2022.2.
+ * General: Change to the clock ports generated for a registered AXI MM interface. decouple_ref_clk is no longer enabled for AXI MM interfaces that have their own enabled clock.
+ * General: Change to propagation code for registered AXI MM interfaces. Signal presence is now controlled by the protocol rather than assuming all signals are present
+ * Revision change in one or more subcores
+
+2021.2.2:
+ * Version 1.0 (Rev. 3)
+ * No changes
+
+2021.2.1:
+ * Version 1.0 (Rev. 3)
+ * No changes
+
+2021.2:
+ * Version 1.0 (Rev. 3)
+ * General: Moved to using the XPM_CDC block for clock domain crossing
+ * General: Added AXI clock and reset to all interfaces that connect to a SmartConnect IP (US and US+). These appear after IPI validation
+
+2021.1.1:
+ * Version 1.0 (Rev. 2)
+ * No changes
+
+2021.1:
+ * Version 1.0 (Rev. 2)
+ * General: Added SystemC emulation model
+ * General: Minor change to IPI propagation implementation.
+
+2020.3:
+ * Version 1.0 (Rev. 1)
+ * No changes
+
+2020.2.2:
+ * Version 1.0 (Rev. 1)
+ * No changes
+
+2020.2.1:
+ * Version 1.0 (Rev. 1)
+ * No changes
+
+2020.2:
+ * Version 1.0 (Rev. 1)
+ * General: Made AXI ACLK and ARESETN compulsory for AXIMM and AXIS interfaces that are being decoupled.  These ports only appear on Versal devices. There is no change for non-Versal devices
+ * General: Changed behaviour in IPI to prevent the decoupler being connected between two SmartConnects. This configuration will fail in hardware.
+
+2020.1.1:
+ * Version 1.0
+ * No changes
+
+2020.1:
+ * Version 1.0
+ * General: Initial release. Previously available as the PR_DECOUPLER core.
+
+(c) Copyright 2020 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+
+This file contains confidential and proprietary information
+of AMD and is protected under U.S. and international copyright
+and other intellectual property laws.
+
+DISCLAIMER
+This disclaimer is not a license and does not grant any
+rights to the materials distributed herewith. Except as
+otherwise provided in a valid license issued to you by
+AMD, and to the maximum extent permitted by applicable
+law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
+AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+(2) AMD shall not be liable (whether in contract or tort,
+including negligence, or under any other theory of
+liability) for any loss or damage of any kind or nature
+related to, arising under or in connection with these
+materials, including for any direct, or any indirect,
+special, incidental, or consequential loss or damage
+(including loss of data, profits, goodwill, or any type of
+loss or damage suffered as a result of any action brought
+by a third party) even if such damage or loss was
+reasonably foreseeable or AMD had been advised of the
+possibility of the same.
+
+CRITICAL APPLICATIONS
+AMD products are not designed or intended to be fail-
+safe, or for use in any application requiring fail-safe
+performance, such as life-support or safety devices or
+systems, Class III medical devices, nuclear facilities,
+applications related to the deployment of airbags, or any
+other applications that could lead to death, personal
+injury, or severe property or environmental damage
+(individually and collectively, "Critical
+Applications"). Customer assumes the sole risk and
+liability of any use of AMD products in Critical
+Applications, subject only to applicable laws and
+regulations governing limitations on product liability.
+
+THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+PART OF THIS FILE AT ALL TIMES.

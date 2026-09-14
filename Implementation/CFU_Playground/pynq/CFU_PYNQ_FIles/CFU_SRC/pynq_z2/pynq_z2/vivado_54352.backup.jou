@@ -1,0 +1,298 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Tue Nov  4 14:20:34 2025
+# Process ID: 54352
+# Current directory: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2
+# Command line: vivado pynq_z2.xpr
+# Log file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/vivado.log
+# Journal file: /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4300.399 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :21491 MB
+#-----------------------------------------------------------
+start_gui
+open_project pynq_z2.xpr
+update_compile_order -fileset sources_1
+save_project_as arunQAFDHGDZXVNBDXG_gae /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2 -force
+upgrade_ip -srcset cfu_decoupler -vlnv xilinx.com:ip:dfx_decoupler:1.0 [get_ips  cfu_decoupler] -log ip_upgrade.log
+export_ip_user_files -of_objects [get_ips cfu_decoupler] -no_script -sync -force -quiet
+update_compile_order -fileset sources_1
+generate_target all [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci]
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/ip/cfu_decoupler/cfu_decoupler.xci]
+launch_runs cfu_decoupler_synth_1 -jobs 12
+wait_on_run cfu_decoupler_synth_1
+wait_on_run cfu_decoupler_synth_1
+synth_design -rtl -rtl_skip_mlo -name rtl_1
+create_bd_design "system"
+update_compile_order -fileset sources_1
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
+endgroup
+create_bd_cell -type module -reference tul_pynq_z2 tul_pynq_z2_0
+set_property location {2 344 197} [get_bd_cells tul_pynq_z2_0]
+set_property location {0.5 53 -136} [get_bd_cells processing_system7_0]
+set_property location {1 83 253} [get_bd_cells tul_pynq_z2_0]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 clk_wiz_0
+endgroup
+set_property -dict [list CONFIG.PRIM_IN_FREQ.VALUE_SRC PROPAGATED] [get_bd_cells clk_wiz_0]
+set_property -dict [list \
+  CONFIG.CLKOUT1_JITTER {125.247} \
+  CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {125.000} \
+  CONFIG.MMCM_CLKOUT0_DIVIDE_F {8.000} \
+] [get_bd_cells clk_wiz_0]
+set_property location {0.5 -230 85} [get_bd_cells clk_wiz_0]
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins tul_pynq_z2_0/clk125]
+apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "1" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Board_Interface {sys_clock ( System Clock ) } Manual_Source {Auto}}  [get_bd_pins clk_wiz_0/clk_in1]
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Manual_Source {New External Port (ACTIVE_HIGH)}}  [get_bd_pins clk_wiz_0/reset]
+endgroup
+startgroup
+create_bd_port -dir I usb_uart_rx
+connect_bd_net [get_bd_pins /tul_pynq_z2_0/usb_uart_rx] [get_bd_ports usb_uart_rx]
+endgroup
+startgroup
+make_bd_pins_external  [get_bd_pins tul_pynq_z2_0/usb_uart_tx]
+endgroup
+startgroup
+make_bd_pins_external  [get_bd_pins tul_pynq_z2_0/user_led0]
+endgroup
+startgroup
+make_bd_pins_external  [get_bd_pins tul_pynq_z2_0/user_led1]
+endgroup
+startgroup
+make_bd_pins_external  [get_bd_pins tul_pynq_z2_0/user_led2]
+endgroup
+startgroup
+make_bd_pins_external  [get_bd_pins tul_pynq_z2_0/user_led3]
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0
+endgroup
+set_property location {2 114 642} [get_bd_cells axi_gpio_0]
+set_property name axi_gpio_decouple [get_bd_cells axi_gpio_0]
+set_property -dict [list \
+  CONFIG.C_ALL_OUTPUTS {1} \
+  CONFIG.C_GPIO_WIDTH {1} \
+] [get_bd_cells axi_gpio_decouple]
+set_property location {1 -247 476} [get_bd_cells axi_gpio_decouple]
+connect_bd_net [get_bd_pins axi_gpio_decouple/gpio_io_o] [get_bd_pins tul_pynq_z2_0/decouple]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0
+endgroup
+set_property -dict [list \
+  CONFIG.C_ALL_INPUTS {1} \
+  CONFIG.C_GPIO_WIDTH {1} \
+] [get_bd_cells axi_gpio_0]
+set_property name axi_gpio_to_reconfig [get_bd_cells axi_gpio_0]
+connect_bd_net [get_bd_pins axi_gpio_to_reconfig/gpio_io_i] [get_bd_pins tul_pynq_z2_0/to_reconfig]
+set_property location {3 564 531} [get_bd_cells axi_gpio_to_reconfig]
+copy_bd_objs /  [get_bd_cells {axi_gpio_to_reconfig}]
+set_property name axi_gpio_decouple_status [get_bd_cells axi_gpio_to_reconfig1]
+connect_bd_net [get_bd_pins axi_gpio_decouple_status/gpio_io_i] [get_bd_pins tul_pynq_z2_0/decouple_status]
+copy_bd_objs /  [get_bd_cells {axi_gpio_decouple_status}]
+set_property name axi_gpio_config_to [get_bd_cells axi_gpio_decouple_status1]
+set_property CONFIG.C_GPIO_WIDTH {3} [get_bd_cells axi_gpio_config_to]
+connect_bd_net [get_bd_pins tul_pynq_z2_0/configure_to] [get_bd_pins axi_gpio_config_to/gpio_io_i]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_config_to/S_AXI} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_config_to/S_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_decouple/S_AXI} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_decouple/S_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_decouple_status/S_AXI} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_decouple_status/S_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_to_reconfig/S_AXI} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_to_reconfig/S_AXI]
+endgroup
+set_property name usb_uart_tx [get_bd_ports usb_uart_tx_0]
+set_property name user_led3 [get_bd_ports user_led3_0]
+set_property name user_led2 [get_bd_ports user_led2_0]
+set_property name user_led1 [get_bd_ports user_led1_0]
+set_property name user_led0 [get_bd_ports user_led0_0]
+validate_bd_design
+make_wrapper -files [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -top
+import_files -force -norecurse /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v
+update_compile_order -fileset sources_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top system_wrapper [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sources_1
+generate_target all [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+launch_runs system_auto_pc_0_synth_1
+wait_on_run system_auto_pc_0_synth_1
+launch_runs system_axi_gpio_0_0_synth_1
+wait_on_run system_axi_gpio_0_0_synth_1
+launch_runs system_axi_gpio_0_1_synth_1
+wait_on_run system_axi_gpio_0_1_synth_1
+launch_runs system_axi_gpio_decouple_status_0_synth_1
+wait_on_run system_axi_gpio_decouple_status_0_synth_1
+launch_runs system_axi_gpio_to_reconfig_0_synth_1
+wait_on_run system_axi_gpio_to_reconfig_0_synth_1
+launch_runs system_clk_wiz_0_0_synth_1
+wait_on_run system_clk_wiz_0_0_synth_1
+launch_runs system_processing_system7_0_0_synth_1
+wait_on_run system_processing_system7_0_0_synth_1
+launch_runs system_rst_ps7_0_100M_0_synth_1
+wait_on_run system_rst_ps7_0_100M_0_synth_1
+launch_runs system_tul_pynq_z2_0_0_synth_1
+wait_on_run system_tul_pynq_z2_0_0_synth_1
+launch_runs system_xbar_0_synth_1
+wait_on_run system_xbar_0_synth_1
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+open_run synth_1 -name synth_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+reset_run synth_1
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg400-1 -lint 
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+open_run impl_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property -dict [list \
+  CONFIG.CLKOUT1_JITTER {124.615} \
+  CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {100.000} \
+  CONFIG.MMCM_CLKOUT0_DIVIDE_F {10.000} \
+] [get_bd_cells clk_wiz_0]
+endgroup
+reset_run system_clk_wiz_0_0_synth_1
+save_bd_design
+reset_run synth_1
+launch_runs synth_1 -jobs 12
+wait_on_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+set_property location {1 206 466} [get_bd_cells axi_gpio_decouple]
+set_property location {1 177 461} [get_bd_cells axi_gpio_decouple]
+set_property location {1 176 464} [get_bd_cells axi_gpio_decouple]
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+set_property location {1 161 98} [get_bd_cells clk_wiz_0]
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1} \
+  CONFIG.PCW_USE_M_AXI_GP0 {0} \
+] [get_bd_cells processing_system7_0]
+delete_bd_objs [get_bd_intf_nets processing_system7_0_M_AXI_GP0]
+endgroup
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1} \
+  CONFIG.PCW_USE_M_AXI_GP0 {1} \
+] [get_bd_cells processing_system7_0]
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {/processing_system7_0/FCLK_CLK0 (100 MHz)} Clk_xbar {/processing_system7_0/FCLK_CLK0 (100 MHz)} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_config_to/S_AXI} ddr_seg {Auto} intc_ip {/ps7_0_axi_periph} master_apm {0}}  [get_bd_intf_pins processing_system7_0/M_AXI_GP0]
+set_property location {1 169 95} [get_bd_cells clk_wiz_0]
+delete_bd_objs [get_bd_nets clk_wiz_0_clk_out1]
+delete_bd_objs [get_bd_nets reset_rtl_1] [get_bd_nets sys_clock_1] [get_bd_cells clk_wiz_0]
+delete_bd_objs [get_bd_ports sys_clock]
+connect_bd_net [get_bd_pins tul_pynq_z2_0/clk125] [get_bd_pins processing_system7_0/FCLK_CLK0]
+delete_bd_objs [get_bd_ports reset_rtl]
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+export_ip_user_files -of_objects  [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/imports/hdl/system_wrapper.v] -no_script -reset -force -quiet
+remove_files  /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/imports/hdl/system_wrapper.v
+update_compile_order -fileset sources_1
+make_wrapper -files [get_files /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd] -top
+add_files -norecurse /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.gen/sources_1/bd/system/hdl/system_wrapper.v
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+open_bd_design {/home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.PCW_EN_CLK1_PORT {1} [get_bd_cells processing_system7_0]
+endgroup
+delete_bd_objs [get_bd_nets processing_system7_0_FCLK_CLK0]
+connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK1] [get_bd_pins tul_pynq_z2_0/clk125]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_config_to/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_decouple/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_decouple_status/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_to_reconfig/s_axi_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins ps7_0_axi_periph/ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/processing_system7_0/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {60} \
+  CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1} \
+] [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+validate_bd_design -force
+startgroup
+set_property -dict [list \
+  CONFIG.PCW_EN_CLK0_PORT {0} \
+  CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {40} \
+] [get_bd_cells processing_system7_0]
+endgroup
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {New Clocking Wizard} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins axi_gpio_config_to/s_axi_aclk]
+endgroup
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Board_Interface {sys_clock ( System Clock ) } Manual_Source {Auto}}  [get_bd_pins clk_wiz/clk_in1]
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Manual_Source {New External Port (ACTIVE_HIGH)}}  [get_bd_pins clk_wiz/reset]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {60} [get_bd_cells processing_system7_0]
+endgroup
+validate_bd_design
+save_bd_design
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+startgroup
+set_property CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {80} [get_bd_cells processing_system7_0]
+endgroup
+reset_run system_processing_system7_0_0_synth_1
+reset_run synth_1
+save_bd_design
+launch_runs impl_1 -jobs 12
+wait_on_run impl_1
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/jsp/Storage/CFU_PYNQ_FIles/CFU_SRC/pynq_z2/pynq_z2/arunQAFDHGDZXVNBDXG_gae.srcs/sources_1/bd/system/system.bd]
+refresh_design

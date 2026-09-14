@@ -1,0 +1,525 @@
+
+software.elf:     file format elf32-littleriscv
+
+SYMBOL TABLE:
+40000000 l    d  .text	00000000 .text
+40003ac8 l    d  .rodata	00000000 .rodata
+40004a18 l    d  .data	00000000 .data
+40004d20 l    d  .bss	00000000 .bss
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_loc	00000000 .debug_loc
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_ranges	00000000 .debug_ranges
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .riscv.attributes	00000000 .riscv.attributes
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    d  .debug_macro	00000000 .debug_macro
+00000000 l    df *ABS*	00000000 src/crt0-vexriscv.o
+40001c60 l       .text	00000000 crt_init
+40001cd4 l       .text	00000000 infinit_loop
+00000000 l    df *ABS*	00000000 base.c
+00000000 l       *ABS*	00000000 regnum_x0
+00000001 l       *ABS*	00000000 regnum_x1
+00000002 l       *ABS*	00000000 regnum_x2
+00000003 l       *ABS*	00000000 regnum_x3
+00000004 l       *ABS*	00000000 regnum_x4
+00000005 l       *ABS*	00000000 regnum_x5
+00000006 l       *ABS*	00000000 regnum_x6
+00000007 l       *ABS*	00000000 regnum_x7
+00000008 l       *ABS*	00000000 regnum_x8
+00000009 l       *ABS*	00000000 regnum_x9
+0000000a l       *ABS*	00000000 regnum_x10
+0000000b l       *ABS*	00000000 regnum_x11
+0000000c l       *ABS*	00000000 regnum_x12
+0000000d l       *ABS*	00000000 regnum_x13
+0000000e l       *ABS*	00000000 regnum_x14
+0000000f l       *ABS*	00000000 regnum_x15
+00000010 l       *ABS*	00000000 regnum_x16
+00000011 l       *ABS*	00000000 regnum_x17
+00000012 l       *ABS*	00000000 regnum_x18
+00000013 l       *ABS*	00000000 regnum_x19
+00000014 l       *ABS*	00000000 regnum_x20
+00000015 l       *ABS*	00000000 regnum_x21
+00000016 l       *ABS*	00000000 regnum_x22
+00000017 l       *ABS*	00000000 regnum_x23
+00000018 l       *ABS*	00000000 regnum_x24
+00000019 l       *ABS*	00000000 regnum_x25
+0000001a l       *ABS*	00000000 regnum_x26
+0000001b l       *ABS*	00000000 regnum_x27
+0000001c l       *ABS*	00000000 regnum_x28
+0000001d l       *ABS*	00000000 regnum_x29
+0000001e l       *ABS*	00000000 regnum_x30
+0000001f l       *ABS*	00000000 regnum_x31
+00000000 l       *ABS*	00000000 regnum_zero
+00000001 l       *ABS*	00000000 regnum_ra
+00000002 l       *ABS*	00000000 regnum_sp
+00000003 l       *ABS*	00000000 regnum_gp
+00000004 l       *ABS*	00000000 regnum_tp
+00000005 l       *ABS*	00000000 regnum_t0
+00000006 l       *ABS*	00000000 regnum_t1
+00000007 l       *ABS*	00000000 regnum_t2
+00000008 l       *ABS*	00000000 regnum_s0
+00000009 l       *ABS*	00000000 regnum_s1
+0000000a l       *ABS*	00000000 regnum_a0
+0000000b l       *ABS*	00000000 regnum_a1
+0000000c l       *ABS*	00000000 regnum_a2
+0000000d l       *ABS*	00000000 regnum_a3
+0000000e l       *ABS*	00000000 regnum_a4
+0000000f l       *ABS*	00000000 regnum_a5
+00000010 l       *ABS*	00000000 regnum_a6
+00000011 l       *ABS*	00000000 regnum_a7
+00000012 l       *ABS*	00000000 regnum_s2
+00000013 l       *ABS*	00000000 regnum_s3
+00000014 l       *ABS*	00000000 regnum_s4
+00000015 l       *ABS*	00000000 regnum_s5
+00000016 l       *ABS*	00000000 regnum_s6
+00000017 l       *ABS*	00000000 regnum_s7
+00000018 l       *ABS*	00000000 regnum_s8
+00000019 l       *ABS*	00000000 regnum_s9
+0000001a l       *ABS*	00000000 regnum_s10
+0000001b l       *ABS*	00000000 regnum_s11
+0000001c l       *ABS*	00000000 regnum_t3
+0000001d l       *ABS*	00000000 regnum_t4
+0000001e l       *ABS*	00000000 regnum_t5
+0000001f l       *ABS*	00000000 regnum_t6
+0000000b l       *ABS*	00000000 CUSTOM0
+0000002b l       *ABS*	00000000 CUSTOM1
+00000000 l    df *ABS*	00000000 benchmarks.c
+4000010c l     F .text	000000b0 do_increment_mem
+400001bc l     F .text	000000b0 do_stores
+4000026c l     F .text	000000a0 do_loads_strided
+4000030c l     F .text	000000b0 do_loads_cached
+400003bc l     F .text	000000a0 do_loads
+40004a28 l     O .data	00000078 MENU
+00000000 l    df *ABS*	00000000 donut.c
+00000000 l       *ABS*	00000000 regnum_x0
+00000001 l       *ABS*	00000000 regnum_x1
+00000002 l       *ABS*	00000000 regnum_x2
+00000003 l       *ABS*	00000000 regnum_x3
+00000004 l       *ABS*	00000000 regnum_x4
+00000005 l       *ABS*	00000000 regnum_x5
+00000006 l       *ABS*	00000000 regnum_x6
+00000007 l       *ABS*	00000000 regnum_x7
+00000008 l       *ABS*	00000000 regnum_x8
+00000009 l       *ABS*	00000000 regnum_x9
+0000000a l       *ABS*	00000000 regnum_x10
+0000000b l       *ABS*	00000000 regnum_x11
+0000000c l       *ABS*	00000000 regnum_x12
+0000000d l       *ABS*	00000000 regnum_x13
+0000000e l       *ABS*	00000000 regnum_x14
+0000000f l       *ABS*	00000000 regnum_x15
+00000010 l       *ABS*	00000000 regnum_x16
+00000011 l       *ABS*	00000000 regnum_x17
+00000012 l       *ABS*	00000000 regnum_x18
+00000013 l       *ABS*	00000000 regnum_x19
+00000014 l       *ABS*	00000000 regnum_x20
+00000015 l       *ABS*	00000000 regnum_x21
+00000016 l       *ABS*	00000000 regnum_x22
+00000017 l       *ABS*	00000000 regnum_x23
+00000018 l       *ABS*	00000000 regnum_x24
+00000019 l       *ABS*	00000000 regnum_x25
+0000001a l       *ABS*	00000000 regnum_x26
+0000001b l       *ABS*	00000000 regnum_x27
+0000001c l       *ABS*	00000000 regnum_x28
+0000001d l       *ABS*	00000000 regnum_x29
+0000001e l       *ABS*	00000000 regnum_x30
+0000001f l       *ABS*	00000000 regnum_x31
+00000000 l       *ABS*	00000000 regnum_zero
+00000001 l       *ABS*	00000000 regnum_ra
+00000002 l       *ABS*	00000000 regnum_sp
+00000003 l       *ABS*	00000000 regnum_gp
+00000004 l       *ABS*	00000000 regnum_tp
+00000005 l       *ABS*	00000000 regnum_t0
+00000006 l       *ABS*	00000000 regnum_t1
+00000007 l       *ABS*	00000000 regnum_t2
+00000008 l       *ABS*	00000000 regnum_s0
+00000009 l       *ABS*	00000000 regnum_s1
+0000000a l       *ABS*	00000000 regnum_a0
+0000000b l       *ABS*	00000000 regnum_a1
+0000000c l       *ABS*	00000000 regnum_a2
+0000000d l       *ABS*	00000000 regnum_a3
+0000000e l       *ABS*	00000000 regnum_a4
+0000000f l       *ABS*	00000000 regnum_a5
+00000010 l       *ABS*	00000000 regnum_a6
+00000011 l       *ABS*	00000000 regnum_a7
+00000012 l       *ABS*	00000000 regnum_s2
+00000013 l       *ABS*	00000000 regnum_s3
+00000014 l       *ABS*	00000000 regnum_s4
+00000015 l       *ABS*	00000000 regnum_s5
+00000016 l       *ABS*	00000000 regnum_s6
+00000017 l       *ABS*	00000000 regnum_s7
+00000018 l       *ABS*	00000000 regnum_s8
+00000019 l       *ABS*	00000000 regnum_s9
+0000001a l       *ABS*	00000000 regnum_s10
+0000001b l       *ABS*	00000000 regnum_s11
+0000001c l       *ABS*	00000000 regnum_t3
+0000001d l       *ABS*	00000000 regnum_t4
+0000001e l       *ABS*	00000000 regnum_t5
+0000001f l       *ABS*	00000000 regnum_t6
+0000000b l       *ABS*	00000000 CUSTOM0
+0000002b l       *ABS*	00000000 CUSTOM1
+40004d38 l     O .bss	000006e0 b
+40005418 l     O .bss	000006e0 z
+00000000 l    df *ABS*	00000000 main.c
+40004aa0 l     O .data	00000098 MENU
+00000000 l    df *ABS*	00000000 stdio.c
+00000000 l    df *ABS*	00000000 embench.c
+40004b38 l     O .data	00000038 MENU
+00000000 l    df *ABS*	00000000 functional_cfu_tests.cc
+00000000 l       *ABS*	00000000 regnum_x0
+00000001 l       *ABS*	00000000 regnum_x1
+00000002 l       *ABS*	00000000 regnum_x2
+00000003 l       *ABS*	00000000 regnum_x3
+00000004 l       *ABS*	00000000 regnum_x4
+00000005 l       *ABS*	00000000 regnum_x5
+00000006 l       *ABS*	00000000 regnum_x6
+00000007 l       *ABS*	00000000 regnum_x7
+00000008 l       *ABS*	00000000 regnum_x8
+00000009 l       *ABS*	00000000 regnum_x9
+0000000a l       *ABS*	00000000 regnum_x10
+0000000b l       *ABS*	00000000 regnum_x11
+0000000c l       *ABS*	00000000 regnum_x12
+0000000d l       *ABS*	00000000 regnum_x13
+0000000e l       *ABS*	00000000 regnum_x14
+0000000f l       *ABS*	00000000 regnum_x15
+00000010 l       *ABS*	00000000 regnum_x16
+00000011 l       *ABS*	00000000 regnum_x17
+00000012 l       *ABS*	00000000 regnum_x18
+00000013 l       *ABS*	00000000 regnum_x19
+00000014 l       *ABS*	00000000 regnum_x20
+00000015 l       *ABS*	00000000 regnum_x21
+00000016 l       *ABS*	00000000 regnum_x22
+00000017 l       *ABS*	00000000 regnum_x23
+00000018 l       *ABS*	00000000 regnum_x24
+00000019 l       *ABS*	00000000 regnum_x25
+0000001a l       *ABS*	00000000 regnum_x26
+0000001b l       *ABS*	00000000 regnum_x27
+0000001c l       *ABS*	00000000 regnum_x28
+0000001d l       *ABS*	00000000 regnum_x29
+0000001e l       *ABS*	00000000 regnum_x30
+0000001f l       *ABS*	00000000 regnum_x31
+00000000 l       *ABS*	00000000 regnum_zero
+00000001 l       *ABS*	00000000 regnum_ra
+00000002 l       *ABS*	00000000 regnum_sp
+00000003 l       *ABS*	00000000 regnum_gp
+00000004 l       *ABS*	00000000 regnum_tp
+00000005 l       *ABS*	00000000 regnum_t0
+00000006 l       *ABS*	00000000 regnum_t1
+00000007 l       *ABS*	00000000 regnum_t2
+00000008 l       *ABS*	00000000 regnum_s0
+00000009 l       *ABS*	00000000 regnum_s1
+0000000a l       *ABS*	00000000 regnum_a0
+0000000b l       *ABS*	00000000 regnum_a1
+0000000c l       *ABS*	00000000 regnum_a2
+0000000d l       *ABS*	00000000 regnum_a3
+0000000e l       *ABS*	00000000 regnum_a4
+0000000f l       *ABS*	00000000 regnum_a5
+00000010 l       *ABS*	00000000 regnum_a6
+00000011 l       *ABS*	00000000 regnum_a7
+00000012 l       *ABS*	00000000 regnum_s2
+00000013 l       *ABS*	00000000 regnum_s3
+00000014 l       *ABS*	00000000 regnum_s4
+00000015 l       *ABS*	00000000 regnum_s5
+00000016 l       *ABS*	00000000 regnum_s6
+00000017 l       *ABS*	00000000 regnum_s7
+00000018 l       *ABS*	00000000 regnum_s8
+00000019 l       *ABS*	00000000 regnum_s9
+0000001a l       *ABS*	00000000 regnum_s10
+0000001b l       *ABS*	00000000 regnum_s11
+0000001c l       *ABS*	00000000 regnum_t3
+0000001d l       *ABS*	00000000 regnum_t4
+0000001e l       *ABS*	00000000 regnum_t5
+0000001f l       *ABS*	00000000 regnum_t6
+0000000b l       *ABS*	00000000 CUSTOM0
+0000002b l       *ABS*	00000000 CUSTOM1
+40000964 l     F .text	00000158 _ZN12_GLOBAL__N_120do_interactive_testsEv
+40000abc l     F .text	00000098 _ZN12_GLOBAL__N_114do_fixed_testsEv
+40000b54 l     F .text	000001a0 _ZN12_GLOBAL__N_116do_compare_testsEv
+40004b70 l     O .data	00000008 _ZN12_GLOBAL__N_14MENUE
+00000000 l    df *ABS*	00000000 instruction_handler.cc
+00000000 l       *ABS*	00000000 regnum_x0
+00000001 l       *ABS*	00000000 regnum_x1
+00000002 l       *ABS*	00000000 regnum_x2
+00000003 l       *ABS*	00000000 regnum_x3
+00000004 l       *ABS*	00000000 regnum_x4
+00000005 l       *ABS*	00000000 regnum_x5
+00000006 l       *ABS*	00000000 regnum_x6
+00000007 l       *ABS*	00000000 regnum_x7
+00000008 l       *ABS*	00000000 regnum_x8
+00000009 l       *ABS*	00000000 regnum_x9
+0000000a l       *ABS*	00000000 regnum_x10
+0000000b l       *ABS*	00000000 regnum_x11
+0000000c l       *ABS*	00000000 regnum_x12
+0000000d l       *ABS*	00000000 regnum_x13
+0000000e l       *ABS*	00000000 regnum_x14
+0000000f l       *ABS*	00000000 regnum_x15
+00000010 l       *ABS*	00000000 regnum_x16
+00000011 l       *ABS*	00000000 regnum_x17
+00000012 l       *ABS*	00000000 regnum_x18
+00000013 l       *ABS*	00000000 regnum_x19
+00000014 l       *ABS*	00000000 regnum_x20
+00000015 l       *ABS*	00000000 regnum_x21
+00000016 l       *ABS*	00000000 regnum_x22
+00000017 l       *ABS*	00000000 regnum_x23
+00000018 l       *ABS*	00000000 regnum_x24
+00000019 l       *ABS*	00000000 regnum_x25
+0000001a l       *ABS*	00000000 regnum_x26
+0000001b l       *ABS*	00000000 regnum_x27
+0000001c l       *ABS*	00000000 regnum_x28
+0000001d l       *ABS*	00000000 regnum_x29
+0000001e l       *ABS*	00000000 regnum_x30
+0000001f l       *ABS*	00000000 regnum_x31
+00000000 l       *ABS*	00000000 regnum_zero
+00000001 l       *ABS*	00000000 regnum_ra
+00000002 l       *ABS*	00000000 regnum_sp
+00000003 l       *ABS*	00000000 regnum_gp
+00000004 l       *ABS*	00000000 regnum_tp
+00000005 l       *ABS*	00000000 regnum_t0
+00000006 l       *ABS*	00000000 regnum_t1
+00000007 l       *ABS*	00000000 regnum_t2
+00000008 l       *ABS*	00000000 regnum_s0
+00000009 l       *ABS*	00000000 regnum_s1
+0000000a l       *ABS*	00000000 regnum_a0
+0000000b l       *ABS*	00000000 regnum_a1
+0000000c l       *ABS*	00000000 regnum_a2
+0000000d l       *ABS*	00000000 regnum_a3
+0000000e l       *ABS*	00000000 regnum_a4
+0000000f l       *ABS*	00000000 regnum_a5
+00000010 l       *ABS*	00000000 regnum_a6
+00000011 l       *ABS*	00000000 regnum_a7
+00000012 l       *ABS*	00000000 regnum_s2
+00000013 l       *ABS*	00000000 regnum_s3
+00000014 l       *ABS*	00000000 regnum_s4
+00000015 l       *ABS*	00000000 regnum_s5
+00000016 l       *ABS*	00000000 regnum_s6
+00000017 l       *ABS*	00000000 regnum_s7
+00000018 l       *ABS*	00000000 regnum_s8
+00000019 l       *ABS*	00000000 regnum_s9
+0000001a l       *ABS*	00000000 regnum_s10
+0000001b l       *ABS*	00000000 regnum_s11
+0000001c l       *ABS*	00000000 regnum_t3
+0000001d l       *ABS*	00000000 regnum_t4
+0000001e l       *ABS*	00000000 regnum_t5
+0000001f l       *ABS*	00000000 regnum_t6
+0000000b l       *ABS*	00000000 CUSTOM0
+0000002b l       *ABS*	00000000 CUSTOM1
+00000000 l    df *ABS*	00000000 menu.cc
+00000000 l    df *ABS*	00000000 perf.cc
+40000fc0 l     F .text	0000004c _ZL12do_perf_showv
+4000100c l     F .text	00000020 _ZL13do_perf_set_1v
+4000102c l     F .text	0000001c _ZL13do_perf_set_0v
+40001048 l     F .text	00000030 _ZL12do_perf_zerov
+40001078 l     F .text	00000014 _ZL13do_perf_pausev
+4000108c l     F .text	00000014 _ZL14do_perf_enablev
+400010a0 l     F .text	000000c8 _ZL15do_perf_measurev
+40004d20 l     O .bss	00000004 _ZL11counter_num
+40004bc8 l     O .data	00000008 _ZL4MENU
+00000000 l    df *ABS*	00000000 murmurhash.cc
+00000000 l    df *ABS*	00000000 util_tests.cc
+40001274 l     F .text	00000148 _ZN12_GLOBAL__N_115do_murmur_testsEv
+400013bc l     F .text	00000300 _ZN12_GLOBAL__N_16do_fpuEv
+40004c60 l     O .data	00000008 _ZN12_GLOBAL__N_14MENUE
+00000000 l    df *ABS*	00000000 proj_menu.cc
+00000000 l       *ABS*	00000000 regnum_x0
+00000001 l       *ABS*	00000000 regnum_x1
+00000002 l       *ABS*	00000000 regnum_x2
+00000003 l       *ABS*	00000000 regnum_x3
+00000004 l       *ABS*	00000000 regnum_x4
+00000005 l       *ABS*	00000000 regnum_x5
+00000006 l       *ABS*	00000000 regnum_x6
+00000007 l       *ABS*	00000000 regnum_x7
+00000008 l       *ABS*	00000000 regnum_x8
+00000009 l       *ABS*	00000000 regnum_x9
+0000000a l       *ABS*	00000000 regnum_x10
+0000000b l       *ABS*	00000000 regnum_x11
+0000000c l       *ABS*	00000000 regnum_x12
+0000000d l       *ABS*	00000000 regnum_x13
+0000000e l       *ABS*	00000000 regnum_x14
+0000000f l       *ABS*	00000000 regnum_x15
+00000010 l       *ABS*	00000000 regnum_x16
+00000011 l       *ABS*	00000000 regnum_x17
+00000012 l       *ABS*	00000000 regnum_x18
+00000013 l       *ABS*	00000000 regnum_x19
+00000014 l       *ABS*	00000000 regnum_x20
+00000015 l       *ABS*	00000000 regnum_x21
+00000016 l       *ABS*	00000000 regnum_x22
+00000017 l       *ABS*	00000000 regnum_x23
+00000018 l       *ABS*	00000000 regnum_x24
+00000019 l       *ABS*	00000000 regnum_x25
+0000001a l       *ABS*	00000000 regnum_x26
+0000001b l       *ABS*	00000000 regnum_x27
+0000001c l       *ABS*	00000000 regnum_x28
+0000001d l       *ABS*	00000000 regnum_x29
+0000001e l       *ABS*	00000000 regnum_x30
+0000001f l       *ABS*	00000000 regnum_x31
+00000000 l       *ABS*	00000000 regnum_zero
+00000001 l       *ABS*	00000000 regnum_ra
+00000002 l       *ABS*	00000000 regnum_sp
+00000003 l       *ABS*	00000000 regnum_gp
+00000004 l       *ABS*	00000000 regnum_tp
+00000005 l       *ABS*	00000000 regnum_t0
+00000006 l       *ABS*	00000000 regnum_t1
+00000007 l       *ABS*	00000000 regnum_t2
+00000008 l       *ABS*	00000000 regnum_s0
+00000009 l       *ABS*	00000000 regnum_s1
+0000000a l       *ABS*	00000000 regnum_a0
+0000000b l       *ABS*	00000000 regnum_a1
+0000000c l       *ABS*	00000000 regnum_a2
+0000000d l       *ABS*	00000000 regnum_a3
+0000000e l       *ABS*	00000000 regnum_a4
+0000000f l       *ABS*	00000000 regnum_a5
+00000010 l       *ABS*	00000000 regnum_a6
+00000011 l       *ABS*	00000000 regnum_a7
+00000012 l       *ABS*	00000000 regnum_s2
+00000013 l       *ABS*	00000000 regnum_s3
+00000014 l       *ABS*	00000000 regnum_s4
+00000015 l       *ABS*	00000000 regnum_s5
+00000016 l       *ABS*	00000000 regnum_s6
+00000017 l       *ABS*	00000000 regnum_s7
+00000018 l       *ABS*	00000000 regnum_s8
+00000019 l       *ABS*	00000000 regnum_s9
+0000001a l       *ABS*	00000000 regnum_s10
+0000001b l       *ABS*	00000000 regnum_s11
+0000001c l       *ABS*	00000000 regnum_t3
+0000001d l       *ABS*	00000000 regnum_t4
+0000001e l       *ABS*	00000000 regnum_t5
+0000001f l       *ABS*	00000000 regnum_t6
+0000000b l       *ABS*	00000000 CUSTOM0
+0000002b l       *ABS*	00000000 CUSTOM1
+400016c8 l     F .text	0000000c _ZN12_GLOBAL__N_114do_hello_worldEv
+400016d4 l     F .text	000000cc _ZN12_GLOBAL__N_115do_grid_cfu_op1Ev
+400017a0 l     F .text	000000cc _ZN12_GLOBAL__N_115do_grid_cfu_op0Ev
+4000186c l     F .text	00000138 _ZN12_GLOBAL__N_119do_exercise_cfu_op1Ev
+400019a4 l     F .text	00000198 _ZN12_GLOBAL__N_119do_exercise_cfu_op0Ev
+40004ca8 l     O .data	00000008 _ZN12_GLOBAL__N_14MENUE
+00000000 l    df *ABS*	00000000 software_cfu.cc
+00000000 l    df *ABS*	00000000 console.c
+00000000 l    df *ABS*	00000000 uart.c
+40004d2c l     O .bss	00000004 rx_consume
+40004d30 l     O .bss	00000004 rx_produce
+40004d28 l     O .bss	00000004 tx_produce
+40004d24 l     O .bss	00000004 tx_consume
+40005af8 l     O .bss	00000080 rx_buf
+40005b78 l     O .bss	00000080 tx_buf
+00000000 l    df *ABS*	00000000 umodsi3.c
+00000000 l    df *ABS*	00000000 udivsi3.c
+00000000 l    df *ABS*	00000000 divsi3.c
+00000000 l    df *ABS*	00000000 comparesf2.c
+00000000 l    df *ABS*	00000000 addsf3.c
+00000000 l    df *ABS*	00000000 subsf3.c
+00000000 l    df *ABS*	00000000 mulsf3.c
+00000000 l    df *ABS*	00000000 divsf3.c
+00000000 l    df *ABS*	00000000 divdi3.c
+00000000 l    df *ABS*	00000000 udivmoddi4.c
+00000000 l    df *ABS*	00000000 floatsisf.c
+00000000 l    df *ABS*	00000000 fixsfsi.c
+00000000 l    df *ABS*	00000000 clzsi2.c
+00000000 l    df *ABS*	00000000 ctzsi2.c
+00000000 l    df *ABS*	00000000 udivdi3.c
+00000000 l    df *ABS*	00000000 umoddi3.c
+00000000 l    df *ABS*	00000000 moddi3.c
+00000000 l    df *ABS*	00000000 strtol.c
+40002e1c l     F .text	000001fc _strtol_l.part.0
+00000000 l    df *ABS*	00000000 getchar.c
+00000000 l    df *ABS*	00000000 printf.c
+00000000 l    df *ABS*	00000000 putchar.c
+00000000 l    df *ABS*	00000000 puts.c
+00000000 l    df *ABS*	00000000 vfiprintf.c
+4000312c l     F .text	000000f4 __ultoa_invert
+00000000 l    df *ABS*	00000000 strlen.c
+00000000 l    df *ABS*	00000000 stdio.c
+4000397c l     F .text	00000020 litex_getc
+4000399c l     F .text	0000003c litex_putc
+40004a18 l     O .data	00000010 __stdio
+00000000 l    df *ABS*	00000000 strnlen.c
+00000000 l    df *ABS*	00000000 fgetc.c
+00000000 l    df *ABS*	00000000 fputc.c
+00000000 l    df *ABS*	00000000 ctype_.c
+00000000 l    df *ABS*	00000000 errno.c
+400030a4 g     F .text	0000000c putchar
+400016bc g     F .text	0000000c do_util_tests_menu
+400027d0 g     F .text	00000078 __divdi3
+40000468 g     F .text	00000494 donut
+4000305c g     F .text	00000048 printf
+40004a10 g     O .rodata	00000004 stdout
+40004a18 g       .data	00000000 _fdata
+40002598 g     F .text	00000238 __divsf3
+40002be8 g     F .text	0000007c __fixsfsi
+4000045c g     F .text	0000000c do_benchmarks_menu
+40000954 g     F .text	00000004 no_menu
+40004d34 g     O .bss	00000004 errno
+40003ac8 g       .text	00000000 _etext
+40004a30 g       .data	00000000 _gp
+40002378 g     F .text	0000000c __subsf3
+40001e14 g     F .text	00000078 uart_write
+400039fc g     F .text	0000007c getc
+40000d00 g     F .text	00000144 instruction_handler
+40001b48 g     F .text	00000014 software_cfu
+40000958 g     F .text	0000000c embench_menu
+400030b0 g     F .text	0000007c puts
+40000cf4 g     F .text	0000000c do_functional_cfu_tests
+40001f20 g     F .text	000000c0 __udivsi3
+40000e50 g     F .text	00000170 menu_run
+40002024 g     F .text	00000060 __lesf2
+00000000 g       *ABS*	00000000 __DYNAMIC
+40003220 g     F .text	00000724 __i_vfprintf
+40002848 g     F .text	000002e4 __udivmoddi4
+40001df8 g     F .text	0000001c uart_read_nonblock
+4000211c g     F .text	00000004 __nesf2
+40002d7c g     F .text	00000024 __umoddi3
+40000e44 g     F .text	0000000c do_instruction_tests
+40002d74 g     F .text	00000008 __udivdi3
+40000938 g     F .text	0000001c readchar
+40001174 g     F .text	00000100 murmurhash3_32
+40003018 g     F .text	00000038 strtol
+400039d8 g     F .text	00000024 strnlen
+40005bf8 g       .bss	00000000 _ebss
+4000004c g     F .text	00000010 init_runtime
+40000020 g     F .text	0000002c trap_handler
+4ffffffc g       .bss	00000000 _fstack
+40001cdc g     F .text	000000c8 uart_isr
+40002120 g     F .text	00000004 __gtsf2
+40001ee8 g     F .text	00000038 __umodsi3
+40002c64 g     F .text	00000098 __clzsi2
+40001b3c g     F .text	0000000c do_proj_menu
+40001e8c g     F .text	00000044 uart_init
+40004a08 g     O .rodata	00000004 stdin
+40001ed0 g     F .text	00000018 uart_sync
+40000000 g       .text	00000000 _ftext
+40000000 g       .text	00000000 _start
+40002b2c g     F .text	000000bc __floatsisf
+40002114 g     F .text	00000004 __eqsf2
+40002024 g     F .text	00000060 __cmpsf2
+40003944 g     F .text	0000001c memset
+400008fc g     F .text	0000003c main
+40001b5c g       .text	00000000 trap_entry
+40002118 g     F .text	00000004 __ltsf2
+40003050 g     F .text	0000000c getchar
+40003a78 g     F .text	00000050 putc
+40001fe0 g     F .text	00000044 __divsi3
+40002384 g     F .text	00000214 __mulsf3
+400039fc g     F .text	0000007c fgetc
+4000005c g     F .text	000000b0 read_val
+40002084 g     F .text	00000060 __gesf2
+40004a0c g     O .rodata	00000004 stderr
+40001168 g     F .text	0000000c perf_test_menu
+40003a78 g     F .text	00000050 fputc
+40002cfc g     F .text	00000078 __ctzsi2
+40004d20 g       .data	00000000 _edata
+40005bf8 g       .bss	00000000 _end
+400020e4 g     F .text	00000030 __unordsf2
+40001da4 g     F .text	00000054 uart_read
+40001cd8 g     F .text	00000004 readchar_nonblock
+400048a0 g     O .rodata	00000101 _ctype_
+40002da0 g     F .text	0000007c __moddi3
+40003960 g     F .text	0000001c strlen
+40003ac8 g       .rodata	00000000 _frodata
+40004d20 g       .bss	00000000 _fbss
+40002124 g     F .text	00000254 __addsf3
+40003220 g     F .text	00000724 vfprintf
+40004a18 g       .rodata	00000000 _erodata
+
+

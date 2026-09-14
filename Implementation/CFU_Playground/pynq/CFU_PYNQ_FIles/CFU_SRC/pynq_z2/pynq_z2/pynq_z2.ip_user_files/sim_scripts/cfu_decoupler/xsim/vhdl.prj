@@ -1,0 +1,6 @@
+vhdl xil_defaultlib  \
+"../../../../pynq_z2.gen/sources_1/ip/cfu_decoupler/dfx_decoupler_cfu_decoupler.vhd" \
+"../../../../pynq_z2.gen/sources_1/ip/cfu_decoupler/sim/cfu_decoupler.vhd" \
+
+# Do not sort compile order
+nosort
