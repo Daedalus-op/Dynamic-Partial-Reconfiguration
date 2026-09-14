@@ -1,0 +1,10 @@
+-------------------------------------
+| Tool Version : Vivado v.2024.1
+| Date         : Thu Dec  4 13:05:18 2025
+| Host         : jsp-H370M-D3H
+| Design       : checkpoint_top_arty_cfu
+| Device       : xc7a35ti-csg324-1L-I-
+-------------------------------------
+
+For more information on clockInfo.txt clock routing debug file see https://support.xilinx.com/s/article/000035660?language=en_US
+

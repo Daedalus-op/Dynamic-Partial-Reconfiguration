@@ -1,0 +1,12 @@
+vhdl xil_defaultlib  \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0_table_pkg.vhd" \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0_vsm_VS_0.vhd" \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0_fetch.vhd" \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0_icap_if_0.vhd" \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0.vhd" \
+"../../../bd/design_1/ip/design_1_dfx_controller_0_0/sim/design_1_dfx_controller_0_0.vhd" \
+"../../../bd/design_1/ip/design_1_rst_clk_wiz_100M_1/sim/design_1_rst_clk_wiz_100M_1.vhd" \
+"../../../bd/design_1/ip/design_1_axi_quad_spi_0_1/sim/design_1_axi_quad_spi_0_1.vhd" \
+
+# Do not sort compile order
+nosort

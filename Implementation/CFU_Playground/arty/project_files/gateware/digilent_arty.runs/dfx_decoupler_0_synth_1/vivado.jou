@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Fri Nov 28 15:21:20 2025
+# Process ID: 3398706
+# Current directory: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1
+# Command line: vivado -log dfx_decoupler_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source dfx_decoupler_0.tcl
+# Log file: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0.vds
+# Journal file: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4300.016 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :15743 MB
+#-----------------------------------------------------------
+source dfx_decoupler_0.tcl -notrace

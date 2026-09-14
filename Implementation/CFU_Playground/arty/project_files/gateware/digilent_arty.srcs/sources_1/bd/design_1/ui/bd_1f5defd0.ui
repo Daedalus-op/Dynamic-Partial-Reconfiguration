@@ -1,0 +1,54 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Addressing View_Layers":"/clk_wiz_clk_out1:false|/rst_clk_wiz_100M_peripheral_aresetn:false|/reset_rtl_0_1:false|/rst_clk_wiz_100M_peripheral_reset:false|/clk_100MHz_1:false|",
+   "Addressing View_ScaleFactor":"1.0",
+   "Addressing View_TopLeft":"-308,-291",
+   "Default View_Layers":"/clk_wiz_clk_out1:true|/rst_clk_wiz_100M_peripheral_aresetn:true|/reset_rtl_0_1:true|/rst_clk_wiz_100M_peripheral_reset:true|/clk_100MHz_1:true|",
+   "Default View_ScaleFactor":"0.733612",
+   "Default View_TopLeft":"-224,230",
+   "Display-PortTypeClock":"true",
+   "Display-PortTypeOthers":"true",
+   "Display-PortTypeReset":"true",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.7.1 2023-07-26 3bc4126617 VDI=43 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port ICAP -pg 1 -lvl 5 -x 1690 -y 240 -defaultsOSRD
+preplace port qspi_flash -pg 1 -lvl 5 -x 1690 -y 650 -defaultsOSRD
+preplace port port-id_clk_100MHz -pg 1 -lvl 0 -x -10 -y 690 -defaultsOSRD
+preplace port port-id_reset_rtl_0 -pg 1 -lvl 0 -x -10 -y 470 -defaultsOSRD
+preplace port port-id_rm_decouple -pg 1 -lvl 5 -x 1690 -y 540 -defaultsOSRD
+preplace port port-id_clk_dfxc -pg 1 -lvl 5 -x 1690 -y 570 -defaultsOSRD
+preplace portBus hw_triggers -pg 1 -lvl 0 -x -10 -y 290 -defaultsOSRD
+preplace inst dfx_controller_0 -pg 1 -lvl 2 -x 670 -y 300 -defaultsOSRD
+preplace inst clk_wiz -pg 1 -lvl 3 -x 1120 -y 680 -defaultsOSRD
+preplace inst rst_clk_wiz_100M -pg 1 -lvl 1 -x 210 -y 490 -defaultsOSRD
+preplace inst dfx_controller_0_axi_periph -pg 1 -lvl 3 -x 1120 -y 120 -defaultsOSRD
+preplace inst axi_quad_spi_0 -pg 1 -lvl 4 -x 1500 -y 660 -defaultsOSRD
+preplace inst ila_0 -pg 1 -lvl 4 -x 1500 -y 390 -defaultsOSRD -resize 121 258
+preplace inst xlconstant_0 -pg 1 -lvl 1 -x 210 -y 350 -defaultsOSRD
+preplace inst system_ila_0 -pg 1 -lvl 4 -x 1500 -y 830 -defaultsOSRD
+preplace netloc clk_100MHz_1 1 0 4 NJ 690 NJ 690 960 300 N
+preplace netloc clk_wiz_locked 1 0 4 30 590 NJ 590 NJ 590 1270
+preplace netloc vsm_VS_0_hw_triggers_0_1 1 0 4 NJ 290 400 430 NJ 430 1330
+preplace netloc rst_clk_wiz_100M_peripheral_aresetn 1 1 3 NJ 530 940 330 1370
+preplace netloc reset_rtl_0_1 1 0 4 20 600 NJ 600 970 480 N
+preplace netloc util_vector_logic_1_Res 1 1 1 410 270n
+preplace netloc xlconstant_0_dout 1 1 1 NJ 350
+preplace netloc dfx_controller_0_vsm_vs_compute_rm_shutdown_req 1 2 2 950J 310 1380
+preplace netloc dfx_controller_0_vsm_vs_compute_rm_reset 1 2 2 NJ 340 1340
+preplace netloc dfx_controller_0_vsm_vs_compute_rm_decouple 1 2 3 NJ 320 1360 230 1630J
+preplace netloc dfx_controller_0_vsm_vs_compute_event_error 1 2 2 NJ 360 1280
+preplace netloc clk_wiz_clk_out1 1 0 5 30 280 420 420 930 420 1320 560 1630J
+preplace netloc axi_quad_spi_0_SPI_0 1 3 2 1380 570 1620J
+preplace netloc dfx_controller_0_ICAP 1 2 3 NJ 240 NJ 240 NJ
+preplace netloc dfx_controller_0_M_AXI_MEM 1 2 1 920 60n
+preplace netloc dfx_controller_0_axi_periph_M00_AXI 1 3 1 1350 120n
+levelinfo -pg 1 -10 210 670 1120 1500 1690
+pagesize -pg 1 -db -bbox -sgen -170 0 1830 930
+"
+}
+{
+   "da_axi4_cnt":"5",
+   "da_board_cnt":"7",
+   "da_clkrst_cnt":"19"
+}

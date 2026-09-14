@@ -1,0 +1,692 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Fri Nov 28 18:43:05 2025
+# Process ID: 3764415
+# Current directory: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1
+# Command line: vivado -log design_1_dfx_controller_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source design_1_dfx_controller_0_0.tcl
+# Log file: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/design_1_dfx_controller_0_0.vds
+# Journal file: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/vivado.jou
+# Running On        :jsp-H370M-D3H
+# Platform          :Ubuntu
+# Operating System  :Ubuntu 24.04.3 LTS
+# Processor Detail  :Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency     :4299.986 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16696 MB
+# Swap memory       :8589 MB
+# Total Virtual     :25285 MB
+# Available Virtual :14996 MB
+#-----------------------------------------------------------
+source design_1_dfx_controller_0_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1361.391 ; gain = 6.965 ; free physical = 1662 ; free virtual = 13360
+INFO: [IP_Flow 19-6924] IPCACHE: Running cache check for IP inst: design_1_dfx_controller_0_0
+Command: synth_design -top design_1_dfx_controller_0_0 -part xc7a35ticsg324-1L -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Device 21-403] Loading part xc7a35ticsg324-1L
+INFO: [Device 21-9227] Part: xc7a35ticsg324-1L does not have CEAM library.
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 3764689
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 2130.895 ; gain = 411.746 ; free physical = 238 ; free virtual = 10176
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'design_1_dfx_controller_0_0' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/synth/design_1_dfx_controller_0_0.vhd:92]
+	Parameter C_XDEVICEFAMILY bound to: artix7 - type: string 
+INFO: [Synth 8-3491] module 'dfx_controller_design_1_dfx_controller_0_0' declared at '/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/dfx_controller_design_1_dfx_controller_0_0.vhd:78' bound to instance 'U0' of component 'dfx_controller_design_1_dfx_controller_0_0' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/synth/design_1_dfx_controller_0_0.vhd:173]
+INFO: [Synth 8-638] synthesizing module 'srl_fifo_f' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:777]
+INFO: [Synth 8-638] synthesizing module 'srl_fifo_rbu_f' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:538]
+INFO: [Synth 8-638] synthesizing module 'cntr_incr_decr_addn_f' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:134]
+INFO: [Synth 8-256] done synthesizing module 'cntr_incr_decr_addn_f' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:134]
+INFO: [Synth 8-638] synthesizing module 'dynshreg_f' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:329]
+INFO: [Synth 8-256] done synthesizing module 'dynshreg_f' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:329]
+INFO: [Synth 8-256] done synthesizing module 'srl_fifo_rbu_f' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:538]
+INFO: [Synth 8-256] done synthesizing module 'srl_fifo_f' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:777]
+INFO: [Synth 8-638] synthesizing module 'srl_fifo_f__parameterized0' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:777]
+INFO: [Synth 8-638] synthesizing module 'srl_fifo_rbu_f__parameterized0' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:538]
+INFO: [Synth 8-638] synthesizing module 'dynshreg_f__parameterized0' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:329]
+INFO: [Synth 8-256] done synthesizing module 'dynshreg_f__parameterized0' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:329]
+INFO: [Synth 8-256] done synthesizing module 'srl_fifo_rbu_f__parameterized0' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:538]
+INFO: [Synth 8-256] done synthesizing module 'srl_fifo_f__parameterized0' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/1e5a/hdl/lib_srl_fifo_v1_0_rfs.vhd:777]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_axis' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:2373]
+INFO: [Synth 8-6157] synthesizing module 'xpm_cdc_sync_rst' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:1059]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_cdc_sync_rst' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:1059]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_base' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:53]
+INFO: [Synth 8-6157] synthesizing module 'xpm_memory_base' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:54]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_memory_base' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:54]
+INFO: [Synth 8-6157] synthesizing module 'xpm_cdc_gray' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_cdc_gray' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_reg_vec' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1905]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_reg_vec' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1905]
+INFO: [Synth 8-6157] synthesizing module 'xpm_cdc_gray__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_cdc_gray__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_reg_vec__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1905]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_reg_vec__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1905]
+INFO: [Synth 8-6157] synthesizing module 'xpm_cdc_gray__parameterized1' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_cdc_gray__parameterized1' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:283]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1220]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1287]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1309]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_reg_bit' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1927]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_reg_bit' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1927]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_rst' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1639]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_rst' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1639]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized1' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized1' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized2' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized2' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_base' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:53]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_axis' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:2373]
+INFO: [Synth 8-638] synthesizing module 'cdc_sync' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:106]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'REG_P_IN_cdc_from' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:219]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'REG_P_IN2_cdc_to' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:232]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d2' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:269]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d3' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:279]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d4' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:289]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d5' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:299]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d6' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:309]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_s_out_d7' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:320]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'P_IN_CROSS2SCNDRY_scndry_out' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:330]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d1' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:339]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d2' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:347]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d3' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:355]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d4' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:364]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d5' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:374]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d6' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:383]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 's_rst_d7' to cell 'FDR' [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:392]
+INFO: [Synth 8-256] done synthesizing module 'cdc_sync' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ipshared/2a4f/hdl/lib_cdc_v1_0_rfs.vhd:106]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_sync' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1975]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_base__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:53]
+INFO: [Synth 8-6157] synthesizing module 'xpm_memory_base__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:54]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_memory_base__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:54]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1220]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1287]
+INFO: [Synth 8-226] default block is never used [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1309]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_rst__parameterized0' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1639]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_rst__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1639]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized3' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized3' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized4' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized4' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized5' [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized5' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1879]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_base__parameterized0' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:53]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_sync' (0#1) [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1975]
+INFO: [Synth 8-256] done synthesizing module 'design_1_dfx_controller_0_0' (0#1) [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/synth/design_1_dfx_controller_0_0.vhd:92]
+WARNING: [Synth 8-6014] Unused sequential element gen_rd_b.gen_doutb_pipe.enb_pipe_reg[0] was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:3077]
+WARNING: [Synth 8-6014] Unused sequential element dest_out_bin_ff_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:417]
+WARNING: [Synth 8-6014] Unused sequential element dest_out_bin_ff_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:417]
+WARNING: [Synth 8-6014] Unused sequential element dest_out_bin_ff_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:417]
+WARNING: [Synth 8-6014] Unused sequential element gdvld.data_valid_std_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:550]
+WARNING: [Synth 8-6014] Unused sequential element gen_fwft.empty_fwft_fb_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1404]
+WARNING: [Synth 8-6014] Unused sequential element gen_rd_b.gen_doutb_pipe.enb_pipe_reg[0] was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:3077]
+WARNING: [Synth 8-6014] Unused sequential element gen_fwft.empty_fwft_fb_reg was removed.  [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1404]
+WARNING: [Synth 8-7129] Port rd_clk in module xpm_fifo_rst__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sleep in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rsta in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port regcea in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterra in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterra in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clkb in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port web[0] in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[2] in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[1] in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[0] in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterrb in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterrb in module xpm_memory_base__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port prmry_resetn in module cdc_sync is either unconnected or has no load
+WARNING: [Synth 8-7129] Port prmry_vect_in[0] in module cdc_sync is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scndry_resetn in module cdc_sync is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sleep in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rsta in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port regcea in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterra in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterra in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port web[0] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[46] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[45] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[44] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[43] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[42] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[41] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[40] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[39] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[38] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[37] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[36] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[35] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[34] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[33] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[32] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[31] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[30] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[29] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[28] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[27] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[26] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[25] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[24] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[23] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[22] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[21] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[20] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[19] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[18] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[17] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[16] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[15] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[14] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[13] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[12] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[11] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[10] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[9] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[8] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[7] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[6] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[5] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[4] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[3] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[2] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[1] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dinb[0] in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectsbiterrb in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port injectdbiterrb in module xpm_memory_base is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[31] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[30] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[29] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[28] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[27] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[26] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[25] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[24] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[23] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[22] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[21] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[20] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[19] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[18] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[17] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[16] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[15] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[14] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[13] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[12] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[11] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[10] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[9] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[8] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[5] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[4] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[3] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[2] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port icap_i[1] in module dfx_controller_design_1_dfx_controller_0_0_icap_if_0 is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2271.832 ; gain = 552.684 ; free physical = 180 ; free virtual = 9949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2283.707 ; gain = 564.559 ; free physical = 172 ; free virtual = 9941
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2283.707 ; gain = 564.559 ; free physical = 172 ; free virtual = 9941
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2289.645 ; gain = 0.000 ; free physical = 176 ; free virtual = 9882
+INFO: [Netlist 29-17] Analyzing 50 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/design_1_dfx_controller_0_0_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/design_1_dfx_controller_0_0_ooc.xdc] for cell 'U0'
+Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/design_1_dfx_controller_0_0.xdc] for cell 'U0'
+Finished Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/design_1_dfx_controller_0_0.xdc] for cell 'U0'
+Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/dont_touch.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_cdc/tcl/xpm_cdc_gray.tcl]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/design_1_dfx_controller_0_0_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/design_1_dfx_controller_0_0_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/tcl/xpm_fifo_rst_axis.tcl]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/design_1_dfx_controller_0_0_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/design_1_dfx_controller_0_0_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/jsp/Storage/Vivado/2024.1/data/ip/xpm/xpm_fifo/tcl/xpm_fifo_rst.tcl]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/design_1_dfx_controller_0_0_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/design_1_dfx_controller_0_0_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Project 1-1714] 9 XPM XDC files have been applied to the design.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2424.457 ; gain = 0.000 ; free physical = 171 ; free virtual = 9775
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 49 instances were transformed.
+  FDE => FDRE: 1 instance 
+  FDR => FDRE: 48 instances
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2424.457 ; gain = 0.000 ; free physical = 171 ; free virtual = 9775
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 2424.457 ; gain = 705.309 ; free physical = 174 ; free virtual = 9515
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35ticsg324-1L
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 174 ; free virtual = 9516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property BLOCK_SYNTH.USER_PROVIDED = rt::set_parameter constPropDram false for U0/i_vsm_vs_compute. (constraint file  /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.gen/sources_1/bd/design_1/ip/design_1_dfx_controller_0_0/design_1_dfx_controller_0_0.xdc, line 56).
+Applied set_property KEEP_HIERARCHY = SOFT for U0. (constraint file  /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/dont_touch.xdc, line 9).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/\gen_cdc_pntr.rd_pntr_cdc_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/\gen_cdc_pntr.wr_pntr_cdc_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/\gen_cdc_pntr.rd_pntr_cdc_dc_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/\gen_cdc_pntr.wr_pntr_cdc_dc_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/\gaxis_rst_sync.xpm_cdc_sync_rst_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/xpm_fifo_rst_inst/\gen_rst_ic.rrst_wr_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo/xpm_fifo_base_inst/xpm_fifo_rst_inst/\gen_rst_ic.wrst_rd_inst . (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/i_bs_fifo. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for U0/i_cp0/\blk_id_fifo.xpm_fifo_sync_inst . (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 179 ; free virtual = 9518
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'trigger_manager'
+INFO: [Synth 8-802] inferred FSM for state register 'sig_pcc_sm_state_reg' in module 'dfx_controller_dma_pcc'
+INFO: [Synth 8-802] inferred FSM for state register 'b_fsm.fsm_cs_reg' in module 'dfx_controller_design_1_dfx_controller_0_0_fetch'
+INFO: [Synth 8-802] inferred FSM for state register 'gen_rst_ic.curr_wrst_state_reg' in module 'xpm_fifo_rst'
+INFO: [Synth 8-802] inferred FSM for state register 'gen_rst_ic.curr_rrst_state_reg' in module 'xpm_fifo_rst'
+INFO: [Synth 8-802] inferred FSM for state register 'gen_fwft.curr_fwft_state_reg' in module 'xpm_fifo_base'
+INFO: [Synth 8-802] inferred FSM for state register 'gen_fwft.curr_fwft_state_reg' in module 'xpm_fifo_base__parameterized0'
+INFO: [Synth 8-802] inferred FSM for state register 'cp_fsm_cs_reg' in module 'dfx_controller_design_1_dfx_controller_0_0_icap_if_0'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  st_por |                               00 |                               00
+        st_kick_selector |                               01 |                               01
+st_wait_for_selector_to_complete |                               10 |                               10
+       st_remove_trigger |                               11 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'current_state_reg' using encoding 'sequential' in module 'trigger_manager'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    init |                         00000001 |                              000
+            wait_for_cmd |                         00000010 |                              001
+                  calc_1 |                         00000100 |                              010
+                  calc_2 |                         00001000 |                              011
+                  calc_3 |                         00010000 |                              100
+       wait_on_xfer_push |                         00100000 |                              101
+             chk_if_done |                         01000000 |                              110
+              error_trap |                         10000000 |                              111
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'sig_pcc_sm_state_reg' using encoding 'one-hot' in module 'dfx_controller_dma_pcc'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  st_por |                              110 |                              000
+         st_wait_for_req |                              001 |                              001
+    st_bad_config_error1 |                              101 |                              010
+st_bad_config_error_wait |                              100 |                              100
+st_bad_config_error_done |                              011 |                              011
+             st_load_dma |                              010 |                              101
+ st_wait_for_tx_to_start |                              000 |                              110
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'b_fsm.fsm_cs_reg' using encoding 'sequential' in module 'dfx_controller_design_1_dfx_controller_0_0_fetch'
+INFO: [Synth 8-5552] Implemented safe state 'default_state' for state register 'gen_rst_ic.curr_wrst_state_reg' in module 'xpm_fifo_rst'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+               WRST_IDLE |                            00001 |                              000
+                 WRST_IN |                            00010 |                              010
+                WRST_OUT |                            00100 |                              111
+               WRST_EXIT |                            01000 |                              110
+            WRST_GO2IDLE |                            10000 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'gen_rst_ic.curr_wrst_state_reg' using encoding 'one-hot' in module 'xpm_fifo_rst'
+INFO: [Synth 8-5552] Implemented safe state 'default_state' for state register 'gen_rst_ic.curr_rrst_state_reg' in module 'xpm_fifo_rst'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+*
+               RRST_IDLE |                               00 |                               00
+                 RRST_IN |                               01 |                               10
+                RRST_OUT |                               10 |                               11
+               RRST_EXIT |                               11 |                               01
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'gen_rst_ic.curr_rrst_state_reg' using encoding 'sequential' in module 'xpm_fifo_rst'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 invalid |                               00 |                               00
+            stage1_valid |                               01 |                               10
+       both_stages_valid |                               10 |                               11
+            stage2_valid |                               11 |                               01
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'gen_fwft.curr_fwft_state_reg' using encoding 'sequential' in module 'xpm_fifo_base'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 invalid |                               00 |                               00
+            stage1_valid |                               01 |                               10
+       both_stages_valid |                               10 |                               11
+            stage2_valid |                               11 |                               01
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'gen_fwft.curr_fwft_state_reg' using encoding 'sequential' in module 'xpm_fifo_base__parameterized0'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  st_por |                             0101 |                             0000
+          st_wait_for_bs |                             0100 |                             0001
+   st_wait_for_icap_done |                             0010 |                             0100
+             st_icap_req |                             0011 |                             0010
+             st_fetch_bs |                             0000 |                             0011
+        st_send_desync_0 |                             0001 |                             0101
+        st_send_desync_1 |                             1000 |                             0110
+        st_send_desync_2 |                             0110 |                             0111
+        st_send_desync_3 |                             0111 |                             1000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'cp_fsm_cs_reg' using encoding 'sequential' in module 'dfx_controller_design_1_dfx_controller_0_0_icap_if_0'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 164 ; free virtual = 9442
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-6026] Ignoring keep related attribute (keep/mark_debug/dont_touch) applied on memory
+WARNING: [Synth 8-6026] Ignoring keep related attribute (keep/mark_debug/dont_touch) applied on memory
+WARNING: [Synth 8-6026] Ignoring keep related attribute (keep/mark_debug/dont_touch) applied on memory
+WARNING: [Synth 8-6026] Ignoring keep related attribute (keep/mark_debug/dont_touch) applied on memory
+WARNING: [Synth 8-6026] Ignoring keep related attribute (keep/mark_debug/dont_touch) applied on memory
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 255 ; free virtual = 9262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 196 ; free virtual = 9198
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:27 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 196 ; free virtual = 9199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 195 ; free virtual = 9212
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:fetch_gnt to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[31] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[30] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[29] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[28] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[27] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[26] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[25] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[24] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[23] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[22] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[21] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[20] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[19] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[18] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[17] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[16] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[15] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[14] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[13] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[12] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[11] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[10] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[9] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[8] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[7] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[6] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[5] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[4] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[3] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[2] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[1] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_addr[0] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_rnw to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_tvalid to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[31] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[30] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[29] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[28] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[27] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[26] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[25] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[24] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[23] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[22] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[21] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[20] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[19] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[18] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[17] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[16] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[15] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[14] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[13] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[12] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[11] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[10] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[9] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[8] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[7] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[6] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[5] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[4] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[3] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[2] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[1] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:reg_wdata[0] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[31] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[30] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[29] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[28] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[27] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[26] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[25] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[24] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[23] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[22] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[21] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[20] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[19] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[18] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[17] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[15] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[14] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:s_axis_ctrl_tdata[13] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:cp_lost_error to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:cp_rm_id_in[0] to constant 0
+INFO: [Synth 8-3295] tying undriven pin i_vsm_vs_compute:cp_bs_id_in[0] to constant 0
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:30 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 184 ; free virtual = 9202
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:30 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 184 ; free virtual = 9202
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 183 ; free virtual = 9194
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 183 ; free virtual = 9194
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 182 ; free virtual = 9195
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 182 ; free virtual = 9195
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |CARRY4   |    46|
+|2     |LUT1     |    50|
+|3     |LUT2     |   123|
+|4     |LUT3     |   215|
+|5     |LUT4     |   147|
+|6     |LUT5     |   132|
+|7     |LUT6     |   243|
+|8     |MUXCY    |     1|
+|9     |RAM16X1S |    78|
+|10    |RAM32M   |     9|
+|11    |SRL16E   |   179|
+|12    |FDE      |     1|
+|13    |FDR      |    16|
+|14    |FDRE     |  1033|
+|15    |FDSE     |    49|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.461 ; gain = 713.312 ; free physical = 181 ; free virtual = 9195
+---------------------------------------------------------------------------------
+
+Report Applied BLOCK_SYNTH Properties: 
++--------+--------------------+-------------------------------------------------------+
+|Inst ID |Instance Name       |Applied BLOCK_SYNTH Properties                         |
++--------+--------------------+-------------------------------------------------------+
+|1       |U0/i_vsm_vs_compute |"USER_PROVIDED rt::set_parameter constPropDram false"  |
++--------+--------------------+-------------------------------------------------------+
+
+Report BLOCK_SYNTH Property Instance Level Cell Usage: 
++------+---------+-----------+
+|      |Cell     |Inst ID: 1 |
++------+---------+-----------+
+|1     |FDRE     |        153|
+|2     |RAM16X1S |         78|
+|3     |LUT5     |         22|
+|4     |LUT6     |         47|
+|5     |LUT4     |         21|
+|6     |LUT2     |         14|
+|7     |LUT3     |         17|
+|8     |LUT1     |         37|
+|9     |SRL16E   |          2|
+|10    |FDSE     |          4|
+|11    |MUXCY    |          1|
+|12    |FDE      |          1|
++------+---------+-----------+
+NOTE: Inst IDs in this report represent instances and are taken from the Report Applied BLOCK_SYNTH Properties.
+
+Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:29 ; elapsed = 00:00:30 . Memory (MB): peak = 2432.461 ; gain = 572.562 ; free physical = 180 ; free virtual = 9196
+Synthesis Optimization Complete : Time (s): cpu = 00:00:31 ; elapsed = 00:00:32 . Memory (MB): peak = 2432.469 ; gain = 713.312 ; free physical = 180 ; free virtual = 9196
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 2432.469 ; gain = 0.000 ; free physical = 173 ; free virtual = 9193
+INFO: [Netlist 29-17] Analyzing 151 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2488.488 ; gain = 0.000 ; free physical = 156 ; free virtual = 9194
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 105 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 1 instance 
+  FDE => FDRE: 1 instance 
+  FDR => FDRE: 16 instances
+  RAM16X1S => RAM32X1S (RAMS32): 78 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 9 instances
+
+Synth Design complete | Checksum: f408294
+INFO: [Common 17-83] Releasing license: Synthesis
+215 Infos, 114 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:35 ; elapsed = 00:00:36 . Memory (MB): peak = 2488.488 ; gain = 1105.316 ; free physical = 152 ; free virtual = 9192
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1841.511; main = 1460.651; forked = 384.830
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3529.320; main = 2488.492; forked = 1096.855
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2512.500 ; gain = 0.000 ; free physical = 477 ; free virtual = 9517
+INFO: [Common 17-1381] The checkpoint '/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/design_1_dfx_controller_0_0.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP design_1_dfx_controller_0_0, cache-ID = 2e65e4f0b5f2e14d
+INFO: [Coretcl 2-1174] Renamed 100 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2512.500 ; gain = 0.000 ; free physical = 461 ; free virtual = 9506
+INFO: [Common 17-1381] The checkpoint '/home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/design_1_dfx_controller_0_0_synth_1/design_1_dfx_controller_0_0.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file design_1_dfx_controller_0_0_utilization_synth.rpt -pb design_1_dfx_controller_0_0_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 28 18:43:54 2025...

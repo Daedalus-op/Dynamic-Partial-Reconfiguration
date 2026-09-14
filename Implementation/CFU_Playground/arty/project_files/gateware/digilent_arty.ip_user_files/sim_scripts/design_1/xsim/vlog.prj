@@ -1,0 +1,10 @@
+verilog xil_defaultlib --include "../../../../digilent_arty.gen/sources_1/bd/design_1/ipshared/3242" --include "../../../../digilent_arty.gen/sources_1/bd/design_1/ipshared/ec67/hdl" \
+"../../../bd/design_1/ip/design_1_clk_wiz_1/design_1_clk_wiz_1_clk_wiz.v" \
+"../../../bd/design_1/ip/design_1_clk_wiz_1/design_1_clk_wiz_1.v" \
+"../../../bd/design_1/sim/design_1.v" \
+"../../../bd/design_1/ip/design_1_auto_pc_0/sim/design_1_auto_pc_0.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

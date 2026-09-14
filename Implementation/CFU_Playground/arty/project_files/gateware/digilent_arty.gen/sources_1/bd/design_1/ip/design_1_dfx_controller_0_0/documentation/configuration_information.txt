@@ -1,0 +1,117 @@
+Core Configuration Properties
+=============================
+CONFIG.HAS_AXI_LITE_IF                             0
+CONFIG.RESET_ACTIVE_LEVEL                          1
+CONFIG.CP_FIFO_DEPTH                               32
+CONFIG.CP_FIFO_TYPE                                lutram
+CONFIG.CP_ARBITRATION_PROTOCOL                     1
+CONFIG.CP_COMPRESSION                              0
+CONFIG.CP_FAMILY                                   7series
+CONFIG.CDC_STAGES                                  2
+CONFIG.VS.vs_compute.START_IN_SHUTDOWN             0
+CONFIG.VS.vs_compute.NUM_TRIGGERS_ALLOCATED        4
+CONFIG.VS.vs_compute.NUM_RMS_ALLOCATED             2
+CONFIG.VS.vs_compute.NUM_HW_TRIGGERS               3
+CONFIG.VS.vs_compute.SHUTDOWN_ON_ERROR             1
+CONFIG.VS.vs_compute.HAS_AXIS_STATUS               0
+CONFIG.VS.vs_compute.HAS_AXIS_CONTROL              0
+CONFIG.VS.vs_compute.HAS_POR_RM                    1
+CONFIG.VS.vs_compute.POR_RM                        DONUT
+CONFIG.VS.vs_compute.SKIP_RM_STARTUP_AFTER_RESET   0
+CONFIG.VS.vs_compute.TRIGGER0_TO_RM                DONUT
+CONFIG.VS.vs_compute.TRIGGER1_TO_RM                example
+CONFIG.VS.vs_compute.TRIGGER2_TO_RM                DONUT
+CONFIG.VS.vs_compute.TRIGGER3_TO_RM                example
+CONFIG.VS.vs_compute.RM.DONUT.SHUTDOWN_REQUIRED    no
+CONFIG.VS.vs_compute.RM.DONUT.STARTUP_REQUIRED     no
+CONFIG.VS.vs_compute.RM.DONUT.RESET_REQUIRED       no
+CONFIG.VS.vs_compute.RM.DONUT.RESET_DURATION       1
+CONFIG.VS.vs_compute.RM.DONUT.BS.0.ADDRESS         196608
+CONFIG.VS.vs_compute.RM.DONUT.BS.0.SIZE            164544
+CONFIG.VS.vs_compute.RM.DONUT.BS.0.CLEAR           0
+CONFIG.VS.vs_compute.RM.example.SHUTDOWN_REQUIRED  no
+CONFIG.VS.vs_compute.RM.example.STARTUP_REQUIRED   no
+CONFIG.VS.vs_compute.RM.example.RESET_REQUIRED     no
+CONFIG.VS.vs_compute.RM.example.RESET_DURATION     1
+CONFIG.VS.vs_compute.RM.example.BS.0.ADDRESS       0
+CONFIG.VS.vs_compute.RM.example.BS.0.SIZE          164544
+CONFIG.VS.vs_compute.RM.example.BS.0.CLEAR         0
+
+
+dfx_controller_v1_0::set_property -dict [list \
+                               CONFIG.HAS_AXI_LITE_IF                             0 \
+                               CONFIG.RESET_ACTIVE_LEVEL                          1 \
+                               CONFIG.CP_FIFO_DEPTH                               32 \
+                               CONFIG.CP_FIFO_TYPE                                lutram \
+                               CONFIG.CP_ARBITRATION_PROTOCOL                     1 \
+                               CONFIG.CP_COMPRESSION                              0 \
+                               CONFIG.CP_FAMILY                                   7series \
+                               CONFIG.CDC_STAGES                                  2 \
+                               CONFIG.VS.vs_compute.START_IN_SHUTDOWN             0 \
+                               CONFIG.VS.vs_compute.NUM_TRIGGERS_ALLOCATED        4 \
+                               CONFIG.VS.vs_compute.NUM_RMS_ALLOCATED             2 \
+                               CONFIG.VS.vs_compute.NUM_HW_TRIGGERS               3 \
+                               CONFIG.VS.vs_compute.SHUTDOWN_ON_ERROR             1 \
+                               CONFIG.VS.vs_compute.HAS_AXIS_STATUS               0 \
+                               CONFIG.VS.vs_compute.HAS_AXIS_CONTROL              0 \
+                               CONFIG.VS.vs_compute.HAS_POR_RM                    1 \
+                               CONFIG.VS.vs_compute.POR_RM                        DONUT \
+                               CONFIG.VS.vs_compute.SKIP_RM_STARTUP_AFTER_RESET   0 \
+                               CONFIG.VS.vs_compute.TRIGGER0_TO_RM                DONUT \
+                               CONFIG.VS.vs_compute.TRIGGER1_TO_RM                example \
+                               CONFIG.VS.vs_compute.TRIGGER2_TO_RM                DONUT \
+                               CONFIG.VS.vs_compute.TRIGGER3_TO_RM                example \
+                               CONFIG.VS.vs_compute.RM.DONUT.SHUTDOWN_REQUIRED    no \
+                               CONFIG.VS.vs_compute.RM.DONUT.STARTUP_REQUIRED     no \
+                               CONFIG.VS.vs_compute.RM.DONUT.RESET_REQUIRED       no \
+                               CONFIG.VS.vs_compute.RM.DONUT.RESET_DURATION       1 \
+                               CONFIG.VS.vs_compute.RM.DONUT.BS.0.ADDRESS         196608 \
+                               CONFIG.VS.vs_compute.RM.DONUT.BS.0.SIZE            164544 \
+                               CONFIG.VS.vs_compute.RM.DONUT.BS.0.CLEAR           0 \
+                               CONFIG.VS.vs_compute.RM.example.SHUTDOWN_REQUIRED  no \
+                               CONFIG.VS.vs_compute.RM.example.STARTUP_REQUIRED   no \
+                               CONFIG.VS.vs_compute.RM.example.RESET_REQUIRED     no \
+                               CONFIG.VS.vs_compute.RM.example.RESET_DURATION     1 \
+                               CONFIG.VS.vs_compute.RM.example.BS.0.ADDRESS       0 \
+                               CONFIG.VS.vs_compute.RM.example.BS.0.SIZE          164544 \
+                               CONFIG.VS.vs_compute.RM.example.BS.0.CLEAR         0 \
+                             ] [get_ips design_1_dfx_controller_0_0]
+
+ID Mapping
+=============================
+Virtual Socket Manager vs_compute is assigned ID 0
+  Reconfigurable Module DONUT is assigned ID 0
+  Reconfigurable Module example is assigned ID 1
+
+
+Address Structure
+=============================
+The addresses are structured as follows:
+  There is no VSM Select slice as there's only one VSM
+  address[ 6: 5]  : Selects the Register Bank
+  address[ 4: 2]  : Selects the Register within the bank
+
+Address Map
+=============================
+| Virtual Socket Manager | Register     | Address |
++------------------------+--------------+---------+
+| vs_compute             | STATUS       | 0X00000 |
+| vs_compute             | CONTROL      | 0X00000 |
+| vs_compute             | SW_TRIGGER   | 0X00004 |
+| vs_compute             | TRIGGER0     | 0X00020 |
+| vs_compute             | TRIGGER1     | 0X00024 |
+| vs_compute             | TRIGGER2     | 0X00028 |
+| vs_compute             | TRIGGER3     | 0X0002C |
+| vs_compute             | RM_BS_INDEX0 | 0X00040 |
+| vs_compute             | RM_CONTROL0  | 0X00044 |
+| vs_compute             | RM_BS_INDEX1 | 0X00048 |
+| vs_compute             | RM_CONTROL1  | 0X0004C |
+| vs_compute             | BS_ID0       | 0X00060 |
+| vs_compute             | BS_ADDRESS0  | 0X00064 |
+| vs_compute             | BS_SIZE0     | 0X00068 |
+| vs_compute             | BS_ID1       | 0X00070 |
+| vs_compute             | BS_ADDRESS1  | 0X00074 |
+| vs_compute             | BS_SIZE1     | 0X00078 |
+
+
+

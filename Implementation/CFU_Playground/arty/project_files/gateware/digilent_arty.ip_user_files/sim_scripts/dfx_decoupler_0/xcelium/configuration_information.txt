@@ -1,0 +1,189 @@
+Core Configuration Properties
+=============================
+CONFIG.HAS_AXI_LITE                                                    0
+CONFIG.HAS_AXIS_CONTROL                                                0
+CONFIG.HAS_AXIS_STATUS                                                 0
+CONFIG.HAS_SIGNAL_CONTROL                                              1
+CONFIG.HAS_SIGNAL_STATUS                                               1
+CONFIG.ALWAYS_HAVE_AXI_CLK                                             0
+CONFIG.INTF.cfu_inputs.VLNV                                            undef
+CONFIG.INTF.cfu_inputs.MODE                                            master
+CONFIG.INTF.cfu_inputs.CDC_STAGES                                      6
+CONFIG.INTF.cfu_inputs.REGISTER                                        0
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.PRESENT                        1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DECOUPLED                      1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DECOUPLED_VALUE                0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.WIDTH                          1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DIRECTION                      in
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.RESOURCE                       infer
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.MANAGEMENT                     auto
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.PRESENT          1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DECOUPLED        1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DECOUPLED_VALUE  0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.WIDTH            10
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DIRECTION        in
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.RESOURCE         infer
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.MANAGEMENT       auto
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.PRESENT             1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DECOUPLED           1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DECOUPLED_VALUE     0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.WIDTH               32
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DIRECTION           in
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.RESOURCE            infer
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.MANAGEMENT          auto
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.PRESENT             1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DECOUPLED           1
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DECOUPLED_VALUE     0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.WIDTH               32
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DIRECTION           in
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.RESOURCE            infer
+CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.MANAGEMENT          auto
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.PRESENT                        1
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DECOUPLED                      1
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DECOUPLED_VALUE                0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.WIDTH                          1
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DIRECTION                      in
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.RESOURCE                       infer
+CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.MANAGEMENT                     auto
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.PRESENT                            1
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.DECOUPLED                          1
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.DECOUPLED_VALUE                    0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.WIDTH                              1
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.DIRECTION                          in
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.RESOURCE                           infer
+CONFIG.INTF.cfu_inputs.SIGNAL.reset.MANAGEMENT                         auto
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.PRESENT                              0
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.DECOUPLED                            1
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.DECOUPLED_VALUE                      0x0
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.WIDTH                                1
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.DIRECTION                            in
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.RESOURCE                             infer
+CONFIG.INTF.cfu_inputs.SIGNAL.clk.MANAGEMENT                           auto
+CONFIG.INTF.cfu_outputs.VLNV                                           undef
+CONFIG.INTF.cfu_outputs.MODE                                           master
+CONFIG.INTF.cfu_outputs.CDC_STAGES                                     0
+CONFIG.INTF.cfu_outputs.REGISTER                                       0
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.PRESENT                       1
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DECOUPLED                     1
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DECOUPLED_VALUE               0x0
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.WIDTH                         1
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DIRECTION                     out
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.RESOURCE                      infer
+CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.MANAGEMENT                    auto
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.PRESENT                       1
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DECOUPLED                     1
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DECOUPLED_VALUE               0x0
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.WIDTH                         1
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DIRECTION                     out
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.RESOURCE                      infer
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.MANAGEMENT                    auto
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.PRESENT           1
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DECOUPLED         1
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DECOUPLED_VALUE   0x0
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.WIDTH             32
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DIRECTION         out
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.RESOURCE          infer
+CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.MANAGEMENT        auto
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.PRESENT                          1
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DECOUPLED                        1
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DECOUPLED_VALUE                  0x0
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.WIDTH                            3
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DIRECTION                        s
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.RESOURCE                         infer
+CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.MANAGEMENT                       auto
+
+
+dfx_decoupler_v1_0::set_property -dict [list \
+                               CONFIG.HAS_AXI_LITE                                                    0 \
+                               CONFIG.HAS_AXIS_CONTROL                                                0 \
+                               CONFIG.HAS_AXIS_STATUS                                                 0 \
+                               CONFIG.HAS_SIGNAL_CONTROL                                              1 \
+                               CONFIG.HAS_SIGNAL_STATUS                                               1 \
+                               CONFIG.ALWAYS_HAVE_AXI_CLK                                             0 \
+                               CONFIG.INTF.cfu_inputs.VLNV                                            undef \
+                               CONFIG.INTF.cfu_inputs.MODE                                            master \
+                               CONFIG.INTF.cfu_inputs.CDC_STAGES                                      6 \
+                               CONFIG.INTF.cfu_inputs.REGISTER                                        0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.PRESENT                        1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DECOUPLED                      1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DECOUPLED_VALUE                0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.WIDTH                          1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.DIRECTION                      in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.RESOURCE                       infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_valid.MANAGEMENT                     auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.PRESENT          1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DECOUPLED        1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DECOUPLED_VALUE  0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.WIDTH            10 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.DIRECTION        in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.RESOURCE         infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_function_id.MANAGEMENT       auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.PRESENT             1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DECOUPLED           1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DECOUPLED_VALUE     0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.WIDTH               32 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.DIRECTION           in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.RESOURCE            infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_0.MANAGEMENT          auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.PRESENT             1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DECOUPLED           1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DECOUPLED_VALUE     0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.WIDTH               32 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.DIRECTION           in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.RESOURCE            infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.cmd_payload_inputs_1.MANAGEMENT          auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.PRESENT                        1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DECOUPLED                      1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DECOUPLED_VALUE                0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.WIDTH                          1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.DIRECTION                      in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.RESOURCE                       infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.rsp_ready.MANAGEMENT                     auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.PRESENT                            1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.DECOUPLED                          1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.DECOUPLED_VALUE                    0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.WIDTH                              1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.DIRECTION                          in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.RESOURCE                           infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.reset.MANAGEMENT                         auto \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.PRESENT                              0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.DECOUPLED                            1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.DECOUPLED_VALUE                      0x0 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.WIDTH                                1 \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.DIRECTION                            in \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.RESOURCE                             infer \
+                               CONFIG.INTF.cfu_inputs.SIGNAL.clk.MANAGEMENT                           auto \
+                               CONFIG.INTF.cfu_outputs.VLNV                                           undef \
+                               CONFIG.INTF.cfu_outputs.MODE                                           master \
+                               CONFIG.INTF.cfu_outputs.CDC_STAGES                                     0 \
+                               CONFIG.INTF.cfu_outputs.REGISTER                                       0 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.PRESENT                       1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DECOUPLED                     1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DECOUPLED_VALUE               0x0 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.WIDTH                         1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.DIRECTION                     out \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.RESOURCE                      infer \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cmd_ready.MANAGEMENT                    auto \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.PRESENT                       1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DECOUPLED                     1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DECOUPLED_VALUE               0x0 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.WIDTH                         1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.DIRECTION                     out \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.RESOURCE                      infer \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_valid.MANAGEMENT                    auto \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.PRESENT           1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DECOUPLED         1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DECOUPLED_VALUE   0x0 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.WIDTH             32 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.DIRECTION         out \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.RESOURCE          infer \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.rsp_payload_outputs_0.MANAGEMENT        auto \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.PRESENT                          1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DECOUPLED                        1 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DECOUPLED_VALUE                  0x0 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.WIDTH                            3 \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.DIRECTION                        s \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.RESOURCE                         infer \
+                               CONFIG.INTF.cfu_outputs.SIGNAL.cfu_id.MANAGEMENT                       auto \
+] [get_ips dfx_decoupler_0]
+

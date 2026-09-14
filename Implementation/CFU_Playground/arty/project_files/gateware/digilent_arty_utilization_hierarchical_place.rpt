@@ -1,0 +1,38 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
+| Date         : Fri Nov 21 12:49:57 2025
+| Host         : jsp-H370M-D3H running 64-bit Ubuntu 24.04.3 LTS
+| Command      : report_utilization -hierarchical -file digilent_arty_utilization_hierarchical_place.rpt
+| Design       : digilent_arty
+| Device       : xc7a35ticsg324-1L
+| Speed File   : -1L
+| Design State : Fully Placed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++----------------------------+------------------+------------+------------+---------+------+------+--------+--------+------------+
+|          Instance          |      Module      | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs | RAMB36 | RAMB18 | DSP Blocks |
++----------------------------+------------------+------------+------------+---------+------+------+--------+--------+------------+
+| digilent_arty              |            (top) |       4882 |       4736 |     144 |    2 | 3878 |     11 |     25 |          4 |
+|   (digilent_arty)          |            (top) |       1921 |       1775 |     144 |    2 | 2279 |     10 |     17 |          0 |
+|   Cfu                      |              Cfu |        208 |        208 |       0 |    0 |  134 |      0 |      0 |          0 |
+|     (Cfu)                  |              Cfu |         22 |         22 |       0 |    0 |   37 |      0 |      0 |          0 |
+|     fn0                    |              fn0 |         38 |         38 |       0 |    0 |    0 |      0 |      0 |          0 |
+|     fn3                    |              fn3 |        151 |        151 |       0 |    0 |   97 |      0 |      0 |          0 |
+|   VexRiscv                 |         VexRiscv |       2772 |       2772 |       0 |    0 | 1465 |      1 |      8 |          4 |
+|     (VexRiscv)             |         VexRiscv |       1383 |       1383 |       0 |    0 | 1311 |      0 |      2 |          4 |
+|     IBusCachedPlugin_cache | InstructionCache |        849 |        849 |       0 |    0 |   95 |      1 |      1 |          0 |
+|     dataCache_1            |        DataCache |        550 |        550 |       0 |    0 |   59 |      0 |      5 |          0 |
++----------------------------+------------------+------------+------------+---------+------+------+--------+--------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

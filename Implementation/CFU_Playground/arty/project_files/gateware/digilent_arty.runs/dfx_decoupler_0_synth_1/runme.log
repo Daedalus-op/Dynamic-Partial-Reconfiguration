@@ -1,0 +1,24 @@
+
+*** Running vivado
+    with args -log dfx_decoupler_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dfx_decoupler_0.tcl
+
+
+****** Vivado v2024.1 (64-bit)
+  **** SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+  **** IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+  **** SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+  **** Start of session at: Fri Nov 28 15:21:20 2025
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source dfx_decoupler_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1361.418 ; gain = 19.840 ; free physical = 2192 ; free virtual = 14063
+INFO: [IP_Flow 19-6924] IPCACHE: Running cache check for IP inst: dfx_decoupler_0
+INFO: [IP_Flow 19-6922] IPCACHE: Exporting cached entry c169608790c2cd3d to dir: /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.cache/ip/2024.1/c/1/c169608790c2cd3d/dfx_decoupler_0_stub.v to /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0_stub.v.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.cache/ip/2024.1/c/1/c169608790c2cd3d/dfx_decoupler_0_sim_netlist.vhdl to /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0_sim_netlist.vhdl.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.cache/ip/2024.1/c/1/c169608790c2cd3d/dfx_decoupler_0_stub.vhdl to /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0_stub.vhdl.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.cache/ip/2024.1/c/1/c169608790c2cd3d/dfx_decoupler_0_sim_netlist.v to /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0_sim_netlist.v.
+INFO: [IP_Flow 19-6928] IPCACHE: copied cached file /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.cache/ip/2024.1/c/1/c169608790c2cd3d/dfx_decoupler_0.dcp to /home/jsp/Storage/CFU-Playground/soc/build/digilent_arty.example_cfu/gateware/digilent_arty.runs/dfx_decoupler_0_synth_1/dfx_decoupler_0.dcp.
+INFO: [IP_Flow 19-4838] Using cached IP synthesis design for IP dfx_decoupler_0, cache-ID = c169608790c2cd3d.
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 28 15:21:30 2025...
